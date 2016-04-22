@@ -10,6 +10,7 @@
 新浪微博SSO登录，微信分享这些都需要签名打包，才能看到效果，设置默认签名文件为自己的签名jks，这样就不需要打包了。
 在app目录下添加你的.jks，然后app的build.gradle文件中的增加以下内容：
 第一种：
+
 ```gradle
 android {  
     signingConfigs {  
@@ -23,6 +24,7 @@ android {
 }
 ```
 第二种：
+
 ```gradle
 android {  
     signingConfigs {  
@@ -109,7 +111,7 @@ private void showPopupMenu(View v) {
     mPopupBackground.showAtLocation(v, Gravity.BOTTOM, 0, 0);
 }
 ```
-v：父布局
+父布局
 demo_popup_window_bg.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -628,12 +630,14 @@ public static void hideSoftInput(Activity activity) {
 ###界面不被弹出的键盘盖住
 
 一进入activity就弹出键盘
+
 ```xml
 android:windowSoftInputMode="adjustResize"
 android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
 ```
 
 第一个软键盘和输入框会完全分离，而第二个输入框还是会被软键盘盖住一点点,而且第二个要把两个属性叠加起来，为什么要叠加起来呢，因为如果只用adjustPan 的话需要点击输入框才会弹出软键盘在 AndroidMainfest.xml中选择哪个activity，设置windowSoftInputMode属性为adjustUnspecified|stateHidden。
+
 ```xml
 android:windowSoftInputMode="adjustUnspecified|stateHidden"
 ```
@@ -816,9 +820,11 @@ tv.setText(Html.fromHtml("<b>" + listTitle.get(position).get("title") + "</b>"))
 
 ###代码设置背景图setImageResource/setBackgroundResource
 
-textView.setBackgroundResource(R.drawable.bg_menu_1);设置背景图片
+```Java
+textView.setBackgroundResource(R.drawable.bg_menu_1);//设置背景图片
 textView.setBackgroundColor(0xffffffff);
-setImageResource與xml中的src的屬性才是相匹配的，而setBackgroundResource是與xml中的background屬性相匹配
+```
+setImageResource与xml中的src的属性才是相匹配的，而setBackgroundResource是与xml中的background属性相匹配
 的.
 holder.chat_sound_iv_right.setBackgroundResource(0);//没有图片
 
@@ -908,9 +914,10 @@ android:background=”@drawable/radio” 使用定义的样式
 
 ###占位符%s替换
 
-%d （表示整数）
-%f （表示浮点数）
-%s （表示字符串）
+- %d （表示整数）
+- %f （表示浮点数）
+- %s （表示字符串）
+
 txt.setText(String.format (“被替换%1$s”,”替换内容”));
 
 ###TextView中嵌套图片Drawable
@@ -1080,6 +1087,7 @@ if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
 ###List增加数据
 
 简单
+
 ```Java
 private List<String> getData() {
     List<String> data = new ArrayList<String>();
@@ -1091,6 +1099,7 @@ private List<String> getData() {
 }
 ```
 键值对
+
 ```Java
 private List<Map<String, Object>> getData() {
     List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -1117,6 +1126,7 @@ private List<Map<String, Object>> getData() {
 }
 ```
 清除数据：
+
 ```Java
 data.clear();
 listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getData()));
@@ -1161,6 +1171,7 @@ public boolean isNumber(String str) {
 ###SharedPreferences
 
 SharedPreferences存数据
+
 ```Java
 SharedPreferences sharedPreferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 Editor editor = sharedPreferences.edit();//获取编辑器
@@ -1172,6 +1183,7 @@ editor.commit();//提交修改
 ```
 
 SharedPreferences取数据
+
 ```Java
 SharedPreferences sharedPreferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 //getString()第二个参数为缺省值,如果preference中不存在该key,将返回缺省值
@@ -1312,8 +1324,7 @@ public boolean onKeyUp(int keyCode, KeyEvent event) {
 
 ```Java
 TranslateAnimation left, right;
-right = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1f,
-Animation.RELATIVE_TO_PARENT, -2f,
+right = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1f, Animation.RELATIVE_TO_PARENT, -2f,
 Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_PARENT,
 0f);
 left = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -2f,
