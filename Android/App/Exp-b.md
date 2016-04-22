@@ -219,16 +219,17 @@ Log.d("TAG", "End");
 
 为了防止Activity，Service等这样的Context泄漏于一些生命周期更长的对象，可以使用生命周期更长的ApplicationContext，但是不是所有的Context的都能替换为ApplicationContext
 这是网上流传的一份表格：
-||Application|Activity|Service|ContentProvider|BroadcastReceiver|
-|----------|:-----:|:-----:|:-----:|:-----:|:-----:|
-|Show Dialog|否|是|否|否|否|
-|Start Activity|否|是|否|否|否|
-|Layout Inflation|否|是|否|否|否|
-|Start Service|是|是|是|是|是|
-|Bind Service|是|是|是|是|否|
-|Send Broadcast|是|是|是|是|是|
-|Regist BroadcastReceiver|是|是|是|是|否|
-|Load Resource Value|是|是|是|是|是|
+
+|                 |Application|Activity|Service|ContentProvider|BroadcastReceiver|
+|-----------------|:---------:|:------:|:-----:|:-------------:|:---------------:|
+|Show Dialog      |否|是|否|否|否|
+|Start Activity   |否|是|否|否|否|
+|Layout Inflation |否|是|否|否|否|
+|Start Service    |是|是|是|是|是|
+|Bind Service     |是|是|是|是|否|
+|Send Broadcast   |是|是|是|是|是|
+|BroadcastReceiver|是|是|是|是|否|
+|Load Resource    |是|是|是|是|是|
 
 ###图片缓存大小
 
