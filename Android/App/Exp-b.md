@@ -209,6 +209,7 @@ Log.d("TAG", "End");
 ###JAVA引用类型一览表
 
 对象引用：强引用 > 软引用 > 弱引用 > 虚引用。
+
 |引用类型|回收时机|用途|生存时间|
 |强引用|从来不会|对象的一般状态|JVM停止运行时终止|
 |软引用|在内存不足时|对象缓存|内存不足时终止|
@@ -221,7 +222,6 @@ Log.d("TAG", "End");
 这是网上流传的一份表格：
 
 |                 |Application|Activity|Service|ContentProvider|BroadcastReceiver|
-|-----------------|:---------:|:------:|:-----:|:-------------:|:---------------:|
 |Show Dialog      |否|是|否|否|否|
 |Start Activity   |否|是|否|否|否|
 |Layout Inflation |否|是|否|否|否|
@@ -336,6 +336,7 @@ adb bugreport > main.log
 ###dpi文件夹的换算比例
 
 之前的ldpi基本可以抛弃了，主流的dpi已经从很早之前的mdip转移到了xhdpi了，特别提醒。
+
 |PPI|RESOLUTION|DP|PX|
 |mdpi(160dp)|320P|1|1|
 |hdpi(240dp)|480P|1|1.5|
