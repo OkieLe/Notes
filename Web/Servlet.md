@@ -3,6 +3,15 @@
 - Servlet就是JAVA 类
 - Servlet是一个继承HttpServlet类的类
 - 这个在服务器端运行，用以处理客户端的请求
+- Servlet 没有 main 方法，不能够独立的运行，它的运行需要容器的支持，Tomcat 是最常用的 JSP/Servlet 容器。Servlet 运行在 Servlet 容器中，并由容器管理从创建到销毁的整个过程。
+
+####JSP与Servlet
+
+JSP 本质是一个 Servlet，它的运行也需要容器的支持。
+
+在 JSP 和 Servlet 文件中都可以编写 Java 和 HTML 代码，不同的是，Servlet 虽然也可以动态的生成页面内容，但更加偏向于逻辑的控制。JSP 最终被转换成 Servlet 在 jvm 中解释执行，在 JSP 中虽然也可以编写 Java 代码，但它更加偏向于页面视图的展现。
+
+在 MVC 架构模式中，就 JSP 和 Servlet 而言，C 通常由 Servlet 充当，V 通常由 JSP 来充当。
 
 ####Servlet相关包的介绍
 
