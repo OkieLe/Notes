@@ -41,7 +41,7 @@ public class Teacher extends SchoolUser{
 }
 ```
 2. 接下来就是与简单工厂模式不同的地方了，在简单工厂模式中所有产品的创建都集中在了一个工厂里，而工厂方法模式则是需要创建多个不同类别的工厂实例的。我们首先定义一个抽象工厂接口，其实工厂方法模式的核心
-```JAva
+```Java
 public  interface Factory {
     public SchoolUser createUser();
 }

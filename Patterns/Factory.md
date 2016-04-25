@@ -7,7 +7,9 @@
 ####一个实例
 
 在校园里，无论是老师还是学生，一般都会有一个id号码，用于登录校园内的各种门户系统。所以，经常会遇到用用户的id号码来区别用户身份，并创建用户对象的问题。
-1. 首先建立一个抽象类SchoolUser，用做学生和教师的父类。
+
+a. 首先建立一个抽象类SchoolUser，用做学生和教师的父类。
+
 ```Java
 package SimpleFacotryTest;
 
@@ -17,7 +19,9 @@ public abstract class SchoolUser {
   public abstract void Describe();
 }
 ```
-2. 创建具体类Teacher和Student，两个具体类的构造函数是通过传递id值来获取用户的详细信息的。
+
+b. 创建具体类Teacher和Student，两个具体类的构造函数是通过传递id值来获取用户的详细信息的。
+
 ```Java
 //Student:
 package SimpleFacotryTest;
@@ -51,7 +55,9 @@ public class Teacher extends SchoolUser{
   }
 }
 ```
-3. 接下来就要开始实现我们的工厂了。正如我们前面在定义里所说的一样，简单工厂是通过传进的参数来动态决定应该创建出哪一个产品类的实例。那么他就需要一个逻辑判断的过程，具体问题具体分析。
+
+c. 接下来就要开始实现我们的工厂了。正如我们前面在定义里所说的一样，简单工厂是通过传进的参数来动态决定应该创建出哪一个产品类的实例。那么他就需要一个逻辑判断的过程，具体问题具体分析。
+
 ```Java
 package SimpleFacotryTest;
 
@@ -69,7 +75,9 @@ public class Factory {
   }
 }
 ```
-4. 以上三步已经实现了简单工厂模式的设计原理。接下来，我们来创建一个客户端去使用该工厂。
+
+d. 以上三步已经实现了简单工厂模式的设计原理。接下来，我们来创建一个客户端去使用该工厂。
+
 ```Java
 package SimpleFacotryTest;
 import java.util.Scanner;;
@@ -89,7 +97,9 @@ public class Client {
   }
 }
 ```
-5. 看一下运行结果：
+
+e. 看一下运行结果：
+
 ```
 123
 不存在该号码的用户
