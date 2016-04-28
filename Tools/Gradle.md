@@ -11,13 +11,13 @@ Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主�
 
 学习Gradle前，需要有一个Groovy语言的基础，以免被Groovy的语法困扰，反而忽略了Gradle的知识。
 
-###1 Projects和tasks
+### 1 Projects和tasks
 
 先明确两个概念，projects和tasks，它们是Gradle中的两个重要概念。
 任何一个Gradle构建，都是由一个或多个projects组成的。Project就是你想要用Gradle做什么，比如构建一个jar包，构建一个web应用。Project也不单指构建操作，部署你的应用或搭建一个环境，也可以是一个project。
 一个project由多个task组成。每个task代表了构建过程当中的一个原子性操作，比如编译，打包，生成javadoc，发布等等这些操作。
 
-###2 编写第一个构建脚本
+### 2 编写第一个构建脚本
 
 新建一个文件build.gradle，然后添加以下代码：
 ```gradle
@@ -42,7 +42,7 @@ Task是Gradle里定义的一个接口，表示上述概念中的task。它定义
 
 在上面执行了gradle hello后，除了输出“Hello, Gradle!”之外，我们发现像“:hello”这样的其他内容。这其实是Gradle打印出来的日志，如果不想输出这些内容，可以在gradle后面 加上参数 -q。即：gradle -q hello。
 
-###3 快速定义任务
+### 3 快速定义任务
 
 上面的代码，还有一种更简洁的写法，如下：
 ```gradle
@@ -53,7 +53,7 @@ task hello << {
 
 执行这个脚本，打印出来的是一样的。也就是我们把像doLast这样的代码，直接简化为<<这个符号了。这其实是Gradle利用了 Groovy的操作符重载的特性，把左位移操作符实现为将action加到task的最后，相当于调用doLast方法。看Gradle的api文档里对 doLast()和leftShift()这两个方法的介绍，可知它们的作用是一样的，所以在这里，<<左移操作符即doLast的简写方 式。
 
-###4 代码即脚本
+### 4 代码即脚本
 
 Gradle脚本是采用Groovy编写的，所以也像Groovy一样，以脚本方式来执行代码，如下面例子：
 ```gradle
@@ -73,7 +73,7 @@ Upper case: MY_NAME
 
 这也就是说，我们在写Gradle脚本的时候，可以像写Groovy代码一样。而Groovy是基于Java的，兼容Java语法，所以Java的朋友们，是不是忽然发现Gradle脚本很好上手了呢？
 
-###5 任务依赖
+### 5 任务依赖
 
 我们可以通过以下方式创建依赖：
 ```gradle
@@ -93,7 +93,7 @@ Hello, Gradle!
 
 另外，被依赖的task不必放在前面声明，在后面也是可以的，这一点在后面将会用到。
 
-###6 动态任务
+### 6 动态任务
 
 借助于强大的Groovy，我们还可以动态地创建任务。如下代码：
 ```gradle
@@ -123,11 +123,11 @@ task3
 ```
 注意，如果任务还未定义，不能使用短标记法（见本篇后续内容）来运行任务。
 
-###7 任务操纵
+### 7 任务操纵
 
 在Gradle当中，任务创建之后可以通过API进行访问，这是Gradle与Ant的不同之处。
 
-####7.1 增加依赖
+### #7.1 增加依赖
 
 还是以上面的例子，但是我们添加一行代码，如下：
 ```gradle
@@ -149,7 +149,7 @@ I'm task number 1
 
 它先执行了task0和task3，因为task1依赖于这两个。
 
-####7.2 增加任务行为
+### #7.2 增加任务行为
 
 如下代码：
 ```gradle
@@ -176,7 +176,7 @@ I am last.
 I am the the last
 ```
 
-###8 短标记法
+### 8 短标记法
 
 如果你对groovy有一定了解，那你也许会注意到，每个task都是一个构建脚本的属性，所以可以通过“$”这种短标记法来访问任务。如下：
 ```gradle
@@ -197,7 +197,7 @@ Greetings from the hello task.
 
 注意，通过这种方法访问的任务一定是要已经定义的。
 
-###9 增加自定义属性
+### 9 增加自定义属性
 
 ```gradle
 task myTask {
@@ -215,7 +215,7 @@ msdx@msdx-ubuntu:~/tmp$ gradle -q printTaskProperties
 myValue
 ```
 
-###10. 调用Ant任务
+### 10. 调用Ant任务
 
 比如利用AntBuilder执行ant.loadfiile。
 ```gradle
@@ -244,7 +244,7 @@ username=admin
 writeable=true
 ```
 
-###11 方法抽取
+### 11 方法抽取
 
 在上面的脚本中，我们可以把部分代码抽取出来，如下：
 ```gradle
@@ -262,7 +262,7 @@ File[] fileList(String dir) {
 
 执行结果一样。
 
-###12. 定义默认任务
+### 12. 定义默认任务
 
 ```gradle
 defaultTasks 'clean', 'run'
@@ -287,7 +287,7 @@ Default Cleaning!
 Default Running!
 ```
 
-###13 DAG配置
+### 13 DAG配置
 
 Gradle使用DAG（Directed acyclic graph，有向非循环图）来决定任务执行的顺序。通过这一特性，我们可以实现依赖任务做不同输出。
 如下代码：

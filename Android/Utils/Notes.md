@@ -1,4 +1,4 @@
-####JIT
+#### JIT
 
 /build/core/combo/TARGET_linux-arm.mk中
 ```Makefile
@@ -23,7 +23,7 @@ dalvik.vm.execution-mode=int:fast #（关闭JIT）
 
 只要在APK的AndroidManifest.xml中把<application>的Android:vmSafeMode属性设置true就可以对APK禁用JIT。
 
-####ADB
+#### ADB
 
 ```shell
 adb root
@@ -46,7 +46,7 @@ adb shell setprop debug.sf.dump.png 0
 
 `getprop | busybox grep opr`查询当前SIM卡及网络类型。
 
-####Prop
+#### Prop
 
 在android系统中，有一些初始化的配置文件，例如:
 ```

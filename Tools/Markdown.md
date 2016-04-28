@@ -1,332 +1,209 @@
-# Cmd Markdown 简明语法手册
-
-标签： Cmd-Markdown
-
----
-
-### 1. 斜体和粗体
-
-使用 * 和 ** 表示斜体和粗体。
-
-示例：
-
-这是 *斜体*，这是 **粗体**。
-
-### 2. 分级标题
-
-使用 === 表示一级标题，使用 --- 表示二级标题。
-
-示例：
-
-```
-这是一个一级标题
-============================
-
-这是一个二级标题
---------------------------------------------------
-
-### 这是一个三级标题
-```
-
-你也可以选择在行首加井号表示不同级别的标题 (H1-H6)，例如：# H1, ## H2, ### H3，#### H4。
-
-### 3. 外链接
-
-使用 \[描述](链接地址) 为文字增加外链接。
-
-示例：
-
-这是去往 [本人博客](http://ghosertblog.github.com) 的链接。
-
-### 4. 无序列表
-
-使用 \*，+，- 表示无序列表。
-
-示例：
-
-- 无序列表项 一
-- 无序列表项 二
-- 无序列表项 三
-
-### 5. 有序列表
-
-使用数字和点表示有序列表。
-
-示例：
-
-1. 有序列表项 一
-2. 有序列表项 二
-3. 有序列表项 三
-
-### 6. 文字引用
-
-使用 > 表示文字引用。
-
-示例：
-
-> 野火烧不尽，春风吹又生。
-
-### 7. 行内代码块
-
-使用 \`代码\` 表示行内代码块。
-
-示例：
-
-让我们聊聊 `html`。
-
-### 8.  代码块
-
-使用 四个缩进空格 表示代码块。
-
-示例：
-
-    这是一个代码块，此行左侧有四个不可见的空格。
-
-### 9.  插入图像
-
-使用 \!\[描述](图片链接地址) 插入图像。
-
-示例：
-
-![我的头像](https://www.zybuluo.com/static/img/my_head.jpg)
-
-# Cmd Markdown 高阶语法手册
-
-### 1. 内容目录
-
-在段落中填写 `[TOC]` 以显示全文内容的目录结构。
-
-[TOC]
-
-### 2. 标签分类
-
-在编辑区任意行的列首位置输入以下代码给文稿标签：
-
-标签： 数学 英语 Markdown
-
-或者
-
-Tags： 数学 英语 Markdown
-
-### 3. 删除线
-
-使用 ~~ 表示删除线。
-
-~~这是一段错误的文本。~~
-
-### 4. 注脚
-
-使用 [^keyword] 表示注脚。
-
-这是一个注脚[^footnote]的样例。
-
-这是第二个注脚[^footnote2]的样例。
-
-### 5. LaTeX 公式
-
-$ 表示行内公式：
-
-质能守恒方程可以用一个很简洁的方程式 $E=mc^2$ 来表达。
-
-$$ 表示整行公式：
-
-$$\sum_{i=1}^n a_i=0$$
-
-$$f(x_1,x_x,\ldots,x_n) = x_1^2 + x_2^2 + \cdots + x_n^2 $$
-
-$$\sum^{j-1}_{k=0}{\widehat{\gamma}_{kj} z_k}$$
-
-访问 [MathJax](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference) 参考更多使用方法。
-
-### 6. 加强的代码块
-
-支持四十一种编程语言的语法高亮的显示，行号显示。
-
-非代码示例：
-
-```
-$ sudo apt-get install vim-gnome
-```
-
-Python 示例：
-
-```python
-@requires_authorization
-def somefunc(param1='', param2=0):
-    '''A docstring'''
-    if param1 > param2: # interesting
-        print 'Greater'
-    return (param2 - param1 + 1) or None
-
-class SomeClass:
-    pass
-
->>> message = '''interpreter
-... prompt'''
-```
-
-JavaScript 示例：
-
-``` javascript
-/**
-* nth element in the fibonacci series.
-* @param n >= 0
-* @return the nth element, >= 0.
-*/
-function fib(n) {
-  var a = 1, b = 1;
-  var tmp;
-  while (--n >= 0) {
-    tmp = a;
-    a += b;
-    b = tmp;
-  }
-  return a;
-}
-
-document.write(fib(10));
-```
-
-### 7. 流程图
-
-#### 示例
-
-```flow
-st=>start: Start:>https://www.zybuluo.com
-io=>inputoutput: verification
-op=>operation: Your Operation
-cond=>condition: Yes or No?
-sub=>subroutine: Your Subroutine
-e=>end
-
-st->io->op->cond
-cond(yes)->e
-cond(no)->sub->io
-```
-
-#### 更多语法参考：[流程图语法参考](http://adrai.github.io/flowchart.js/)
-
-### 8. 序列图
-
-#### 示例 1
-
-```seq
-Alice->Bob: Hello Bob, how are you?
-Note right of Bob: Bob thinks
-Bob-->Alice: I am good thanks!
-```
-
-#### 示例 2
-
-```seq
-Title: Here is a title
-A->B: Normal line
-B-->C: Dashed line
-C->>D: Open arrow
-D-->>A: Dashed open arrow
-```
-
-#### 更多语法参考：[序列图语法参考](http://bramp.github.io/js-sequence-diagrams/)
-
-### 9. 表格支持
-
-| 项目        | 价格   |  数量  |
-| --------   | -----:  | :----:  |
-| 计算机     | \$1600 |   5     |
-| 手机        |   \$12   |   12   |
-| 管线        |    \$1    |  234  |
-
-
-### 10. 定义型列表
-
-名词 1
-:   定义 1（左侧有一个可见的冒号和四个不可见的空格）
-
-代码块 2
-:   这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
-
-        代码块（左侧有八个不可见的空格）
-
-### 11. Html 标签
-
-本站支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：
-
-    <table>
-        <tr>
-            <th rowspan="2">值班人员</th>
-            <th>星期一</th>
-            <th>星期二</th>
-            <th>星期三</th>
-        </tr>
-        <tr>
-            <td>李强</td>
-            <td>张明</td>
-            <td>王平</td>
-        </tr>
-    </table>
-
-
-<table>
-    <tr>
-        <th rowspan="2">值班人员</th>
-        <th>星期一</th>
-        <th>星期二</th>
-        <th>星期三</th>
-    </tr>
-    <tr>
-        <td>李强</td>
-        <td>张明</td>
-        <td>王平</td>
-    </tr>
-</table>
-
-### 12. 内嵌图标
-
-本站的图标系统对外开放，在文档中输入
-
-    <i class="icon-weibo"></i>
-
-即显示微博的图标： <i class="icon-weibo icon-2x"></i>
-
-替换 上述 `i 标签` 内的 `icon-weibo` 以显示不同的图标，例如：
-
-    <i class="icon-renren"></i>
-
-即显示人人的图标： <i class="icon-renren icon-2x"></i>
-
-更多的图标和玩法可以参看 [font-awesome](http://fortawesome.github.io/Font-Awesome/3.2.1/icons/) 官方网站。
-
-### 13. 待办事宜 Todo 列表
-
-使用带有 [ ] 或 [x] （未完成或已完成）项的列表语法撰写一个待办事宜列表，并且支持子列表嵌套以及混用Markdown语法，例如：
-
-    - [ ] **Cmd Markdown 开发**
-        - [ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率
-        - [ ] 支持以 PDF 格式导出文稿
-        - [x] 新增Todo列表功能 [语法参考](https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments)
-        - [x] 改进 LaTex 功能
-            - [x] 修复 LaTex 公式渲染问题
-            - [x] 新增 LaTex 公式编号功能 [语法参考](http://docs.mathjax.org/en/latest/tex.html#tex-eq-numbers)
-    - [ ] **七月旅行准备**
-        - [ ] 准备邮轮上需要携带的物品
-        - [ ] 浏览日本免税店的物品
-        - [x] 购买蓝宝石公主号七月一日的船票
-
-对应显示如下待办事宜 Todo 列表：
-
-- [ ] **Cmd Markdown 开发**
-    - [ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率
-    - [ ] 支持以 PDF 格式导出文稿
-    - [x] 新增Todo列表功能 [语法参考](https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments)
-    - [x] 改进 LaTex 功能
-        - [x] 修复 LaTex 公式渲染问题
-        - [x] 新增 LaTex 公式编号功能 [语法参考](http://docs.mathjax.org/en/latest/tex.html#tex-eq-numbers)
-- [ ] **七月旅行准备**
-    - [ ] 准备邮轮上需要携带的物品
-    - [ ] 浏览日本免税店的物品
-    - [x] 购买蓝宝石公主号七月一日的船票
-
-
-[^footnote]: 这是一个 *注脚* 的 **文本**。
-
-[^footnote2]: 这是另一个 *注脚* 的 **文本**。
+## 主要内容 ##
+> #### Markdown是_什么_？ ####
+> #### _谁_发明了这么个东西？ ####
+> #### _为什么_要使用它？ ####
+> #### _怎么_使用？ ####
+> #### 都_谁_在用？####
+> #### 感觉有意思？_不怕你看见，就怕你试试_ ####
+
+## 正文 ##
+### 1. Markdown是*什么*？ ###
+**Markdown**是一种轻量级**标记语言**，它以纯文本形式(_易读、易写、易更改_)编写文档，并最终以HTML格式发布。    
+**Markdown**也可以理解为将以MARKDOWN语言编写的语言转换成HTML内容的工具，最初是一个perl脚本_Markdown.pl_。    
+
+### 2. _谁_发明了这么个东西？ ###
+它由[**Aaron Swartz**](http://www.aaronsw.com/)和**John Gruber**共同设计，**Aaron Swartz**就是那位于去年（_2013年1月11日_）自杀,有着**开挂**一般人生经历的程序员。维基百科对他的[介绍](http://zh.wikipedia.org/wiki/%E4%BA%9A%E4%BC%A6%C2%B7%E6%96%AF%E6%B2%83%E8%8C%A8)是：**软件工程师、作家、政治组织者、互联网活动家、维基百科人**。    
+
+他有着足以让你跪拜的人生经历：    
++ **14岁**参与RSS 1.0规格标准的制订。     
++ **2004**年入读**斯坦福**，之后退学。   
++ **2005**年创建[Infogami](http://infogami.org/)，之后与[Reddit](http://www.reddit.com/)合并成为其合伙人。   
++ **2010**年创立求进会（Demand Progress），积极参与禁止网络盗版法案（SOPA）活动，最终该提案**居然**被撤回。   
++ **2011**年7月19日，因被控从MIT和JSTOR下载480万篇学术论文并以免费形式上传于网络被捕。     
++ **2013**年1月自杀身亡。    
+
+![Aaron Swartz](https://github.com/younghz/Markdown/raw/master/Res/Aaron_Swartz.jpg)
+
+天才都有早逝的归途（又是一位**犹太人**）。
+
+### 3. _为什么_要使用它？ ###
++ 它是易读（_看起开舒服_）、易写（_语法简单_）、易更改**纯文本**。处处体现着**极简主义**的影子。
++ 兼容HTML，可以转换为HTML格式发布。
++ 跨平台使用。
++ 越来越多的网站支持Markdown。
++ 更方便清晰的组织你的电子邮件。（Markdown-here, Airmail）
++ 摆脱Word（我不是认真的）。
+
+### 4. _怎么_使用？ ###
+如果不算**扩展**，Markdown的语法绝对**简单**到让你爱不释手。
+
+废话太多，下面正文，Markdown语法主要分为如下几大部分：
+**标题**，**段落**，**区块引用**，**代码区块**，**强调**，**列表**，**分割线**，**链接**，**图片**，**反斜杠 `\`**，**符号'`'**。
+
+#### 4.1 标题 ####
+两种形式：  
+1）使用`=`和`-`标记一级和二级标题。
+> 一级标题   
+> `=========`   
+> 二级标题    
+> `---------`
+
+效果：
+> 一级标题   
+> =========   
+> 二级标题
+> ---------  
+
+2）使用`#`，可表示1-6级标题。
+> \# 一级标题   
+> \## 二级标题   
+> \### 三级标题   
+> \#### 四级标题   
+> \##### 五级标题   
+> \###### 六级标题    
+
+效果：
+> # 一级标题   
+> ## 二级标题   
+> ### 三级标题   
+> #### 四级标题   
+> ##### 五级标题   
+> ###### 六级标题
+
+#### 4.2 段落 ####
+段落的前后要有空行，所谓的空行是指没有文字内容。若想在段内强制换行的方式是使用**两个以上**空格加上回车（引用中换行省略回车）。
+
+#### 4.3 区块引用 ####
+在段落的每行或者只在第一行使用符号`>`,还可使用多个嵌套引用，如：
+> \> 区块引用  
+> \>> 嵌套引用  
+
+效果：
+> 区块引用  
+>> 嵌套引用
+
+#### 4.4 代码区块 ####
+代码区块的建立是在每行加上4个空格或者一个制表符（如同写代码一样）。如    
+普通段落：
+
+void main()    
+{    
+    printf("Hello, Markdown.");    
+}    
+
+代码区块：
+
+    void main()
+    {
+        printf("Hello, Markdown.");
+    }
+
+**注意**:需要和普通段落之间存在空行。
+
+#### 4.5 强调 ####
+在强调内容两侧分别加上`*`或者`_`，如：
+> \*斜体\*，\_斜体\_    
+> \*\*粗体\*\*，\_\_粗体\_\_
+
+效果：
+> *斜体*，_斜体_    
+> **粗体**，__粗体__
+
+#### 4.6 列表 ####
+使用`·`、`+`、或`-`标记无序列表，如：
+> \-（+\*） 第一项
+> \-（+\*） 第二项
+> \- （+\*）第三项
+
+**注意**：标记后面最少有一个_空格_或_制表符_。若不在引用区块中，必须和前方段落之间存在空行。
+
+效果：
+> + 第一项
+> + 第二项
+> + 第三项
+
+有序列表的标记方式是将上述的符号换成数字,并辅以`.`，如：
+> 1 . 第一项   
+> 2 . 第二项    
+> 3 . 第三项    
+
+效果：
+> 1. 第一项
+> 2. 第二项
+> 3. 第三项
+
+#### 4.7 分割线 ####
+分割线最常使用就是三个或以上`*`，还可以使用`-`和`_`。
+
+#### 4.8 链接 ####
+链接可以由两种形式生成：**行内式**和**参考式**。    
+**行内式**：
+> \[younghz的Markdown库\]\(https:://github.com/younghz/Markdown "Markdown"\)。
+
+效果：
+> [younghz的Markdown库](https:://github.com/younghz/Markdown "Markdown")。
+
+**参考式**：
+> \[younghz的Markdown库1\]\[1\]    
+> \[younghz的Markdown库2\]\[2\]    
+> \[1\]:https:://github.com/younghz/Markdown "Markdown"    
+> \[2\]:https:://github.com/younghz/Markdown "Markdown"    
+
+效果：
+> [younghz的Markdown库1][1]    
+> [younghz的Markdown库2][2]
+
+[1]: https:://github.com/younghz/Markdown "Markdown"
+[2]: https:://github.com/younghz/Markdown "Markdown"
+
+**注意**：上述的`[1]:https:://github.com/younghz/Markdown "Markdown"`不出现在区块中。
+
+#### 4.9 图片 ####
+添加图片的形式和链接相似，只需在链接的基础上前方加一个`！`。
+#### 4.10 反斜杠`\` ####
+相当于**反转义**作用。使符号成为普通符号。
+#### 4.11 符号'`' ####
+起到标记作用。如：
+>\`ctrl+a\`
+
+效果：
+>`ctrl+a`    
+
+#### 5. 都_谁_在用？####
+Markdown的使用者：
++ GitHub
++ 简书
++ Stack Overflow
++ Apollo
++ Moodle
++ Reddit
++ 等等
+
+#### 6. 感觉有意思？趁热打铁，推荐几个_工具_。 ####
++ **Chrome**下的stackedit插件可以离线使用，很爽。也不用担心平台受限。
+在线的dillinger.io算是评价好的了，可是不能离线使用。    
++ **Windowns**下的MarkdownPad也用过，不过免费版的体验不是很好。    
++ **Mac**下的Mou是国人贡献的，口碑很好。推荐。    
++ **Linux**下的ReText不错。    
+
+**其实在对语法了如于心的话，直接用编辑器就可以了，脑子里满满的都是格式化好的文本啊。**
+我现在使用`马克飞象` + `Markdown-here`，先编辑好，然后一键格式化，挺方便。
+
+****
+**注意**：不同的Markdown解释器或工具对相应语法（扩展语法）的解释效果不尽相同，具体可参见工具的使用说明。
+虽然有人想出面搞一个所谓的标准化的Markdown，[没想到还惹怒了健在的创始人John Gruber]
+(http://blog.codinghorror.com/standard-markdown-is-now-common-markdown/)。
+****
+以上基本是所有traditonal markdown的语法。
+
+### 其它： ###
+列表的使用(非traditonal markdown)：
+
+用`|`表示表格纵向边界，表头和表内容用`-`隔开，并可用`:`进行对齐设置，两边都有`:`则表示居中，若不加`:`则默认左对齐。
+
+|代码库                              |链接                                |
+|:------------------------------------:|------------------------------------|
+|MarkDown                              |[https://github.com/younghz/Markdown](https://github.com/younghz/Markdown "Markdown")|
+|moos-young                            |[https://github.com/younghz/moos-young](https://github.com/younghz/moos-young "tianchi")|
+
+关于其它扩展语法可参见具体工具的使用说明。

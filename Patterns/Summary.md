@@ -1,6 +1,6 @@
 ![summary](../_attach/Patterns/summary.jpg)
 
-####创建模式(Creational Pattern)
+#### 创建模式(Creational Pattern)
 
 创建模式是对类的实例化过程的抽象化。分为类的创建模式和对象的创建模式。一些系统在创建对象时，需要动态的决定怎样创建对象，创建那些对象，以及如何组合和表示这些对象。创建模式描述了如何构造和封装这些动态的决定。
 1. 类的创建模式  使用继承关系，把类的创建延迟到子类，从而封装了客户端将得到哪些具体类的信息，并且隐藏了这些类的实例是如何被创建和放在一起的。
@@ -8,7 +8,7 @@
 
 包括：简单工厂（Simple Factory），工厂方法（Factory Method），抽象工厂（Abstract Factory），单例（Singleton），多例（Multiton），建造（Builder），原始模型（Prototype）等。
 
-####结构模式（Structural Pattern）
+#### 结构模式（Structural Pattern）
 
 结构模式描述如何将类或者对象结合在一起形成更大的结构。结构模式描述类和实例这两种不同的东西。
 1. 类的结构模式  使用继承来把类、接口等组合在一起，以形成更大的结构。当一个类从父类继承并实现某接口时，这个新的类就把父类的结构和接口的结构结合起来。类的结构模式是静态的。
@@ -16,7 +16,7 @@
 
 包括：适配器（Adapter），缺省适配（Default Adapter），合成(Composite)，装饰(Decorator)，代理(Proxy)，享元（Flyweight），门面（Facade），桥接（Bridge）等。
 
-####行为模式（Behavioral Pattern）
+#### 行为模式（Behavioral Pattern）
 
 行为模式是对在不同对象之间划分责任和算法的抽象化。行为模式不仅仅是关于类和对象的，而且是关于它们之间的相互作用的。分为
 1. 类的行为模式  使用继承关系在几个类之间分配行为。
@@ -24,7 +24,7 @@
 
 包括：不变（Immutable），策略（Strategy），模板方法（Template Method），观察者（Observer），迭代子（Iterator），责任链（Chain of Responsibility），命令（Command），备忘录（Memento），状态（State），访问者（Visitor），解释器（Interpreter），调停者（Mediator）等。
 
-####定义
+#### 定义
 
 `Abstract Factory`: 提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
 

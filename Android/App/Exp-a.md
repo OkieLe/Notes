@@ -1,11 +1,11 @@
-###Android Studio 如何Debug
+### Android Studio 如何Debug
 
 - 单击F5(Step Over)，单行一个个方法执行
 - 单击F6(Step Into)，单行执行
 - 单击F7(Step Out)，不往下执行，回到上一行
 - 单击F8(Resume Program)，跳出当前断点
 
-###Android Studio设置默认的签名文件
+### Android Studio设置默认的签名文件
 
 新浪微博SSO登录，微信分享这些都需要签名打包，才能看到效果，设置默认签名文件为自己的签名jks，这样就不需要打包了。
 在app目录下添加你的.jks，然后app的build.gradle文件中的增加以下内容：
@@ -44,7 +44,7 @@ buildTypes {
 ```
 这样编译出来的debug版本直接用的是你的正式签名
 
-###Fragment懒加载
+### Fragment懒加载
 ```Java
 protected boolean isVisible;
 
@@ -74,7 +74,7 @@ protected void lazyLoad() {
 protected void onInvisible() {
 }
 ```
-###Android studio头注释和方法注释
+### Android studio头注释和方法注释
 
 File | Settings | Editor|File and Code Templates|Includes|File Header
 ```Java
@@ -84,18 +84,18 @@ File | Settings | Editor|File and Code Templates|Includes|File Header
 ```
 输入我们想要设置的注释模板
 
-###adapter.getPositionForSelection()和getSectionForPosition()
+### adapter.getPositionForSelection()和getSectionForPosition()
 
 getPositionForSection()根据分类列的索引号获得该序列的首个位置
 getSectionForPosition()通过该项的位置，获得所在分类组的索引号
 
-###getResources().getColor(R.color.color_name) is deprecated和drawableTop
+### getResources().getColor(R.color.color_name) is deprecated和drawableTop
 ```Java
 textView.setTextColor(Color.parseColor("#FFFFFF"));
 //或者
 ContextCompat.getColor(context, R.color.color_name)
 ```
-###showPopupWindow
+### showPopupWindow
 ```Java
 private void showPopupMenu(View v) {
     final View bgView = View.inflate(DemoApplication.getContext(), R.layout.demo_popup_window_bg, null);
@@ -122,7 +122,7 @@ demo_popup_window_bg.xml
 </LinearLayout>
 ```
 
-###onFinishInflate()
+### onFinishInflate()
 
 view的onFinishInflate()何时调用的？
 当View中所有的子控件均被映射成xml后触发；
@@ -130,9 +130,9 @@ MyView mv = (MyView)View.inflate (context,R.layout.my_view,null);
 当加载完成xml后，就会执行那个方法；
 我们一般使用View的流程是在onCreate中使用setContentView来设置要显示Layout文件或直接创建一个View，在当设置了 ContentView之后系统会对这个View进行解析，然后回调当前视图View中的onFinishInflate方法。只有解析了这个View我 们才能在这个View容器中获取到拥有Id的组件，同样因为系统解析完View之后才会调用onFinishInflate方法，所以我们自定义组件时可 以onFinishInflate方法中获取指定子View的引用。
 
-###Fragment设置隐藏或显示某个Fragment
+### Fragment设置隐藏或显示某个Fragment
 
-####MainFragment点击
+#### MainFragment点击
 ```Java
 public void onItemClick(AdapterView<?> adapterView, View view,
                     int position, long id) {
@@ -141,7 +141,7 @@ public void onItemClick(AdapterView<?> adapterView, View view,
         mData.get(position).get("imgUrl").toString());
 }
 ```
-####MainActivity
+#### MainActivity
 ```Java
 public void showImageFragment(boolean show, String imgTxt, String imgUrl) {
     // showActionbarWithTabs(!show);
@@ -155,7 +155,7 @@ public void showImageFragment(boolean show, String imgTxt, String imgUrl) {
     }
 }
 ```
-###获取arrt的值
+### 获取arrt的值
 
 不同主题下需要把颜色，数值写成attr属性
 xml里，我们可以简单的引用attr属性值
@@ -177,11 +177,11 @@ intent.setAction(Intent.ACTION_DIAL);// 拨号盘
 startActivity(intent);
 ```
 
-###Drawable/Bitmap、String/InputStream、Bitmap/byte[]互转
+### Drawable/Bitmap、String/InputStream、Bitmap/byte[]互转
 
 链接：http://wuxiaolong.me/2015/08/10/Drawable-to-Bitmap/
 
-###ProgressDialog
+### ProgressDialog
 ```Java
 final ProgressDialog progress = new ProgressDialog(LoginActivity.this);
 progress.setMessage("请稍等...");
@@ -189,13 +189,13 @@ progress.setCanceledOnTouchOutside(false);
 progress.show();
 progress.dismiss();
 ```
-###毫秒
+### 毫秒
 ```Java
 Calendar.getInstance().getTimeInMillis()
 System.currentTimeMillis()
 ```
 
-###Fragment setUserVisibleHint(boolean isVisibleToUser)
+### Fragment setUserVisibleHint(boolean isVisibleToUser)
 ```Java
 @Override
 public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -208,7 +208,7 @@ public void setUserVisibleHint(boolean isVisibleToUser) {
 }
 ```
 
-###Fragment onActivityResult
+### Fragment onActivityResult
 ```Java
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -229,13 +229,13 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 startActivityForResult(intent, AppConfig.REQUEST_CODE_DIALOGUE);
 // 不是调用 getActivity().startActivityForResult()。
 ```
-###dimen代码取值
+### dimen代码取值
 getDimension方法获取到资源文件中定义的dimension值
 ```Java
 Resources res = getResources();
 float fontSize = res.getDimension(R.dimen.font_size);
 ```
-###数组初始化赋值
+### 数组初始化赋值
 
 1. 创建数组后，通过循环对数组赋值。
 ```Java
@@ -252,7 +252,7 @@ int [] nums = {0,1,2,3,4,5,6,7,8,9};
 int [] nums = new int[]{0,1,2,3,4,5,6,7,8,9};
 ```
 
-###Fragment.isAdded()
+### Fragment.isAdded()
 ```Java
 Fragment mBeforeFragment = new Fragment();
 public void switchFragment(Fragment currentFragment) {
@@ -270,7 +270,7 @@ public void switchFragment(Fragment currentFragment) {
 ```Java
 switchFragment(HomeFragment.newInstance());
 ```
-###HomeFragment
+### HomeFragment
 
 ```Java
 public static HomeFragment homeFragment = null;
@@ -282,7 +282,7 @@ public static HomeFragment newInstance() {
 }
 ```
 
-###android之inputType属性
+### android之inputType属性
 ```xml
 <EditText android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -320,7 +320,7 @@ public static HomeFragment newInstance() {
     android:inputType="date" 日期键盘
     android:inputType="time" 时间键盘
 
-###ImageView.ScaleType
+### ImageView.ScaleType
 
 1. ImageView.ScaleType.center:图片位于视图中间，但不执行缩放。
 2. ImageView.ScaleType.CENTER_CROP 按统一比例缩放图片（保持图片的尺寸比例）便于图片的两维（宽度和高度）等于或者大于相应的视图的维度
@@ -331,7 +331,7 @@ public static HomeFragment newInstance() {
 7. ImageView.ScaleType.FIT_XY缩放图片使用XY
 8. ImageView.ScaleType.MATRIX当绘制时使用图片矩阵缩放
 
-###调用系统发送短信界面
+### 调用系统发送短信界面
 
 ```Java
 /**
@@ -347,7 +347,7 @@ private void sendSMS(String smsBody) {
 }
 ```
 
-###跳转市场搜索某款软件
+### 跳转市场搜索某款软件
 
 ```Java
 Intent intent = new Intent("android.intent.action.VIEW");
@@ -355,7 +355,7 @@ intent.setData(Uri.parse("market://details?id=com.adobe.flashplayer"));
 startActivity(intent);
 ```
 
-###检测系统中是否安装某款软件
+### 检测系统中是否安装某款软件
 
 ```Java
 //检测系统中是否已经安装了adobe flash player插件，插件的packageName是com.adobe.flashplayer：
@@ -393,7 +393,7 @@ private void isAvilible(String packageName) {
 }
 ```
 
-###对话框菜单
+### 对话框菜单
 
 ```Java
 new AlertDialog.Builder(this)
@@ -409,7 +409,7 @@ new AlertDialog.Builder(this)
     }).show();
 ```
 
-###定义ProgressBar
+### 定义ProgressBar
 
 ```xml
 <ProgressBar
@@ -434,7 +434,7 @@ progress_rotate：
 </layer-list>
 ```
 
-###幻灯片效果
+### 幻灯片效果
 
 ```xml
 <ProgressBar
@@ -476,7 +476,7 @@ anim
 </animation-list>
 ```
 
-###MD5加密
+### MD5加密
 
 ```Java
 public String Md5(String plainText) {
@@ -505,7 +505,7 @@ public String Md5(String plainText) {
 }
 ```
 
-###设置自动跳转页面
+### 设置自动跳转页面
 
 Timer
 ```Java
@@ -530,7 +530,7 @@ new Handler().postDelayed(new Runnable() {
 }, 1000);
 ```
 
-###随机取数
+### 随机取数
 ```Java
 List<Integer> list = new ArrayList<Integer>();
 for (int i = 0; i < 10; i++) {
@@ -547,7 +547,7 @@ Random random = new Random();
 int ran = random.nextInt(keywordsList.size());
 String tmp = keywordsList.get(ran).get("keyword").toString();
 ```
-###selector下的属性值
+### selector下的属性值
 
 - android:state_pressed
 如果是true，当被点击时显示该图片，如果是false没被按下时显示默认。
@@ -575,7 +575,7 @@ true，当此activity获得焦点在最前面时显示该图片；false，当没
 </selector>
 ```
 
-###带下划线的EditText
+### 带下划线的EditText
 
 ```Java
 public class LinedEditText extends EditText {
@@ -615,7 +615,7 @@ public class LinedEditText extends EditText {
 ```
 主要工作就是重载onDraw方法，利用从TextView继承下来的getLineCount函数获取文本所占的行数，以及 getLineBounds来获取特定行的基准高度值，而且这个函数第二个参数会返回此行的“外包装”值。再利用这些值绘制这一行的线条。为了让界面的 View使用自定义的EditText类，必须在配置文件中进行设置
 
-###关闭键盘
+### 关闭键盘
 
 ```Java
 public static void hideSoftInput(Activity activity) {
@@ -627,7 +627,7 @@ public static void hideSoftInput(Activity activity) {
 }
 ```
 
-###界面不被弹出的键盘盖住
+### 界面不被弹出的键盘盖住
 
 一进入activity就弹出键盘
 
@@ -652,11 +652,11 @@ windowSoftInputMode各值的含义：
 - adjustResize：该Activity总是调整屏幕的大小以便留出软键盘的空间
 - adjustPan：当前窗口的内容将自动移动以便当前焦点从不被键盘覆盖和用户能总是看到输入内容的部分
 
-###控件美化Shape
+### 控件美化Shape
 
 链接：http://wuxiaolong.me/2013/07/09/shape/
 
-###获取版本名称 VersionName
+### 获取版本名称 VersionName
 
 ```Java
 public String getVersionName(Context context) {
@@ -671,7 +671,7 @@ public String getVersionName(Context context) {
 }
 ```
 
-###获取Android手机设备的IMSI / IMEI 信息
+### 获取Android手机设备的IMSI / IMEI 信息
 
 ```Java
 TelephonyManager mTelephonyMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -683,7 +683,7 @@ String imei = mTelephonyMgr.getDeviceId();
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 ```
 
-###自定义Log是否显示
+### 自定义Log是否显示
 ```Java
 public class Log {
     private static final String TAG = "wxl";
@@ -716,7 +716,7 @@ public class Log {
     }
 }
 ```
-###异步操作AsyncTask
+### 异步操作AsyncTask
 
 参数1：向后台任务的执行方法传递参数的类型 ；
 参数2：在后台任务执行过程中，要求主UI线程处理中间状态，通常是一些UI处理中传递的参数类型；
@@ -755,7 +755,7 @@ private class MyAsyncTask extends AsyncTask<Integer, String, Void> {
 ```Java
 new MyAsyncTask().execute(参数1);// 创建后台任务的对象
 ```
-###检查网络状态
+### 检查网络状态
 
 ```Java
 public boolean checkNetworkInfo() {
@@ -793,17 +793,17 @@ public boolean checkNetworkInfo() {
 }
 ```
 
-###Html.fromHtml（）
+### Html.fromHtml（）
 
 让数据接受网页的格式
 
-###URLEncoder.encode
+### URLEncoder.encode
 
 网址请求带中文
 ```Java
 URLEncoder.encode(content, "utf-8")
 ```
-###Android中字体加粗
+### Android中字体加粗
 在xml文件中使用
 ```xml
 android:textStyle=”bold”
@@ -818,7 +818,7 @@ Html.fromHtml(“”)
 tv.setText(Html.fromHtml("<b>" + listTitle.get(position).get("title") + "</b>"));
 ```
 
-###代码设置背景图setImageResource/setBackgroundResource
+### 代码设置背景图setImageResource/setBackgroundResource
 
 ```Java
 textView.setBackgroundResource(R.drawable.bg_menu_1);//设置背景图片
@@ -828,7 +828,7 @@ setImageResource与xml中的src的属性才是相匹配的，而setBackgroundRes
 的.
 holder.chat_sound_iv_right.setBackgroundResource(0);//没有图片
 
-###android中的ellipsize
+### android中的ellipsize
 
 用法如下：
 在xml中
@@ -852,7 +852,7 @@ android:singleline = "true"
 - android:ellipsize，设置了文字过长时如何切断文字，可以有none, start,middle, end, 如果使用走马灯效果则设为marquee.
 - android:focusable，Android的缺省行为是在控件获得Focus时才会显示走马灯效果
 
-###控件点击效果
+### 控件点击效果
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/professional_1"/>
@@ -861,7 +861,7 @@ android:singleline = "true"
 </selector>
 ```
 
-###保留小数点
+### 保留小数点
 
 方法一：
 
@@ -878,7 +878,7 @@ double juli = 1569;
 String result = String.format("%.1f", juli/1000);
 ```
 
-###RadioGroup
+### RadioGroup
 
 ```xml
 <RadioGroup
@@ -912,7 +912,7 @@ String result = String.format("%.1f", juli/1000);
 android:button=”@null” 去除RadioButton前面的圆点
 android:background=”@drawable/radio” 使用定义的样式
 
-###占位符%s替换
+### 占位符%s替换
 
 - %d （表示整数）
 - %f （表示浮点数）
@@ -920,7 +920,7 @@ android:background=”@drawable/radio” 使用定义的样式
 
 txt.setText(String.format (“被替换%1$s”,”替换内容”));
 
-###TextView中嵌套图片Drawable
+### TextView中嵌套图片Drawable
 
 ```Java
 Drawable drawable = getResources().getDrawable(R.drawable.ji_dot_nor);
@@ -930,7 +930,7 @@ textView.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
 说明：setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom)
 意思是设置Drawable显示在text的左、上、右、下位置。(Textview、Button都可以)
 
-###TextView做成分割线
+### TextView做成分割线
 
 ```xml
 <TextView
@@ -940,7 +940,7 @@ textView.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
     android:background="@color/orange" />
 ```
 
-###SpannableString单击文字链接
+### SpannableString单击文字链接
 
 ```Java
 SpannableString spannableString = new SpannableString(str);
@@ -954,7 +954,7 @@ TextView.setText(spannableString);
 TextView.setMovementMethod(LinkMovementMethod.getInstance());
 ```
 
-###TextView中文字通过SpannableString来设置超链接、颜色、字体等属性
+### TextView中文字通过SpannableString来设置超链接、颜色、字体等属性
 
 ```Java
 String  title =”123456”;
@@ -964,11 +964,11 @@ titleStr.length(), 0);
 textView.setText(titleStr);
 ```
 
-###android:drawableTop属性
+### android:drawableTop属性
 
 写在TextView里，实现图片+文字
 
-###获取分辨率
+### 获取分辨率
 
 ```Java
 DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -977,7 +977,7 @@ getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 displayMetrics.widthPixels + "x" + displayMetrics.heightPixels;
 ```
 
-###代码完成控件
+### 代码完成控件
 
 Button
 ```Java
@@ -1050,7 +1050,7 @@ for (int i = 0; i < lables.length; i++) {
 }
 ```
 
-###TextWatcher
+### TextWatcher
 
 ```Java
 editText1.addTextChangedListener(watcher);
@@ -1064,12 +1064,12 @@ TextWatcher watcher = new TextWatcher() {
 };
 ```
 
-###屏幕旋转时不销毁
+### 屏幕旋转时不销毁
 
 AndroidManifest加入
 android:configChanges="orientation|keyboardHidden"
 
-###获取屏幕方向
+### 获取屏幕方向
 
 ```Java
 Configuration newConfig = getResources().getConfiguration();    
@@ -1084,7 +1084,7 @@ if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
 }
 ```
 
-###List增加数据
+### List增加数据
 
 简单
 
@@ -1132,14 +1132,14 @@ data.clear();
 listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1,getData()));
 ```
 
-###LinkedList
+### LinkedList
 
 ```Java
 LinkedList<String> list = new LinkedList<String>();
 list.addFirst("000");
 ```
 
-###验证是否手机号码
+### 验证是否手机号码
 
 ```Java
 public boolean isMobileNO(String mobiles) {
@@ -1151,7 +1151,7 @@ public boolean isMobileNO(String mobiles) {
 }
 ```
 
-###正则表达式数字验证
+### 正则表达式数字验证
 
 ```Java
 public boolean isNumber(String str) {
@@ -1168,7 +1168,7 @@ public boolean isNumber(String str) {
 }
 ```
 
-###SharedPreferences
+### SharedPreferences
 
 SharedPreferences存数据
 
@@ -1192,7 +1192,7 @@ int age = sharedPreferences.getInt("age", 1);
 boolean autoLogin= sharedPreferences. getBoolean("AutoLogin", false);
 ```
 
-###Intent 传值
+### Intent 传值
 
 简单传值
 ActivityPage
@@ -1257,7 +1257,7 @@ return super.onKeyDown(keyCode, event);
 }
 ```
 
-###List
+### List
 
 ```Java
 Intent intent = new Intent();
@@ -1269,7 +1269,7 @@ ArrayList<String> mSelectedPhotos = (ArrayList<String>) intent
 .getStringArrayListExtra("mSelectedPhotos");
 ```
 
-###xml文件中导入另一个xml文件的方法include
+### xml文件中导入另一个xml文件的方法include
 
 ```xml
 <include
@@ -1277,7 +1277,7 @@ android:id="@+id/included1"
 layout="@layout/anotherlayout" />
 ```
 
-###单击返回键两次退出
+### 单击返回键两次退出
 
 ```Java
 private static Boolean isExit = false;
@@ -1320,7 +1320,7 @@ public boolean onKeyUp(int keyCode, KeyEvent event) {
 }
 ```
 
-###图片左右循环移动
+### 图片左右循环移动
 
 ```Java
 TranslateAnimation left, right;
@@ -1367,7 +1367,7 @@ runImage.startAnimation(right);
 runImage.startAnimation(right);
 ```
 
-###控件左右抖动
+### 控件左右抖动
 
 res下anim
 animlayout.xml

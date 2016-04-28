@@ -3,7 +3,7 @@
 - *A*->ContactAggregator
 - *T*->TransactionContext
 
-####插入联系人涉及合并的流程
+#### 插入联系人涉及合并的流程
 
 ![flow](../../_attach/Android/contact_aggregator.png)
 
@@ -31,17 +31,17 @@
 >- 找到有效contact_id，进行合并；
 >- 未找到有效contact_id，而且当前联系人是新建的或可见的，调用A.pickBestMatchBasedOnData()基于data表挑选最佳匹配，进行合并。
 
-####更新/删除涉及合并的操作
+#### 更新/删除涉及合并的操作
 
 更新/删除对应的data数据后， DataRowHandler调用A.triggerAggregation()，以及后续触发P.onCommit()，后续流程与插入类似。
 
-####手动合并/拆分联系人流程
+#### 手动合并/拆分联系人流程
 
 - AP.applyBatch()中，调用数据库的update接口，更新agg_exceptions的记录，AP.update()->P.updateInTransaction()->P.updateAggregationException()，然后针对两个raw_contacts_id分别执行A.markForAggregation()->A.aggregateContact()进行实际操作。
 - 合并和拆分通过agg_exceptions中type值区分，拆分类型为AggregationExceptions.TYPE_KEEP_SEPARATE，还有TYPE_AUTOMATIC和TYPE_KEEP_TOGETHER，合并默认为TYPE_AUTOMATIC。
 - 多个联系人拆分会产生数对两两拆分的数据库操作，通过applyBatch()执行。
 
-####ContactMatcher
+#### ContactMatcher
 
 - 该类为合并提供候选contacts，每个候选contact会与主联系人数据进行对比，得到一个匹配分数，最佳匹配根据分数选择。
 - 用于匹配的数据：Identity/name_lookup(primary)，email/phone(secondary)。

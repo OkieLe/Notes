@@ -1,4 +1,4 @@
-####常用类
+#### 常用类
 
 - String类：重点关注字符串与其它数据类型转换方法，valueOf
 - StringBuffer类
@@ -7,7 +7,7 @@
 - Vector向量类与数组的转换
 - 日期和时间类：Date
 
-####编程规范
+#### 编程规范
 
 - 性能关键的地方字符串的拼接不能使用+，应该使用StringBuffer
 - 使用System.arrayCopy()，数组拷贝
@@ -23,15 +23,15 @@
 - 返回值以零长度数组替代null。
 - 如有打开的数据流，在finally语句块中关闭数据流，避免潜在的bugs。
 
-####线程调度
+#### 线程调度
 
 ![调度](../_attach/Java/thread.png)
 
-####异常
+#### 异常
 
 ![调度](../_attach/Java/exception.png)
 
-####经验
+#### 经验
 
 - Java中不能将非布尔型看成整型；==与equals()
 - boolean/1bit，char/16bits，byte/8bits，short/16bits，int/32bits，long/64bits，float/32bits，double/64bits，void；类型长度与平台无关，都是固定的，所以没有sizeof；

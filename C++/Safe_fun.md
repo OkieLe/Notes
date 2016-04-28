@@ -1,6 +1,6 @@
 [Safe fun substitute](../_attach/Safe_fun.pdf)
 
-####POSIX
+#### POSIX
 
 下表中所列的均为异步信号安全函数，来自POSIX标准。应用程序可以在信号处理程序中调用这些异步安全函数。
 ```
@@ -145,6 +145,6 @@ poll()
 sigpending()
 ```
 
-####OpenBSD
+#### OpenBSD
 
 OpenBSD singal()手册列出了少量异步安全函数，但是这些函数其它平台下可能不是安全的。这些函数包括：snprintf()， vsnprintf()和syslog_r()函数（只有当syslog_data结构体初始化为本地变量的情况下才可以）。

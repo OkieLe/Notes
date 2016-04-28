@@ -1,4 +1,4 @@
-####一、Configuration简述
+#### 一、Configuration简述
 
 Configuration类(android.content.res.Configuration)是专门用来描述手机的配置信息。这些配置信息包括用户设置的配置项，如字体大小、语言等，也包括设备配置，如输入模式、屏幕尺寸等。这些配置项会影响到应用如何引用资源。
 
@@ -28,9 +28,9 @@ Configuration类中使用以下公开(public)变量保存各种配置信息，�
 
 变量与资源限定符不是一一对应关系，但是所有限定符都有一个对应的配置项存储资源匹配时需要的信息。fontScale本身不会影响资源的引用，没有对应的资源限定符。
 
-####二、Configuration机制
+#### 二、Configuration机制
 
-#####2.1 使用Configuration
+##### 2.1 使用Configuration
 
 代码中有时需要从Configuration中读取相关的数据，比如本地语言、屏幕方向等配置，可以通过以下方式获取。
 
@@ -56,7 +56,7 @@ am.updateConfiguration(config);
 
 还有另一个修改配置的接口updatePersistentConfiguration，设置里面字体大小的修改调用这个方法，两个方法的区别稍后说明。
 
-#####2.2 Configuration工作机制
+##### 2.2 Configuration工作机制
 
 **1. Configuration初始化**
 Configuration是作为ActivityManagerService的成员(mConfiguration)存在，SystemServer启动时，在构造函数中初始化为默认值，设置的绝大多数属性的默认值是无效值，fontScale默认为1，然后以当前语言设置语言属性(locale)。

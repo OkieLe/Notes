@@ -2,7 +2,7 @@
 
 jQuery 库可以通过一行简单的标记被添加到网页中。
 
-####jQuery 库 - 特性
+#### jQuery 库 - 特性
 
 jQuery 是一个 JavaScript 函数库。
 jQuery 库包含以下特性：
@@ -15,7 +15,7 @@ jQuery 库包含以下特性：
 - AJAX
 - Utilities
 
-####向您的页面添加 jQuery 库
+#### 向您的页面添加 jQuery 库
 
 jQuery 库位于一个 JavaScript 文件中，其中包含了所有的 jQuery 函数。
 
@@ -27,19 +27,19 @@ jQuery 库位于一个 JavaScript 文件中，其中包含了所有的 jQuery �
 ```
 请注意，`<script>` 标签应该位于页面的 `<head>` 部分。HTML5中不必使用 `type="text/javascript"`。
 
-####下载 jQuery
+#### 下载 jQuery
 
 共有两个版本的 jQuery 可供下载：一份是精简过的，另一份是未压缩的（供调试或阅读）。
 
 这两个版本都可从 jQuery.com 下载。
 
-####库的替代
+#### 库的替代
 
 Google 和 Microsoft 对 jQuery 的支持都很好。
 
 如果您不愿意在自己的计算机上存放 jQuery 库，那么可以从 Google 或 Microsoft 加载 CDN jQuery 核心文件。
 
-####使用 Google 的 CDN
+#### 使用 Google 的 CDN
 
 ```html
 <head>
@@ -48,7 +48,7 @@ Google 和 Microsoft 对 jQuery 的支持都很好。
 </head>
 ```
 
-####使用 Microsoft 的 CDN
+#### 使用 Microsoft 的 CDN
 
 ```html
 <head>
@@ -57,7 +57,7 @@ Google 和 Microsoft 对 jQuery 的支持都很好。
 </head>
 ```
 
-####jQuery 语法
+#### jQuery 语法
 
 jQuery 语法是为 HTML 元素的选取编制的，可以对元素执行某些操作。
 
@@ -69,7 +69,7 @@ jQuery 语法是为 HTML 元素的选取编制的，可以对元素执行某些�
 
 jQuery 的 `action()` 执行对元素的操作
 
-#####示例
+##### 示例
 
 ```
 $(this).hide() - 隐藏当前元素
@@ -78,7 +78,7 @@ $(".test").hide() - 隐藏所有 class="test" 的所有元素
 $("#test").hide() - 隐藏所有 id="test" 的元素
 ```
 
-####文档就绪函数
+#### 文档就绪函数
 
 您也许已经注意到在我们的实例中的所有 jQuery 函数位于一个 document ready 函数中：
 ```JavaScript
@@ -102,7 +102,7 @@ jQuery 使用 $ 符号作为 jQuery 的简介方式。
 如果存在名称冲突，则重命名 jQuery 库
 ```
 
-####AJAX
+#### AJAX
 
 AJAX 是与服务器交换数据的艺术，它在不重载全部页面的情况下，实现了对部分网页的更新。
 
@@ -110,12 +110,12 @@ AJAX = 异步 JavaScript 和 XML（Asynchronous JavaScript and XML）。简短�
 
 通过 jQuery AJAX 方法，您能够使用 HTTP Get 和 HTTP Post 从远程服务器上请求文本、HTML、XML 或 JSON - 同时您能够把这些外部数据直接载入网页的被选元素中。
 
-####jQuery load() 方法
+#### jQuery load() 方法
 
 jQuery load() 方法是简单但强大的 AJAX 方法。
 load() 方法从服务器加载数据，并把返回的数据放入被选元素中。
 
-#####语法：
+##### 语法：
 
 `$(selector).load(URL,data,callback);`
 - 必需的 URL 参数规定您希望加载的 URL。
@@ -156,7 +156,7 @@ $("button").click(function(){
 
 来源： [w3school](http://www.w3school.com.cn/jquery/jquery_ajax_load.asp)
 
-####HTTP 请求：GET vs. POST
+#### HTTP 请求：GET vs. POST
 
 jQuery get() 和 post() 方法用于通过 HTTP GET 或 POST 请求从服务器请求数据。
 
@@ -169,7 +169,7 @@ GET 基本上用于从服务器获得（取回）数据。注释：GET 方法可
 
 POST 也可用于从服务器获取数据。不过，POST 方法不会缓存数据，并且常用于连同请求一起发送数据。
 
-#####jQuery $.get() 方法
+##### jQuery $.get() 方法
 
 `$.get()` 方法通过 HTTP GET 请求从服务器上请求数据。语法：
 
@@ -197,7 +197,7 @@ response.write("This is some text from an external ASP file.")
 %>
 ```
 
-#####jQuery $.post() 方法
+##### jQuery $.post() 方法
 
 $.post() 方法通过 HTTP POST 请求从服务器上请求数据。
 语法：

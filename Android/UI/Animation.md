@@ -1,4 +1,4 @@
-####一、视图动画(View Animation)
+#### 一、视图动画(View Animation)
 
 视图动画系统用来创建View上的补间动画。补间动画用起始/结束位置、大小、旋转以及其他常用的动画信息来计算动画。
 
@@ -12,9 +12,9 @@
 
 startAnimation()用来启动动画，也可以用setStartTime()设置启动时间，具体用法请查看SDK。
 
-####二、属性动画(Property Animation)
+#### 二、属性动画(Property Animation)
 
-#####2.1 简介
+##### 2.1 简介
 
 属性动画几乎可以让任何东西动起来。不管是不是画到屏幕的对象，都可以定义一个它的属性随时间改变的动画。属性动画就是让对象的属性值在特定时间段内变化，比如对象的位置等。
 
@@ -42,13 +42,13 @@ ValueAnimator对象跟踪动画的时序，比如动画已经播放的时间，�
 
 >另一方面视图动画构建简单，编码少，如果可以满足开发要求，没必要使用属性动画。
 
-#####2.2 Animators/Evaluators/Interpolators
+##### 2.2 Animators/Evaluators/Interpolators
 
 - Animator类提供创建动画的基本架构，但需要扩展之后才可以用于实际，因为它只提供了最小的实现，下面是一些它的子类。
 - Evaluators用来定义如何计算对应的属性值，通过Animator提供的时间轴，动画起始值，计算出变化的属性值。常用的有IntEvaluator、FloatEvaluator、ArgbEvaluator，还有TypeEvaluator接口。这个接口允许你扩展出自己的Evaluator，其实只有一个方法要实现evaluate()，返回合适的属性值就可以了。
 - Interpolators定义特定的数据如何随时间变化。如线性、加速等。常用的有AccelerateInterpolator、LinearInterpolator、AnticipateInterpolator、BounceInterpolator、CycleInterpolator等。也可以通过扩展TimeInterpolator接口自定义Interpolator，重写getInterpolation(float played)，根据传入的播放时间百分比，返回一个属性值改变的百分比。
 
-#####1. ValueAnimator
+##### 1. ValueAnimator
 
 属性动画的主时间引擎，同时计算变化的属性值。包含所有计算动画数据的核心功能，像动画时间轴，是否重复播放，接收更新时间的监听以及设置自定义计算类型的能力。属性动画由两部分：计算动画数据以及把新的属性值设置给对象。后者的逻辑需要开发者自己处理。
 
@@ -68,7 +68,7 @@ animation.setDuration(1000);
 animation.start();
 ```
 
-#####2. ObjectAnimator
+##### 2. ObjectAnimator
 
 ValueAnimator子类，可以设置一个目标对象以及对象要变化的属性。大部分时候都要使用这个类，因为它可以使修改目标对象属性值的处理更容易。它可以自动更新属性值，所以有一些限制，要求目标对象有一些特定的访问方法。
 
@@ -84,7 +84,7 @@ anim.start();
 - set和get方法必须操作相同的数据类型，比如都是float；
 - 据创建属性动画的对象不同，可能需要调用invalidate()强制屏幕利用新的属性值进行重画。可以在onAnimationUpdate()回调方法中进行该操作。
 
-#####3. AnimatorSet
+##### 3. AnimatorSet
 
 提供几个动画的组合机制，可以让几个动画有序或同时播放。AnimatorSet本身也可以嵌套。下面是SDK中一个示例：
 1. 播放bounceAnim；
@@ -105,7 +105,7 @@ animatorSet.play(bouncer).before(fadeAnim);
 animatorSet.start();
 ```
 
-#####2.3 Animation Listeners
+##### 2.3 Animation Listeners
 
 监听动画播放过程，有以下两个接口。
 > Animator.AnimatorListener
@@ -118,9 +118,9 @@ animatorSet.start();
     - onAnimationUpdate()：动画的每一帧都会调用，监听这个时间来使用动画播放期间的属性值，调用传入方法的ValueAnimator对象的getAnimatedValue()方法.
     - 如果不想实现所有事件的监听，可以扩展AnimatorListenerAdapter，里面的方法都有空的实现，可以选择需要的来覆写。
 
-#####2.4 创建Views/ViewGroups动画
+##### 2.4 创建Views/ViewGroups动画
 
-#####1. ViewGroups布局动画
+##### 1. ViewGroups布局动画
 
 在ViewGroup内可以通过LayoutTransition构建布局动画。比如布局中子视图的显示、消失动画，添加或删除子视图时其他视图的移动和变形等。
 
@@ -132,7 +132,7 @@ animatorSet.start();
 
 在布局文件中将对应ViewGroup的android:animateLayoutchanges设置为true，就可以打开动画。
 
-#####2. Views动画
+##### 2. Views动画
 
 属性动画系统可以使View的动画流线化(streamlined，先这么翻译吧)。视图动画系统是改变View被画出来的方式来是View变形，这需要在View的容器内处理，因为View本身没有可以操作的属性。这样的变化并没有改变View对象本身。
 
@@ -161,7 +161,7 @@ ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
 myView.animate().x(50f).y(100f);
 ```
 
-#####2.5 关键帧Keyframe
+##### 2.5 关键帧Keyframe
 
 Keyframe对象包含一个时间/数值对，定义了动画某一时间的特定状态。每个关键帧还有各自的插值器来确定与前一关键帧之间动画的变化。
 
@@ -176,7 +176,7 @@ rotationAnim.setDuration(5000ms);
 ```
 >关键帧使用的例子可以参考APIDemos的MultiPropertyAnimation。
 
-#####2.6 用xml定义属性动画
+##### 2.6 用xml定义属性动画
 
 属性动画的资源为区别于视图动画(Android 3.1开始)，存在res/animator中，这个目录是可选的，但是ADT插件只能识别这个目录的资源。
 
@@ -190,7 +190,7 @@ set.setTarget(myObject);
 set.start();
 ```
 
-####三、绘图动画/帧动画(Drawable Animation)
+#### 三、绘图动画/帧动画(Drawable Animation)
 
 帧动画就是连续的加载一系列图片资源来生成动画。这是一种传统的动画方式，就像一卷胶片。AnimationDrawable类是帧动画的基础。
 
@@ -229,13 +229,13 @@ public boolean onTouchEvent(MotionEvent event) {
 ```
 >*注*：不要在Activity的onCreate()中start()动画，因为窗口可能还没准备好，如果想立即播放动画，可以在onWindowFocusChanged()中启动。
 
-####四、Canvas & Drawables
+#### 四、Canvas & Drawables
 
 Android框架提供的2D绘图的API，可以把自定义的图形渲染到画布(Canvas)或直接修改已有视图的显示。2D绘图典型的有两种方式：
 - a. 把图或动画绘到布局中的View对象。这种方法系统会自动处理绘图操作，只要定义要绘制的图就可以了，一般用于简单的、静态或者预定义的动画等；
 - b. 把图绘到画布上。这种方法要自己调用对应类的onDraw()，或者Canvas类的draw...()方法。一般用于需要时常重画界面的应用。如果在你要绘制的界面所在的UI主线程，可以调用invalidate()重画，然后自己重写onDraw()；如果在新启线程，可以使用SurfaceView进行绘画，只要线程可以承受，多快都可以，而且不用调用invalidate()。
 
-#####1. Canvas
+##### 1. Canvas
 
 Canvas作为一个接口，处理所有的绘画操作，实际的绘图通过Canvas画到下层的Bitmap上，而Bitmap会被放到窗口中。
 
@@ -256,7 +256,7 @@ SurfaceView是View的一个特殊子类，在视图层次中提供了精细的dr
 
 要想从子线程往Surface Canvas绘图，必须给子线程传递SurfaceHolder，然后就可以通过SurfaceHolder.lockCanvas()锁定画布，在上面绘图。绘制结束后，unlockCanvasAndPost()解锁画布。因为每次从SurfaceHolder获取画布，画布之前的状态都会被保存，显示动画时需要重画整个Surface，才不会看到之前图片的痕迹。清空画布可以drawColor()填充纯色，或者drawBitmap()设置一个背景图片。
 
-#####2. Drawables
+##### 2. Drawables
 
 Android提供了一个2D图形库，用来绘制形状和图片，android.graphics.drawable包中可以这些类。
 
@@ -279,7 +279,7 @@ mDrawable.draw(canvas);
 
 NinePatchDrawable是一种可以伸缩的位图，好多按钮背景都使用这种资源。扩展名为.9.png，放在res/drawable目录。边缘用来定义图片中可伸缩和静态的区域：在左边和上边缘画一个(或更多)像素宽的黑线定义可伸缩区域，可以有多个可伸缩区域，他们相对比例不变，所以最大的区域一直最大；在右边和下边缘的黑线(可选)定义可绘制区域，或叫做padding box，比如作为文字背景时，会拉伸自己以适应文字显示区域的大小，如果未定义右下边缘，默认使用左上边缘作为可绘制区域。
 
-####五、其他
+#### 五、其他
 
 - OpenGL：用于高性能的2D和3D图形绘制。
 - 硬件加速：使用GPU执行所有的绘图操作。
@@ -292,7 +292,7 @@ NinePatchDrawable是一种可以伸缩的位图，好多按钮背景都使用这
 - <set></set>标签可以设置动画组合；alpha, scale, rotate, translate是几种基本补间动画，用来设计高级动画；
 - fade是由alpha动画做成的；
 
-#####Animation
+##### Animation
 
 android中Canvas包含当前矩阵，当调用 Canvas.drawBitmap(bmp, x, y, Paint)绘制时，android 会先把bmp做一次矩阵运算，然后将运算的结果显示在Canvas上；编程人员只需不断修改Canvas的矩阵并刷新屏幕，View里的对象就会不停的做图形变换，动画就形成了。
 

@@ -1,4 +1,4 @@
-###HTML Basic Document
+### HTML Basic Document
 
 ```html
 <html>
@@ -11,7 +11,7 @@ Visible text goes here
 </html>
 ```
 
-###Text Elements
+### Text Elements
 
 ```html
 <p>This is a paragraph</p>
@@ -20,7 +20,7 @@ Visible text goes here
 <pre>This text is preformatted</pre>
 ```
 
-###Logical Styles
+### Logical Styles
 
 ```html
 <em>This text is emphasized</em>
@@ -28,14 +28,14 @@ Visible text goes here
 <code>This is some computer code</code>
 ```
 
-###Physical Styles
+### Physical Styles
 
 ```html
 <b>This text is bold</b>
 <i>This text is italic</i>
 ```
 
-###Links, Anchors, and Image Elements
+### Links, Anchors, and Image Elements
 
 ```html
 <a href="http://www.example.com/">This is a Link</a>
@@ -45,7 +45,7 @@ Visible text goes here
 <a href="#tips">Jump to the Useful Tips Section</a>
 ```
 
-###Unordered list
+### Unordered list
 
 ```html
 <ul>
@@ -54,7 +54,7 @@ Visible text goes here
 </ul>
 ```
 
-###Ordered list
+### Ordered list
 
 ```html
 <ol>
@@ -63,7 +63,7 @@ Visible text goes here
 </ol>
 ```
 
-###Definition list
+### Definition list
 
 ```html
 <dl>
@@ -74,7 +74,7 @@ Visible text goes here
 </dl>
 ```
 
-###Tables
+### Tables
 
 ```html
 <table border="1">
@@ -89,7 +89,7 @@ Visible text goes here
 </table>
 ```
 
-###Frames
+### Frames
 
 ```html
 <frameset cols="25%,75%">
@@ -98,7 +98,7 @@ Visible text goes here
 </frameset>
 ```
 
-###Forms
+### Forms
 
 ```html
 <form action="http://www.example.com/test.asp" method="post/get">
@@ -118,7 +118,7 @@ Visible text goes here
 </form>
 ```
 
-###Entities
+### Entities
 
 ```html
 &lt; is the same as <
@@ -126,7 +126,7 @@ Visible text goes here
 &#169; is the same as ©
 ```
 
-###Other Elements
+### Other Elements
 
 ```html
 <!-- This is a comment -->
@@ -144,7 +144,7 @@ City<br>
 
 **XHTML 是作为 XML 被重新设计的 HTML。与 HTML 相比最重要的区别：**
 
-###文档结构
+### 文档结构
 
 ```
 XHTML DOCTYPE 是强制性的
@@ -152,7 +152,7 @@ XHTML DOCTYPE 是强制性的
 <html>、<head>、<title> 以及 <body> 也是强制性的
 ```
 
-###元素语法
+### 元素语法
 
 ```
 XHTML 元素必须正确嵌套
@@ -161,7 +161,7 @@ XHTML 元素必须小写
 XHTML 文档必须有一个根元素
 ```
 
-###属性语法
+### 属性语法
 
 ```
 XHTML 属性必须使用小写

@@ -12,7 +12,7 @@
 make snod        #打包system.img文件
 ```
 
-####一、 Android编译系统的架构
+#### 一、 Android编译系统的架构
 
 Android编译系统完成的不仅仅是对目标系统二进制文件、java应用程序的编译、链接、打包等，而且还有包括生成各种依赖关系、确保某个模块的修改引起相依赖的文件的重新编译链接，甚至还包括目标文件系统的生成，配置文件的生成等，因此Android编译系统具有支持多架构、多语言、多目标、多编译方式。这些目标和结构决定其架构也很重要。
 
@@ -29,7 +29,7 @@ Android编译系统集中于build/core下，几个重要的*.mk如下：
 - Annroid.mk：分散于各个目录下的Android.mk文件，控制生成局部模块的源码，名称所需头文件路径，依赖库等特殊选项。
 - build/envsetup.sh：编译环境初始化，定义了一些有用的shell函数，方便编译使用。
 
-####二、 编译步骤原理
+#### 二、 编译步骤原理
 
 从编译步骤入手分析。
 ```
@@ -38,7 +38,7 @@ Android编译系统集中于build/core下，几个重要的*.mk如下：
 3) make;
 ```
 
-#####source build/envsetup.sh
+##### source build/envsetup.sh
 
 这个命令是用来将envsetup.sh里的所有用到的命令加载到环境变量中去，加载了编译时使用到的函数，如lunch，mm，mmm，choosecombo等。打开这个文件可以看到定义了很多函数。常用的如下：
 ```shell
@@ -65,7 +65,7 @@ done
 unset f
 ```
 
-#####choosecombo
+##### choosecombo
 
 设置编译参数，看这张思维导图，可以看到choosecombo依次调用如下函数，经常参数配置。
 
@@ -73,7 +73,7 @@ unset f
 
 配置完编译参数以后，可以看到打印出的配置信息。
 
-####三、 Makefile的主要流程
+#### 三、 Makefile的主要流程
 
 主要流程都在build/core/main.mk里安排。
 - 初始化相关的参数设置（buildspec.mk、envsetup.mk、config.mk）
@@ -102,7 +102,7 @@ unset f
 build/tartget/board/Android.mk文件也被包含进来，它从TARGET_DEVICE_DIR目录下查找并包含AndroidBoard.mk文件，如果找不到就报错。
 7. include build/core/Makefile：Makefile定义了目标的依赖关系，system.img，ramdisk.img，userdate.img，recorvery.img等。
 
-####四、 生成各种img的方式
+#### 四、 生成各种img的方式
 
 在build/core/Makefile这个文件中，定制了生成各种img的方式，包括ramdisk.img，userdate.img，system.img，recover.img等。我们可以看看这些img都是如何生成的。
 

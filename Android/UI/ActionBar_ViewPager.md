@@ -1,12 +1,12 @@
-###一、ActionBar
+### 一、ActionBar
 
-####1. 简介
+#### 1. 简介
 
 ActionBar是Android3.0开始加入的一种界面特性。用来显示应用标识和用户位置，并提供用户操作以及导航功能。
 
 ActionBar可以显示应用图标以及当前Activity的标题；内置了Tab导航功能用于在Fragment间切换，以及下拉列表导航功能。同时Options菜单也被集成在ActionBar中，可以把菜单项直接显示为ActionBar上的图标/&文字，提供更快捷的操作。
 
-####2. 使用ActionBar
+#### 2. 使用ActionBar
 
 所有targetSdkVersion或minSdkVersion为11及以上，使用Theme.Holo主题的Activity都默认使用ActionBar。
 
@@ -14,7 +14,7 @@ ActionBar可以显示应用图标以及当前Activity的标题；内置了Tab导
 
 隐藏或移除ActionBar会导致Activity重新布局来使用ActionBar占用的空间。所以如果需要经常隐藏和显示ActionBar，可以使用overlay(覆盖)模式，即让ActionBar遮挡部分Activity，这样隐藏和显示就不会导致重新布局。使用overlay模式需要在Activity主题中设置android:windowActionBarOverlay为true。应注意ActionBar不要覆盖有效的内容，ActionBar高度可以用”?android:attr/actionBarSize”(xml)或者getHeight()获取。
 
-####3. Options菜单
+#### 3. Options菜单
 
 ActionBar可以给用户比选项菜单更快捷的操作方式。Options菜单的创建和显示没有变化，跟之前版本一样。要显示为action item的菜单项只要再另外添加几个属性就可以了。
 
@@ -31,9 +31,9 @@ action item可以显示为图标和(或)文本，其他Options菜单仍可以通
 
 4.0以后添加的新特性—拆分ActionBar。打开这个特性时，应用运行在窄屏手机会在屏幕底部有一个独立的bar来显示action items，顶部就可以有足够空间显示标题导航等信息。打开这个功能要在AndroidManifest.xml的application或activity标签中加上`uiOptions="splitActionBarWhenNarrow"`
 
-####4. 导航功能
+#### 4. 导航功能
 
-#####a) 应用图标导航
+##### a) 应用图标导航
 
 应用图标一般显示在ActionBar最左侧，可以使图标行为像action item，点击后返回应用的home activity或者上一层。
 
@@ -41,7 +41,7 @@ action item可以显示为图标和(或)文本，其他Options菜单仍可以通
 
 向上跟返回是不同的，向上是在同一个应用中跳转，返回是退回到前一个activity，不管是哪个应用。所以向上在某些情景是更适合的，调用setDisplayHomeAsUpEnabled(true)来打开。同样是对自定义菜单中home事件进行处理。
 
-#####b) Tab页导航
+##### b) Tab页导航
 
 首先布局中要包含一个ViewGroup，其中每个fragment关联一个tab；要给ViewGroup一个id，因为在切换tab的时候需要引用。如果tab内容直接放在activity中，可以直接把fragment放在默认的ViewGroup，引用时id为android.R.id.content。
 1. 实现ActionBar.TabListener，用来处理用户事件对应的fragment切换；
@@ -52,7 +52,7 @@ TabListener的回调方法中只有Tab对象和一个FragmentTransaction对象ft
 
 Activity中调用ActionBar的setNavigationMode(NAVIGATION_MODE_TABS)方法显示tabs(一般在onCreate()中调用)，还可以调用setDisplayShowTitleEnabled(false)隐藏掉默认的标题栏，一般tab上都有标题/图标。getSelectedNavigationIndex()可以获取到当前tab的索引。
 
-#####c) 下拉列表导航
+##### c) 下拉列表导航
 
 ActionBar内建了下拉列表导航，也可以叫作过滤。
 1. 创建一个SpinnerAdapter提供可选的条目以及列表的布局；
@@ -60,7 +60,7 @@ ActionBar内建了下拉列表导航，也可以叫作过滤。
 3. 调用ActionBar的setNavigationMode(ActionBar.NAVIGATION_MODE_LIST)；
 4. setListNavigationCallbacks(spinnerAdapter, navigationListener)。
 
-####5. Action Provider
+#### 5. Action Provider
 
 ActionProvider可以用自定义布局替换action item，而且可以控制所有items的行为。ShareActionProvider是ActionProvider的扩展，在ActionBar上显示一个可以分享的目标列表。可以声明一个ShareActionProvider替换传统调起ACTION_SEND的Intent。点击这个action item会显示一个可以处理ACTION_SEND的应用的下拉列表，即时该菜单显示在overflow菜单中。使用这样的Action Provider，就不必处理对应菜单的用户事件。
 
@@ -73,7 +73,7 @@ ShareActionProvider菜单中的应用根据点击次数排序，点击历史存�
 2. onCreateActionView()，从xml文件inflate自定义布局，设置事件监听等；
 3. onPerformDefaultAction()，当用户选中菜单时被调用，但是当你提供子菜单时，要通过onPrepareSubMenu()处理，然后前者就不再会被调用。但如果activity/fragment中处理了onOptionsItemSelected()，该方法不会被调到。
 
-####6. 自定义ActionBar风格
+#### 6. 自定义ActionBar风格
 
 ```
 android:windowActionBarOverlay：前面说过，用来设置overlay模式；
@@ -94,7 +94,7 @@ android:actionDropDownStyle：下拉列表风格，比如背景、文本等。
 ```
 更复杂的风格可以修改Activity主题中的这两个属性：android:actionBarStyle和android:actionBarSplitStyle。
 
-###二、ViewPager
+### 二、ViewPager
 
 android.support.v4.view.ViewPager是谷歌官方给我们提供的一个兼容低版本安卓设备的软件包，里面包括了只有在安卓3.0以上版本可以使用的API。ViewPager可以做很多事情，从最简单的导航，到页面菜单等等。它与ListView类似，也需要一个适配器，就是同一个包内的PagerAdapter。
 

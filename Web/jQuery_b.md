@@ -1,4 +1,4 @@
-####jQuery 选择器
+#### jQuery 选择器
 
 ```
 *
@@ -98,7 +98,7 @@ eg: $(":checked") ==> 所有被选中的 input 元素
 来源： [w3school](http://www.w3school.com.cn/jquery/jquery_ref_selectors.asp)
 
 
-####jQuery 事件方法
+#### jQuery 事件方法
 
 事件方法会触发匹配元素的事件，或将函数绑定到所有匹配元素的某个事件。
 
@@ -157,7 +157,7 @@ unload(): 触发、或将函数绑定到指定元素的 unload 事件
 ```
 来源： [w3school](http://www.w3school.com.cn/jquery/jquery_ref_events.asp)
 
-####jQuery 效果函数
+#### jQuery 效果函数
 
 ```
 animate(): 对被选元素应用“自定义”的动画
@@ -179,7 +179,7 @@ toggle(): 对被选元素进行隐藏和显示的切换
 
 来源： [w3school](http://www.w3school.com.cn/jquery/jquery_ref_effects.asp)
 
-####jQuery 文档操作方法
+#### jQuery 文档操作方法
 
 这些方法对于 XML 文档和 HTML 文档均是适用的，除了：html()。
 
@@ -215,7 +215,7 @@ wrapinner(): 将每一个匹配的元素的子内容用指定的内容或元素�
 
 来源： [w3school](http://www.w3school.com.cn/jquery/jquery_ref_manipulation.asp)
 
-####Query 属性操作方法
+#### Query 属性操作方法
 
 下面列出的这些方法获得或设置元素的 DOM 属性。
 这些方法对于 XML 文档和 HTML 文档均是适用的，除了：`html()`。

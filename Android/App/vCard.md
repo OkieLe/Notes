@@ -1,4 +1,4 @@
-####vCard介绍(以下内容主要来自wikipedia)
+#### vCard介绍(以下内容主要来自wikipedia)
 
 vCard或称做Versitcard，是电子名片的文件格式标准。它一般附加在电子邮件之后，但也可以用于其它场合（如在因特网上相互交换）。vCard可包含的信息有：姓名、地址信息、电话号码、URL，logo，相片等。
 
@@ -32,7 +32,7 @@ vCard数据格式行是： `type [;para]:value`
 
 vCard内容必须以BEGIN:VCARD开头，以END:VCARD结尾。之间必须包含VERSION和FN属性。不同的版本支持的类型有所变化，可以定义自己的类型，自己定义的类型需要以“x-”开头。
 
-####应用流程
+#### 应用流程
 
 Android联系人应用提供对vCard文件的部分支持。包括对不同版本的vCard文件进行解析，恢复到联系人数据库；以及对联系人进行备份。
 ICS支持2.1/3.0版本的导入，相关代码在src\com\android\contacts\vcard目录下。
@@ -54,7 +54,7 @@ b. 导入流程
 
 ![Export vcard](../../_attach/Android/import_vcard.png)
 
-####框架支持
+#### 框架支持
 
 相关代码目录`frameworks\opt\vcard\java\com\android\vcard`，用于vCard的解析、构建等基本支持。
 - VCardParser*：对不同版本的vCard文件进行解析；
@@ -66,6 +66,6 @@ b. 导入流程
 - VCardBuilder：用来把单个联系人的各中信息组合为一个vCard记录；
 - VCardSourceDetector：解析vCard文件，预计文件的格式等信息。
 
-####其他
+#### 其他
 
 本文档只是简单介绍联系人中vCard相关流程，没有框架中vCard相关类的使用方法，希望有后来者补充。

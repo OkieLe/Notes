@@ -4,7 +4,7 @@ Annotation（注解）就是Java提供了一种元程序中的元素关联任何
 
 **基本的规则**:Annotation不能影响程序代码的执行，无论增加、删除 Annotation，代码都始终如一的执行。
 
-####系统内置标准注解：
+#### 系统内置标准注解：
 
 注解的语法比较简单，除了@符号的使用外，他基本与Java固有的语法一致，JavaSE中内置三个标准注解，定义在java.lang中：
 
@@ -21,7 +21,7 @@ SuppressWarnings注解的常见参数值的简单说明：
 6. finally：任何 finally 子句不能正常完成时的警告;
 7. all：关于以上所有情况的警告。
 
-####元注解
+#### 元注解
 
 元注解的作用就是负责注解其他注解。Java定义了4个标准的meta-annotation类型，它们被用来提供对其它 annotation类型作说明。
 a. `@Target`

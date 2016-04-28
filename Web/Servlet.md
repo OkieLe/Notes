@@ -1,11 +1,11 @@
-####什么是Servlet?
+#### 什么是Servlet?
 
 - Servlet就是JAVA 类
 - Servlet是一个继承HttpServlet类的类
 - 这个在服务器端运行，用以处理客户端的请求
 - Servlet 没有 main 方法，不能够独立的运行，它的运行需要容器的支持，Tomcat 是最常用的 JSP/Servlet 容器。Servlet 运行在 Servlet 容器中，并由容器管理从创建到销毁的整个过程。
 
-####JSP与Servlet
+#### JSP与Servlet
 
 JSP 本质是一个 Servlet，它的运行也需要容器的支持。
 
@@ -13,7 +13,7 @@ JSP 本质是一个 Servlet，它的运行也需要容器的支持。
 
 在 MVC 架构模式中，就 JSP 和 Servlet 而言，C 通常由 Servlet 充当，V 通常由 JSP 来充当。
 
-####Servlet相关包的介绍
+#### Servlet相关包的介绍
 
 - javax.servlet.* ：存放与HTTP 协议无关的一般性Servlet 类；
 - javax.servlet.http.* ：除了继承javax.servlet.* 之外，并且还增加与HTTP协议有关的功能。（注意：大家有必要学习一下HTTP协议，因为WEB开发都会涉及到）
@@ -56,7 +56,7 @@ JSP 本质是一个 Servlet，它的运行也需要容器的支持。
 
     HttpServletResponse接口：提供Http响应
 
-####Servlet生命周期
+#### Servlet生命周期
 
 - Servlet生命周期就是指创建Servlet实例后，存在的时间以及何时销毁的整个过程．
 
@@ -79,7 +79,7 @@ JSP 本质是一个 Servlet，它的运行也需要容器的支持。
 
     垃圾收集：销毁实例
 
-####Servlet的基本结构
+#### Servlet的基本结构
 
 ```Java
 package cn.dragon.servlet;
@@ -111,7 +111,7 @@ public class ServletDemoFirst extends HttpServlet { 　　
 }
 ```
 
-####Servlet的部署
+#### Servlet的部署
 
 以下截取部分
 ```xml
@@ -133,7 +133,7 @@ public class ServletDemoFirst extends HttpServlet { 　　
 2. `<servlet-class>`后面指在对应的类上面．　　技巧：你可以直接在你的servlet类中复制过来，这样可以避免出错！
 3. `<url-pattern>`必须是/servlet 再加servlet名字.大家现在就这么记.
 
-####Servlet实例演示
+#### Servlet实例演示
 ```Java
 package cn.dragon.servlet;
 import java.io.IOException;
@@ -172,7 +172,7 @@ public class ServletDemoSecond extends HttpServlet {
 }
 ```
 
-####web.xml文件
+#### web.xml文件
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

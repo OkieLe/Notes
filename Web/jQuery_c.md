@@ -1,4 +1,4 @@
-####jQuery CSS 操作函数
+#### jQuery CSS 操作函数
 
 下面列出的这些方法设置或返回元素的 CSS 相关属性。
 ```
@@ -14,7 +14,7 @@ width(): 设置或返回匹配元素的宽度。
 
 来源： [w2school](http://www.w3school.com.cn/jquery/jquery_ref_css.asp)
 
-####jQuery Ajax 操作函数
+#### jQuery Ajax 操作函数
 
 jQuery 库拥有完整的 Ajax 兼容套件。其中的函数和方法允许我们在不刷新浏览器的情况下从服务器加载数据。
 ```
@@ -40,7 +40,7 @@ jQuery.post(): 使用 HTTP POST 请求从服务器加载数据。
 
 来源： [w2school](http://www.w3school.com.cn/jquery/jquery_ref_ajax.asp)
 
-####jQuery 遍历函数
+#### jQuery 遍历函数
 
 jQuery 遍历函数包括了用于筛选、查找和串联元素的方法。
 ```
@@ -76,7 +76,7 @@ jQuery 遍历函数包括了用于筛选、查找和串联元素的方法。
 
 来源： [w2school](http://www.w3school.com.cn/jquery/jquery_ref_traversing.asp)
 
-####jQuery 数据操作函数
+#### jQuery 数据操作函数
 
 这些方法允许我们将指定的 DOM 元素与任意数据相关联。
 ```
@@ -94,7 +94,7 @@ jQuery.removeData(): 移除之前存放的数据。
 
 来源： [w2school](http://www.w3school.com.cn/jquery/jquery_ref_data.asp)
 
-####jQuery DOM 元素方法
+#### jQuery DOM 元素方法
 
 ```
 .get(): 获得由选择器指定的 DOM 元素。
@@ -105,7 +105,7 @@ jQuery.removeData(): 移除之前存放的数据。
 
 来源：[w2school](http://www.w3school.com.cn/jquery/jquery_ref_dom_element_methods.asp)
 
-####jQuery 核心函数
+#### jQuery 核心函数
 
 ```
 jQuery(): 接受一个字符串，其中包含了用于匹配元素集合的 CSS 选择器。
@@ -114,7 +114,7 @@ jQuery.noConflict(): 运行这个函数将变量 $ 的控制权让渡给第一�
 
 来源：[w2school](http://www.w3school.com.cn/jquery/jquery_ref_core.asp)
 
-####jQuery 属性
+#### jQuery 属性
 
 下面列出的这些方法设置或返回元素的 CSS 相关属性。
 ```

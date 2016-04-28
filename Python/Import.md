@@ -1,4 +1,4 @@
-####标准库的安装路径
+#### 标准库的安装路径
 
 在import模块的时候，python是通过系统路径找到这些模块的，我们可以将这些路径打印出来：
 ```Python
@@ -22,7 +22,7 @@
 ```
 那么，我们放进这些路径里的模块或包，就可以不需指定路径，直接使用import导入了。特别的，/Library/Python/2.7/site-packages，我们常用的应该放在这里。
 
-####常见问题
+#### 常见问题
 
 - 引入某一特定路径下的模块
 >使用`sys.path.append(yourmodulepath)`
@@ -31,12 +31,12 @@
 >利用系统环境变量 `export PYTHONPATH=$PYTHONPATH:yourmodulepath`
 >直接将这个路径链接到类似/Library/Python/2.7/site-packages目录下
 
-####建议
+#### 建议
 
 - 经常使用`if __name__ == '__main__'`，保证你写包既可以import又可以独立运行，用于test。
 - 多次import不会多次执行模块，只会执行一次。可以使用reload来强制运行模块，但不提倡。
 
-####包（package）
+#### 包（package）
 
 为了组织好模块，将多个模块分为一个包。包是python模块文件所在的目录，且该目录下必须存在__init__.py文件。常见的包结构如下：
 ```
