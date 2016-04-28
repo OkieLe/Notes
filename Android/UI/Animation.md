@@ -42,13 +42,14 @@ ValueAnimator对象跟踪动画的时序，比如动画已经播放的时间，�
 
 >另一方面视图动画构建简单，编码少，如果可以满足开发要求，没必要使用属性动画。
 
-####2.2 Animators/Evaluators/Interpolators
+#####2.2 Animators/Evaluators/Interpolators
 
 - Animator类提供创建动画的基本架构，但需要扩展之后才可以用于实际，因为它只提供了最小的实现，下面是一些它的子类。
 - Evaluators用来定义如何计算对应的属性值，通过Animator提供的时间轴，动画起始值，计算出变化的属性值。常用的有IntEvaluator、FloatEvaluator、ArgbEvaluator，还有TypeEvaluator接口。这个接口允许你扩展出自己的Evaluator，其实只有一个方法要实现evaluate()，返回合适的属性值就可以了。
 - Interpolators定义特定的数据如何随时间变化。如线性、加速等。常用的有AccelerateInterpolator、LinearInterpolator、AnticipateInterpolator、BounceInterpolator、CycleInterpolator等。也可以通过扩展TimeInterpolator接口自定义Interpolator，重写getInterpolation(float played)，根据传入的播放时间百分比，返回一个属性值改变的百分比。
 
 #####1. ValueAnimator
+
 属性动画的主时间引擎，同时计算变化的属性值。包含所有计算动画数据的核心功能，像动画时间轴，是否重复播放，接收更新时间的监听以及设置自定义计算类型的能力。属性动画由两部分：计算动画数据以及把新的属性值设置给对象。后者的逻辑需要开发者自己处理。
 
 可以通过工厂方法ofInt()、ofFloat()和ofObject()获取ValueAnimator对象。
@@ -104,7 +105,7 @@ animatorSet.play(bouncer).before(fadeAnim);
 animatorSet.start();
 ```
 
-####2.3 Animation Listeners
+#####2.3 Animation Listeners
 
 监听动画播放过程，有以下两个接口。
 > Animator.AnimatorListener
@@ -117,7 +118,7 @@ animatorSet.start();
     - onAnimationUpdate()：动画的每一帧都会调用，监听这个时间来使用动画播放期间的属性值，调用传入方法的ValueAnimator对象的getAnimatedValue()方法.
     - 如果不想实现所有事件的监听，可以扩展AnimatorListenerAdapter，里面的方法都有空的实现，可以选择需要的来覆写。
 
-####2.4 创建Views/ViewGroups动画
+#####2.4 创建Views/ViewGroups动画
 
 #####1. ViewGroups布局动画
 
@@ -132,7 +133,6 @@ animatorSet.start();
 在布局文件中将对应ViewGroup的android:animateLayoutchanges设置为true，就可以打开动画。
 
 #####2. Views动画
-
 
 属性动画系统可以使View的动画流线化(streamlined，先这么翻译吧)。视图动画系统是改变View被画出来的方式来是View变形，这需要在View的容器内处理，因为View本身没有可以操作的属性。这样的变化并没有改变View对象本身。
 
@@ -161,7 +161,7 @@ ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
 myView.animate().x(50f).y(100f);
 ```
 
-####2.5 关键帧Keyframe
+#####2.5 关键帧Keyframe
 
 Keyframe对象包含一个时间/数值对，定义了动画某一时间的特定状态。每个关键帧还有各自的插值器来确定与前一关键帧之间动画的变化。
 
@@ -176,7 +176,7 @@ rotationAnim.setDuration(5000ms);
 ```
 >关键帧使用的例子可以参考APIDemos的MultiPropertyAnimation。
 
-####2.6 用xml定义属性动画
+#####2.6 用xml定义属性动画
 
 属性动画的资源为区别于视图动画(Android 3.1开始)，存在res/animator中，这个目录是可选的，但是ADT插件只能识别这个目录的资源。
 
