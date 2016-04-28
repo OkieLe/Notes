@@ -17,6 +17,7 @@ Task，简单的说，就是一组以栈的模式聚集在一起的Activity组�
 
 ####Android下的任务和Activity栈
 
+
 就像前面提到的，一个activity可以启动另一个，包括那些定义在不同应用程序中的。假设，例如，你想让用户显示一些地方的街道地图。已经有一个activity可以做这个事，所以你的activity所要做的就是将行为对象和需要的信息放在一起，并将它们传递给startActivity()。地图查看器将显示这个地图。当用户按下后退按钮时，你的activity又重新显示在屏幕上了。
 
 对用户来说，这个地图查看器看起来就像是你的应用程序的一部分，即使它定义在另外的应用程序中并运行在那个程序的进程中。Android 通过保持所有的activity在同一个任务中来保持用户体验。简单的的说，任务就是用户所体验到的“应用程序”。它是一组相关的activity，分配到一个栈中。栈中的根activity，是任务的开始——一般来说，它是用户组应用程序加载器中选择的activity。在栈顶的activity正是当前正在运行的——集中处理用户动作的那个。当一个activity启动了另外一个，这个新的activity将压入栈中，它将成为正在运行中的 activity。前一个activity保留在栈中。当用户按下后退按键，当前的这个activity将中栈中弹出，而前面的那个activity恢复成运行中状态。
@@ -49,19 +50,19 @@ finishOnTaskLaunch
 
 下面将说明这些标志和属性都有什么用，他们之间怎么互相影响，应该用什么样的方案来控制它们的使用。
 
-#####亲和性和新任务
+####亲和性和新任务
 
 默认情况下，应用程序中的所有activity，都有一个对于其它activity的亲和性—这是一个对于同一个任务中的其他activity的优先权，然后，通过 <activity>元素的 taskAffinity 属性可以可以分别为每一个activity设置亲和性。不同应用程序定义的activity可以共享同一个亲和性，或者同一个应用程序定义的 activity可以指定不同的亲和性。亲和性在两种情况下发挥作用：当行为对象启动了一个包含 FLAG_ACTIVITY_NEW_TASK标志的activity，和当一个activity的allowTaskReparenting 属性设置为“true”。
 
-#####FLAG_ACTIVITY_NEW_TASK 标志
+####FLAG_ACTIVITY_NEW_TASK 标志
 
 正如前面描述的，一个新的activity，默认情况下，被加载进调用startActivity()方法的activity对象所在的那个任务中。它被压入和调用者所在的同一个栈中，但是，如果行为对象在调用startActivity()方法时传递了FLAG_ACTIVITY_NEW_TASK标记，系统将用一个不同的任务来容纳这个新的activity。通常，就像这个标记的名字所代表的。它是一个新任务，但是，它不必非要这样。如果已经存在一个和这个activity亲和性相同的任务，这个activity就会载入到那个任务中，如果不是的话，才会启动新任务。
 
-#####allowTaskReparenting 属性
+####allowTaskReparenting 属性
 
 如果activity的allowTaskReparenting 属性设置为“true”，它就能从他启动时所在的任务移动到另一个出现在前台的任务。例如，假设有一个activity可以根据选择的城市包括天气情况，它作为一个旅行应用程序的一部分。它和同一个应用程序中的其他activity有同样的亲和性(默认的亲和性)并且允许重组。你的一个activity开启了天气报告器，所以它属于同一个任务中的这个activity，然而，当旅行应用程序开始运行时，天气报告器将被重新分配并显示到那个任务中。
 
-#####启动模式
+####启动模式
 
 有4中不同的启动模式可以分配给 <activity> 元素的 launchMode 属性。
 - "standard" (默认的模式)
@@ -88,7 +89,7 @@ finishOnTaskLaunch
 
 注意，当创建一个新的activity实例来处理一个新的行为时，用户总是能够通过按下BACK按键退回到前面的状态(前一个activity)。但是当一个已经存在的activity实例处理一个新的行为时，用户不能通过按下BACK按键退回到前面的状态。
 
-#####清理栈
+####清理栈
 
 如果用户离开一个任务很长时间。系统将清除除了根activity之外的所有activity。当用户重新回到任务中时，像是用户离开了它，除了只有最初的activity还在。这个理念是这样的，过了一段时间，用户很可能放弃之前所做的事情，回到任务去做一些新的事情。
 
@@ -107,7 +108,7 @@ finishOnTaskLaunch
 
 FLAG_ACTIVITY_CLEAR_TOP经常和FLAG_ACTIVITY_NEW_TASK一起使用。当一起使用时，这些标志是定位一个在另一个任务中存在的activity并且将它放在一个可以响应行为的地方的一种方法。
 
-#####启动任务
+####启动任务
 
 Activity通过将行为过滤器”android .intent.action.MAIN“设置为指定动作和"android .intent.category.LAUNCHER"作为指定类型，来成为任务的入口。(前面关于行为过滤器那一些讨论的例子)。这种类型的过滤器会让activity的图标和标签显示在应用程序加载器上面，可以让用户启动和返回activity。
 
@@ -118,7 +119,7 @@ Activity通过将行为过滤器”android .intent.action.MAIN“设置为指定
 
 对于那些你不想让用户返回到activity的情况，将 <activity>的finishOnTaskLaunch属性设置为”true“，参看前面的清理栈。
 
-#####Activity的taskAffinity属性
+####Activity的taskAffinity属性
 
 Activity的归属，也就是Activity应该在哪个Task中，Activity与Task的吸附关系。我们知道，一般情况下在同一个应用中，启动的Activity都在同一个Task中，它们在该Task中度过自己的生命周期，这些Activity是从一而终的好榜样。
 
