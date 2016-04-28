@@ -22,9 +22,9 @@ parse_config_file(tmp);
 parse_config_file(“init.qcom.rc”);
 ```
 
-####配置文件的语法
+#### 配置文件的语法
 
-#####配置文件的内容包含有4种：
+##### 配置文件的内容包含有4种：
 
 ```
 动作(Action)
@@ -33,7 +33,7 @@ parse_config_file(“init.qcom.rc”);
 选项(Options)
 ```
 
-#####动作和命令一起使用，形式如下：
+##### 动作和命令一起使用，形式如下：
 
 ```init
 on <trigger>
@@ -47,7 +47,7 @@ on property:persist.service.adb.enable=1
 start adbd
 ```
 
-#####服务和选项一起使用，形式如下：
+##### 服务和选项一起使用，形式如下：
 
 ```init
 service <name> <pathname> [ <argument> ]*
@@ -75,7 +75,7 @@ oneshot
 >- 这个可执行程序会一直存在--如果可执行程序被杀死，则会重新启动。
 
 
-#####选项是影响服务启动和运行的参数，主要的选项如下：
+##### 选项是影响服务启动和运行的参数，主要的选项如下：
 
 `disabled` 禁用服务，此服务开机时不会自动启动，但是可以在应用程序中手动启动它。
 
@@ -100,7 +100,7 @@ oneshot
 `class <name>`
 为服务指定一个类别，默认为"default"，同一类别的服务必须一起启动和停止
 
-#####动作触发条件<trigger>
+##### 动作触发条件<trigger>
 
 `boot` 首个触发条件，初始化开始(载入配置文件)的时候触发
 
@@ -116,7 +116,7 @@ oneshot
 `service-exited-<name>`
 名为`<name>`的服务关闭的时候触发
 
-#####命令(Command)的形式
+##### 命令(Command)的形式
 
 `exec <path> [ <argument> ]*`
 复制(fork)和执行路径为`<path>`的应用程序，`<argument>`为该应用程序的参数，在该应用程序执行完前，此命令会屏蔽，
@@ -177,7 +177,7 @@ oneshot
 `write <path> <string> [ <string> ]*`
 打开路径为`<path>`的文件并将一个多这多个字符串写入到该文件中。
 
-#####系统属性(Property)
+##### 系统属性(Property)
 
 android初始化过程中会修改一些属性，通过getprop命令我们可以看到属性值，这些属性指示了某些动作或者服务的状态，主要如下：
 
@@ -187,7 +187,7 @@ android初始化过程中会修改一些属性，通过getprop命令我们可以
 
 `init.svc.<name>` 此属性指示个名为`<name>`的服务的状态("stopped", "running", 或者 "restarting").
 
-####init流程
+#### init流程
 
 init的源代码在文件：./system/core/init/init.c 中，init会一步步完成下面的任务：
 1. 初始化log系统

@@ -1,6 +1,6 @@
-####一、AIDL工作原理
+#### 一、AIDL工作原理
 
-#####AIDL定义
+##### AIDL定义
 
 Android平台，每个应用程序都拥有自己的进程空间，通常一个进程空间不能访问另一个进程空间，即一个应用不能访问另一个应用。为了解决这个问题，Android提供了AIDL，采用AIDL方式来实现。
 
@@ -8,7 +8,7 @@ AIDL是 Android Interface definition language的缩写，是android内部进程�
 
 **IPC**：interprocess communication 内部进程通信。
 
-#####AIDL工作原理
+##### AIDL工作原理
 
 要知道AIDL的工作原理就需要分析AIDL语言生成的接口文件。
 
@@ -52,13 +52,13 @@ mXXXManager.XXX();
 
 小结：AIDL的作用就是自动生成一个Service的Stub类和Proxy类，为Service开发者和使用者完成数据解析和打包工作。
 
-####二、AIDL如何使用，即如何建立AIDL服务
+#### 二、AIDL如何使用，即如何建立AIDL服务
 
 上面分析了AIDL工作原理，下面将分析具体的实例以加深对AIDL的理解。
 
 建立AIDL服务需要分两个部分：一个是服务端，一个是客户端
 
-#####服务端
+##### 服务端
 
 服务端步骤
 
@@ -117,7 +117,7 @@ return new MyServiceImpl();
 </service>
 ```
 
-#####客户端
+##### 客户端
 
 - 首先新建一个Android工程，并将自动生成的IMyService.java文件连同包目录一起复制到工程的src目录中。
 - 调用AIDL服务。调用AIDL服务首先要绑定服务，然后才能获得服务对象
@@ -156,7 +156,7 @@ public void onClick(View view) {
 ```
 功能实现：在点击绑定服务按钮的时候去绑定服务并获取服务对象，在点击显示按钮的时候，获取服务端信息，并显示在TextView中。
 
-####android中 本地服务和 AIDL服务的区别
+#### android中 本地服务和 AIDL服务的区别
 
 - 本地服务不支持onBind(),它从onBind()返回null，这种类型的服务只能由承载服务的应用程序组件访问。可以调用 startService来调用本地服务。
 - AIDL服务可以同时供同一进程内的组件和其他应用程序的组件使用。这种类型的服务在AIDL文件中为自身与其客户端定义一个契约。服务实现 AIDL契约，而客户端绑定到 AIDL定义。服务通过从 onBind()方法 返回AIDL接口的实现，来实现契约。客户端通过调用 bindService()来绑定到AIDL服务，并调用 unBindService()来从服务断开。

@@ -1,4 +1,4 @@
-####一、ContentProvider简述
+#### 一、ContentProvider简述
 
 在Android系统中，Content Provider作为应用程序四大组件之一，它起到在应用程序之间共享数据的作用，同时它还是标准的数据访问接口。
 
@@ -12,7 +12,7 @@ Android中数据访问层由ContentProvider实现，业务应用和ContentProvid
 
 Android系统中，内置了轻型数据库SQLite，占用资源低，而且开源。Android系统中通讯录、信息和邮件等都是用SQLite数据库保存的。
 
-####二、ContentProvider接口
+#### 二、ContentProvider接口
 
 一般提供访问功能的数据库Provider，都会提供一个接口文件。如Android系统数据库Provider应用提供的公开接口都在android.provider包内，可以在SDK的源代码目录中找到Java源码。在Android源代码frameworks/base/core/java/android/provider目录下可以找到我们定制后的文件。
 
@@ -30,7 +30,7 @@ Android系统中，内置了轻型数据库SQLite，占用资源低，而且开�
 
 对于使用者来说，这些接口定义是编码的主要参考，同时数据库开发者一般会提供接口使用的说明文档，甚至示例代码。对于Android原生Content Provider来说，最好的文档就是SDK，示例代码可以参考开源的原生应用代码。
 
-####三、ContentProvider创建
+#### 三、ContentProvider创建
 
 a) 实现自己的Content Provider时，必须继承于ContentProvider类，并实现以下6个函数：
 - onCreate()，用来执行一些初始化工作；
@@ -96,7 +96,7 @@ b) 然后在AndroidManifest.xml中配置后才能正常使用。其中包括Prov
 </manifest>
 ```
 
-####四、访问Content Provider提供的数据
+#### 四、访问Content Provider提供的数据
 
 a) 在使用数据的应用AndroidManifest.xml中声明读/写权限，读权限只能查询(query)，insert/update/delete需要写权限；
 ```xml
@@ -105,13 +105,13 @@ a) 在使用数据的应用AndroidManifest.xml中声明读/写权限，读权限
 ```
 b) 在代码中通过Context类的方法getContentResolver()获取ContentResolver实例，并调用对应的接口query/insert/update/delete进行数据访问。具体的使用下一部分进行说明。
 
-####五、使用数据库
+#### 五、使用数据库
 
 ContentResolver提供从应用访问数据的接口，从(数据库)外部访问数据库必须经过它来实现。通过Context的方法getContentResolver()可以获取到对应上下文的ContentResolver对象。然后调用ContentResolver的query/insert/update/delete方法进行相应操作。
 
 不是数据库所有的表都有接口进行操作，同一个表也可能支持不同的uri，所以使用数据集这个词。
 
-#####a) 读取数据Query
+##### a) 读取数据Query
 
 `public final Cursor query(Uri uri, String[] projection, String selection, String[]selectionArgs, String sortOrder)`
 
@@ -126,14 +126,14 @@ cursor中只包含projection中的数据列，要获取包含最多数据列的�
 
 CursorLoader，AsyncQueryHandler是Android框架提供的包装类，可以把耗时的数据库操作放入异步任务中执行，操作结束后通过回调通知调用者进行后续操作。CursorLoader是3.0开始新加入的类，可以通过LoaderManager进行管理，而LoaderManager可以很好的与Activity/Fragment协同工作。
 
-#####b) 写数据
+##### b) 写数据
 
 ContentValues用于保存供ContentResolver处理的一个数据集合，类似于Map的结构，key当然不能重复。一般key保存数据库字段名，value保存对应的字段值。这样用来保存一条数据记录，用作update/delete方法的参数。另外用来在函数之间传递类似Map结构的数据也是很方便的。
 
 - bulkInsert/ApplyBatch用于批量操作，前者用于对同一个Uri批量插入一组记录，后者用来进行事务操作，而且其中有很大的灵活度。
 - ContentProviderOperation/ContentProviderResult用于数据库事务操作applyBatch()的参数和返回结果。数据库大批量写操作，甚至混合操作应该使用applyBatch()来实现。具体的使用可以参考相应的SDK文档。
 
-#####c) 其他
+##### c) 其他
 
 - ContentObserver用于监听数据内容的变化，当收到数据内容变化的通知，可以重新获取数据，并进行界面刷新等操作。
 - ContentResolver的方法registerContentObserver(Uri uri, boolean notifyForDescedents, ContentObserver observer)用来给特定uri注册监听器observer，对数据变化的处理放在observer的onChange()方法中。
@@ -158,7 +158,7 @@ Uri代表了要操作的数据，Uri主要包含了两部分信息：1.需要操
 Uri uri = Uri.parse("content://com.changcheng.provider.contactprovider/contact")
 ```
 
-####UriMatcher、ContentUris和ContentResolver简介
+#### UriMatcher、ContentUris和ContentResolver简介
 
 因为Uri代表了要操作的数据，所以我们很经常需要解析Uri，并从Uri中获取数据。Android系统提供了两个用于操作Uri的工具类，分别为UriMatcher 和ContentUris 。
 
