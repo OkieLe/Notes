@@ -166,6 +166,7 @@ def test():
 - 子类不会自动调用父类的构造方法
 - 查看模块包含的内容可以使用dir函数，它会将对象（以及模块的所有函数、类、变量等）的所有特性列出。`__all__`变量定义了模块的共有接口 （public interface）。更准确的说，它告诉解释器：从模块导入所有名字代表什么含义。eg： `form copy import *` 代码你只能访问`__all__`所定义的接口，而如果想访问其他接口的话，就必须显式地实现，`from copy import PyStringMap`
 - shelve模块的简单使用
+
 ```Python
 '''
 Created on 2011-12-11
