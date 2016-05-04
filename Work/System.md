@@ -23,3 +23,6 @@ http://www.tuicool.com/articles/6bqeem
 
 Android Lint
 http://android.jobbole.com/82633/
+
+进程保活
+http://www.jianshu.com/p/63aafe3c12af

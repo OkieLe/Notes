@@ -31,3 +31,6 @@ libs on Github
 
 dom4j
 [dom4j](http://blog.csdn.net/redarmy_chen/article/details/12969219)
+
+Font-Awesome
+[Font-Awesome](http://fortawesome.github.io/Font-Awesome/cheatsheet/)
