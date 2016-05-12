@@ -1,3 +1,7 @@
+- Python3 in 1 pic
+
+![python3](../_attach/Python/python3_in1pic.png)
+
 **Python的执行过程**
 
 >当程序执行时，python内部会先将源代码编译成所谓的字节码的形式。字节码是源代码底层的. 与平台无关的表现形式。编译字节码的过程中，会生成一个.pyc的文件，这个文件就是编译之后的字节码。Python真正在运行的就是这个字节码文件，如果生成字节码文件之后没有 再修改过源代码的话，下次程序运行会跳过编译这个步骤，直接运行pyc文件，这是一种启动速度的优化。字节码文件被发送到python虚拟机 （Python Virtual Machine, PVM）上来执行。PVM是python的运行引擎。
