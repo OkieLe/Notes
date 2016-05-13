@@ -16,8 +16,7 @@ APK打包会自动对PNG进行无损压缩，如果自行无损压缩是无效�
 
 ### Tcpdump抓包
 
-有些模拟器比如genymotion自带了tcpdump，如果没有的话，需要下载tcpdump:
-http://www.strazzere.com/android/tcpdump
+有些模拟器比如genymotion自带了tcpdump，如果没有的话，需要下载[tcpdump](http://www.strazzere.com/android/tcpdump).
 把tcpdump push到/data/local下，抓包命令：
 
 ```shell
