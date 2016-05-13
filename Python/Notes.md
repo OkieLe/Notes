@@ -31,6 +31,7 @@
 - 字符串的title方法，将字符串转换为标题，也就是所有单词的首字母大写，而其他字母小写。`string = "that's all folks.";string.title()=="That'S All Folks."`
 - strip方法返回去除两侧（不包括内部）空格的字符串。
 - 使用dict的小Demo：
+
 ```python
 people = {
     'Alice':{
@@ -56,6 +57,7 @@ else:
 ```
 - 字典的拷贝，字典的普通copy方法是浅拷贝，只是简单的拷贝值，但是如果涉及到应用的拷贝的话，就要考虑使用deepcopy方法进行深拷贝。
 - 模块的导入：
+
 ```Python
 import somemodule
 from somemodule import somefunction
@@ -67,6 +69,7 @@ import math as foobar #使用别名，避免冲突
 - == 测试相等性，即值是否相等，而 is 用于测试同一性，即是否指向同一个对象
 - `a if b else c ;` 如果b为真，则返回a，否则返回c
 - 遍历字典
+
 ```Python
 d = {'x':1,'y':2,'z':3}
 #Method1
@@ -80,6 +83,7 @@ for (key , value) in d.items() :
     print key , '----->' , value
 ```
 - zip函数可以用来进行并行迭代，可以将多个序列"压缩"在一起，然后返回一个元组的列表
+
 ```Python
 names = ['Peter','Rich','Tom']
 ages = [20,23,22]
@@ -91,6 +95,7 @@ print d['Peter']
 - 在循环中添加else语句，只有在没有调用break语句的时候执行。这样可以方便编写曾经需要flag标记的算法。
 - 使用del时候，删除的只是名称，而不是列表本身值，事实上，在python中是没有办法删除值的，系统会自动进行垃圾回收。
 - 求斐波那契数列
+
 ```Python
 def fibs(num):
     'a function document'
@@ -100,6 +105,7 @@ def fibs(num):
     return result
 ```
 - 抽象函数（参数可以缺省，可以通过`*p`传递任意数量的参数，传递的是元组；通过`**p`传递任意数量的参数，传递的是字典）
+
 ```Python
 def a(*p):
     print p
@@ -121,6 +127,7 @@ result:
 - 使用`globals()`函数获取全局变量值，该函数的近亲是vars，它可以返回全局变量的字典（locals返回局部变量的字典）
 - 随机函数`random.choice([1,2,3,4])`
 - 关于面向对象
+
 ```Python
 #__metaclass__ = type
 class Person:   
@@ -157,7 +164,8 @@ print p2.count
 ```
 - python支持多重继承，如果一个方法从多个超类继承，那么必须要注意一下超类的顺序（在class语句中）：先继承的类中方法会重写后继承的类中的方法，也就是后来将自动忽略同名的继承。
 - 使用`hasattr(tc,'talk')` 判断对象tc时候包含talk属性； 使用`callable(getattr(tc,'talk',None))` 判断对象tc的talk属性是否可以调用，但是在python3.0之后，callable方法已经不再使用了，可以使用 `hasattr(x,'__call__')`代替`callable(x)`；使用setattr可以动态设置对象的属 性，`setattr(tc,'talk',speek)`
-- try: except: else: finally: 可以捕捉多个异常，多个异常用元组进行列出，并且可以捕捉对象，
+- try: except: else: finally: 可以捕捉多个异常，多个异常用元组进行列出，并且可以捕捉对象
+
 ```Python
 def test():
     while True:
