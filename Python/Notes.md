@@ -56,6 +56,7 @@ else:
     print "Phone is : %(phone)s \nAddress is : %(address)s" % profile
 ```
 - 字典的拷贝，字典的普通copy方法是浅拷贝，只是简单的拷贝值，但是如果涉及到应用的拷贝的话，就要考虑使用deepcopy方法进行深拷贝。
+- 自定义模块加入编译路径方法：在Python安装目录的Lib\site-packages下添加*.pth文件，将模块路径添加到文件中。
 - 模块的导入：
 
 ```Python
