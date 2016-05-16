@@ -109,3 +109,5 @@ $ python3 test.py -i inputfile -o outputfile
 
 - 输入的文件为： inputfile
 - 输出的文件为： outputfile
+
+[来源](http://www.runoob.com/python3/python3-command-line-arguments.html)
