@@ -14,6 +14,7 @@
 大段大段的代码我就不贴了，最后附上两篇连接
 
 [第一篇 Android : can native code get broadcast intent from android system?](http://stackoverflow.com/questions/21279270/android-can-native-code-get-broadcast-intent-from-android-system/21337119#answer-21337119)
+
 Any Android application can start a process by calling `Runtime.exec()` function.
 
 ```Java
