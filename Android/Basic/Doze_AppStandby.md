@@ -30,15 +30,15 @@
 3. 退出 Doze 模式（系统退出休眠，所有的应用程序恢复正常活动）：
 用户唤醒装置移动，打开屏幕, 或者设备连接电源.
 4. Doze 有哪些限制？
-- 网络连接会被禁止
-- Wake Lock 会被屏蔽
-- AlarmManager 定时任务延迟到下一个 maintenance window 进行处理，除非使用 AlarmManager 提供的方法： setAndAllowWhileIdle() 或者 setExactAndAllowWhileIdle()
-- 系统将不扫描热点 WIFI
-- 同步工作将被禁止
-- 不允许 JobScheduler 进行任务调度
+>- 网络连接会被禁止
+>- Wake Lock 会被屏蔽
+>- AlarmManager 定时任务延迟到下一个 maintenance window 进行处理，除非使用 AlarmManager 提供的方法： setAndAllowWhileIdle() 或者 setExactAndAllowWhileIdle()
+>- 系统将不扫描热点 WIFI
+>- 同步工作将被禁止
+>- 不允许 JobScheduler 进行任务调度
 5. 适配 Doze 模式有什么方法？
-- Doze 影响到 AlarmManager 闹钟和定时器管理活动，在 Android6.0 引入了两个新方法： setAndAllowWhileIdle() 和 setExactAndAllowWhileIdle() ，调用两个方法可以在 Doze 模式下让系统响应定时任务
-- Doze 模式下限制了网络的连接，如果应用程序依赖于实时信息，那么这个将影响 App 的体验。那么你需要使用 Google Cloud Messaging (GCM) 谷歌云消息（后面详细讲解）
+>- Doze 影响到 AlarmManager 闹钟和定时器管理活动，在 Android6.0 引入了两个新方法： setAndAllowWhileIdle() 和 setExactAndAllowWhileIdle() ，调用两个方法可以在 Doze 模式下让系统响应定时任务
+>- Doze 模式下限制了网络的连接，如果应用程序依赖于实时信息，那么这个将影响 App 的体验。那么你需要使用 Google Cloud Messaging (GCM) 谷歌云消息（后面详细讲解）
 6. 测试 Doze 和 App Standby 模式的方法（ Adb 命令）
 
 ##### 测试 Doze 模式
@@ -48,6 +48,7 @@
 3. 运行 app 并让其运行活动；
 4. 关闭设备的屏幕；
 5. 运行以下 adb 命令使系统进入 Doze 模式：
+
 ```shell
 $ adb shell dumpsys battery unplug
 $ adb shell dumpsys deviceidle step
@@ -57,6 +58,7 @@ $ adb shell dumpsys deviceidle step
 ##### 测试 App Standby 模式
 
 步骤 1-3 同测试 Doze 模式
+
 4. 运行以下 adb 命令迫使系统进入 App Standby 模式：
 ```shell
 $ adb shell dumpsys battery unplug
@@ -72,6 +74,7 @@ $ adb shell am get-inactive <packageName>
 #### Understanding App Standby
 
 当用户不触摸使用应用程序一段时间时，该应用程序处于 App Standby 状态，系统将把该 App 标志为空闲状态。除非触发以下任意条件，应用程序将退出 App Standby 状态：
+
 1. 用户主动启动该 App;
 2. 该 App 当前有一个前台进程（或包含一个活动的前台服务，或被另一个 activity 或前台 service 使用）;
 3. App 生成一个用户所能在锁屏或通知托盘看到的 Notification, 而当用户设备插入电源时，系统将会释放 App 的待机状态，允许他们自由的连接网络及其执行未完成的工作和同步。如果设备空闲很长一段时间，系统将允许空闲 App 一天一次访问网络。
@@ -144,6 +147,7 @@ $ adb shell dumpsys deviceidle
 #### 总结：
 
 Doze 模式的推出本身是为了减少电池的消耗，且 Google 希望统一使用 GCM 来传递消息进行通讯，而对于国内开发来讲，确实带来了很大的麻烦：
+
 1. 国内开发的一些消息推送机制（ PUSH ）将受到影响；
 2. 若使用 GCM ，在国内使用 GCM 延迟高，对于即时通讯产品来说选择还需勇气啊；
 3. 国内第三方手机厂商如华为、小米、三星，定制的 Rom 也将使用定制的推送消息机制。这让同一款 App 如何选择哪种推送机制才能兼容呢？
