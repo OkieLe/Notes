@@ -48,3 +48,6 @@ Retrofit
 
 LinuxToy
 [Zorro](https://linuxtoy.org/author/zorro.html)
+
+Android笔记
+[kc专栏](http://blog.csdn.net/kc58236582?viewmode=contents)
