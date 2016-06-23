@@ -74,29 +74,38 @@ MVP
 ### Ladders
 
 libs on Github
+
 [cnblogs](http://www.cnblogs.com/hawkon/p/3593709.html)
 
 dom4j
+
 [dom4j](http://blog.csdn.net/redarmy_chen/article/details/12969219)
 
 Font-Awesome
+
 [Font-Awesome](http://fortawesome.github.io/Font-Awesome/cheatsheet/)
 
 Bootstrap template
+
 [AdminLTE](https://almsaeedstudio.com/)
 
 Retrofit
+
 [官方页面](http://square.github.io/retrofit/)
 [源码分析](http://www.cnblogs.com/angeldevil/p/3757335.html)
 [使用](http://blog.csdn.net/lmj623565791/article/details/51304204)
 
 RxJava
+
 [是时候学习RxJava了](http://android.jobbole.com/83416/)
 
 RESTful
+
 [Jersey](https://github.com/jersey)
+
 [Jersey home](https://jersey.java.net/)
 
 Picasso
+
 [Picasso](http://square.github.io/picasso/)
 
