@@ -1,4 +1,4 @@
-﻿##### Python 提供了 getopt 模块来获取命令行参数。
+##### Python 提供了 getopt 模块来获取命令行参数。
 
 ```
 $ python test.py arg1 arg2 arg3
