@@ -82,6 +82,7 @@ xml/json
 [dom4j](http://blog.csdn.net/redarmy_chen/article/details/12969219)
 
 [Jackson](https://github.com/FasterXML/jackson)
+[Jackson annotations](http://blog.csdn.net/sdyy321/article/details/40298081)
 
 [xstream](https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream)
 
