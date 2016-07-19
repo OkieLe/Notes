@@ -96,8 +96,9 @@ Bootstrap template
 
 Retrofit
 
-[官方页面](http://square.github.io/retrofit/)
+[官方页面](https://square.github.io/retrofit/)
 [源码分析](http://www.cnblogs.com/angeldevil/p/3757335.html)
+[注解说明](http://blog.csdn.net/maplejaw_/article/details/51942145)
 [使用](http://blog.csdn.net/lmj623565791/article/details/51304204)
 
 RxJava
