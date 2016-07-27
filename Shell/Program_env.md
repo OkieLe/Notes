@@ -30,19 +30,32 @@
 ~/.bash_login
 ~/.profile
 ```
-这里要注意的是，本步骤只会检查到一个文件并处理，即使同时存在2个或3个文件，本步骤也只会处理最优先的那个文件，而忽略其他文件。以上两个步骤的检查都可以用—noprofile参数进行关闭。
+这里要注意的是，本步骤只会检查到一个文件并处理，即使同时存在2个或3个文件，本步骤也只会处理最优先的那个文件，而忽略其他文件。以上两个步骤的检查都可以用`—noprofile`参数进行关闭。
+
 当bash是以login方式登录的时候，在bash退出时（exit），会额外读取并执行~/.bash_logout文件中的命令。
+
 当bash是以交互方式登录时（-i参数），bash会读取并执行~/.bashrc中的命令。—norc参数可以关闭这个功能，另外还可以通过—rcfile参数指定一个文件替代默认的~/.bashrc文件。
+
 以上就是bash以login方式和交互式方式登录的主要区别，根据这个过程，我们到RHEL7的环境上看看都需要加载哪些配置：
-首先是加载/etc/profile。根据RHEL7上此文件内容，这个脚本还需要去检查/etc/profile.d/目录，将里面以.sh结尾的文件都加载一遍。具体细节可以自行查看本文件内容。
-之后是检查~/.bash_profile。这个文件中会加载~/.bashrc文件。
-之后是处理~/.bashrc文件。此文件主要功能是给bash环境添加一些alias，之后再加载/etc/bashrc文件。
-最后处理/etc/bashrc文件。这个过程并不是bash自身带的过程，而是在RHEL7系统中通过脚本调用实现。
+
+1. 首先是加载/etc/profile。根据RHEL7上此文件内容，这个脚本还需要去检查/etc/profile.d/目录，将里面以.sh结尾的文件都加载一遍。具体细节可以自行查看本文件内容。
+2. 之后是检查~/.bash_profile。这个文件中会加载~/.bashrc文件。
+3. 之后是处理~/.bashrc文件。此文件主要功能是给bash环境添加一些alias，之后再加载/etc/bashrc文件。
+4. 最后处理/etc/bashrc文件。这个过程并不是bash自身带的过程，而是在RHEL7系统中通过脚本调用实现。
+
 了解了这些之后，如果你的bash环境不是在RHEL7系统上，也应该可以确定在自己环境中启动的bash到底加载了哪些配置文件。
-bash和sh
+
+#### bash和sh
+
 几乎所有人都知道bash有个别名叫sh，也就是说在一个脚本前面写!#/bin/bash和#!/bin/sh似乎没什么不同。但是下面我们要看看它们究竟有什么不同。
+
 首先，第一个区别就是这两个文件并不是同样的类型。如果细心观察过这两个文件的话，大家会发现：
-[zorro@zorrozou-pc0 bash]$ ls -l /usr/bin/sh lrwxrwxrwx 1 root root 4 11月 24 04:20 /usr/bin/sh -> bash [zorro@zorrozou-pc0 bash]$ ls -l /usr/bin/bash -rwxr-xr-x 1 root root 791304 11月 24 04:20 /usr/bin/bash
+```
+[zorro@zorrozou-pc0 bash]$ ls -l /usr/bin/sh
+lrwxrwxrwx 1 root root 4 11月 24 04:20 /usr/bin/sh -> bash 
+[zorro@zorrozou-pc0 bash]$ ls -l /usr/bin/bash
+-rwxr-xr-x 1 root root 791304 11月 24 04:20 /usr/bin/bash
+```
 sh是指向bash的一个符号链接。符号链接就像是快捷方式，那么执行sh就是在执行bash。这说明什么？说明这两个执行方式是等同的么？实际上 并不是。我们都知道在程序中是可以获得自己执行命令的进程名称的，这个方法在bash编程中可以使用$0变量来实现，参见如下脚本：
 [zorro@zorrozou-pc0 bash]$ cat name.sh #!/bin/bash echo $0 case $0 in *name.sh) echo "My name is name!" ;; *na.sh) echo "My name is na" ;; *) echo "Name error!" ;; esac
 这个脚本直接执行的结果是：
