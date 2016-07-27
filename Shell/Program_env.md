@@ -323,6 +323,7 @@ aaa=1000
 #### 命令历史
 
 交互bash中提供一种方便追溯曾经使用的命令的功能，叫做命令历史功能。就是将曾经用过的命令纪录下来，以备以后查询或者重复调用。这个功能在交互方式的bash中默认打开，在bash编程环境中默认是没有开启的。可以使用`set +H`来关闭这个功能，`set -H`打开这个功能。在开启了history功能的bash中我们可以使用history内建命令查询当前的命令历史列表：
+
 ```
 [zorro@zorrozou-pc0 bash]$ history
 1 sudo bash
@@ -330,84 +331,115 @@ aaa=1000
 3 ls
 4 ip ad sh
 ```
+
 命令历史的相关配置都是通过bash的环境变量来完成的：
-> HISTFILE：记录命令历史的文件路径。
-> HISTFILESIZE：命令历史文件的行数限制
-> HISTCONTROL：这个变量可以用来控制命令历史的一些特性。比如一般的命令历史会完全按照我们执行命令的顺序来完整记录，如果我们连续执行相同的命令，也会重复记录，如：
+
+* HISTFILE：记录命令历史的文件路径。
+* HISTFILESIZE：命令历史文件的行数限制
+* HISTCONTROL：这个变量可以用来控制命令历史的一些特性。比如一般的命令历史会完全按照我们执行命令的顺序来完整记录，如果我们连续执行相同的命令，也会重复记录，如：
+
 ```
-\[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ history ...... 1173 pwd 1174 pwd 1175 pwd 1176 history
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ history
+......
+1173 pwd
+1174 pwd
+1175 pwd
+1176 history
 ```
+
 我们可以利用这个变量的配置来消除命令历史中的重复记录：
-\[zorro@zorrozou-pc0 bash\]$ export HISTCONTROL=ignoredups \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ history 1177 export HISTCONTROL=ignoredups 1178 history 1179 pwd 1180 history
+
+```
+[zorro@zorrozou-pc0 bash]$ export HISTCONTROL=ignoredups
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ pwd /home/zorro/bash
+[zorro@zorrozou-pc0 bash]$ history
+1177 export HISTCONTROL=ignoredups
+1178 history
+1179 pwd
+1180 history
+```
+
 这个变量还有其它配置，ignorespace可以用来让history忽略以空格开头的命令，ignoreboth可以同时起到ignoredups和ignorespace的作用，
-HISTIGNORE：可以控制history机制忽略某些命令，配置方法：
-export HISTIGNORE=”pwd:ls:cd:”。
-HISTSIZE：命令历史纪录的命令个数。
-HISTTIMEFORMAT：可以用来定义命令历史纪录的时间格式.在命令历史中记录命令执行时间有时候很有用，配置方法：
-export HISTTIMEFORMAT='%F %T '
-相关时间格式的帮助可以查看man 3 strftime。
-HISTCMD：当前命令历史的行数。
-在交互式操作bash的时候，可以通过一些特殊符号对命令历史进行快速调用，这些符号基本都是以!开头的，除非!后面跟的是空格、换行、等号=或者小括号\(\)：
-!n：表示引用命令历史中的第n条命令，如：!123，执行第123条命令。
-!-n：表示引用命令历史中的倒数第n条命令，如：!-123，执行倒数第123条命令。
-!!：重复执行上一条命令。
-!string：在命令历史中找到最近的一条以string字符串开头的命令并执行。
-!?string\[?\]：在命令历史中找到最近的一条包括string字符的命令并执行。如果最有一个?省略的话，就是找到以string结尾的命令。
-^string1^string2^：将上一个命令中的string1字符串替换成string2字符串并执行。可以简写为：^string1^string2
-!\#：重复当前输入的命令。
-以下符号可以作为某个命令的单词代号，如：
-^：!^表示上一条命令中的第一个参数，$123^表示第123条命令的第一个参数。
-$：!$表示上一条命令中的最后一个参数。!123$表示第123条命令的最后一个参数。
-n（数字）：!!0表示上一条命令的命令名，!!3上一条命令的第三个参数。!123:3第123条命令的第三个参数。
-：表示所有参数，如：!123:\或!123\_
-x-y：x和y都是数字，表示从第x到第y个参数，如：!123:1-6表示第123条命令的第1个到第6个参数。只写成-y，取前y个，如：!123:-7表示0-7。
-x：表示取从第x个参数之后的所有参数，相当于x-$。如：!123:2\
-x-：表示取从第x个参数之后的所有参数，不包括最后一个。如：!123:2-
-选择出相关命令或者参数之后，我们还可以通过一些命令对其进行操作：
-h 删除所有后面的路径，只留下前面的
-\[zorro@zorrozou-pc0 bash\]$ ls \/etc\/passwd \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:h ls \/etc ...
-t 删除所有前面的路径，只留下后面的
-\[zorro@zorrozou-pc0 bash\]$ !-2:t passwd
-紧接着上面的命令执行，相当于运行passwd。
-r 删除后缀.xxx, 留下文件名
-\[zorro@zorrozou-pc0 bash\]$ ls 123.txt ls: cannot access '123.txt': No such file or directory \[zorro@zorrozou-pc0 bash\]$ !!:r ls 123
-e 删除文件名, 留下后缀
-\[zorro@zorrozou-pc0 bash\]$ !-2:e .txt bash: .txt: command not found
-p 只打印结果命令，但不执行
-\[zorro@zorrozou-pc0 bash\]$ ls \/etc\/passwd \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:p ls \/etc\/passwd
-q 防止代换参数被再次替换，相当于给选择的参数加上了’’，以防止其被转义。
-\[zorro@zorrozou-pc0 bash\]$ ls `echo /etc/passwd` \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:q 'ls `echo /etc/passwd`' -bash: ls `echo /etc/passwd`: No such file or directory
-x 作用同上，区别是每个参数都会分别给加上’’。如：
-\[zorro@zorrozou-pc0 bash\]$ !-2:x 'ls' '`echo' '/etc/passwd`' ls: cannot access '`echo': No such file or directory ls: cannot access '/etc/passwd`': No such file or directory
-s\/old\/new\/ 字符串替换，跟上面的^^类似，但是可以指定任意历史命令。只替换找到的第一个old字符串。 & 重复上次替换 g 在执行s或者＆命令作为前缀使用，表示全局替换。
-资源限制
-每一个进程环境中都有对于资源的限制，bash脚本也不例外。我们可以使用ulimit内建命令查看和设置bash环境中的资源限制。
-\[zorro@zorrozou-pc0 ~\]$ ulimit -a core file size \(blocks, -c\) unlimited data seg size \(kbytes, -d\) unlimited scheduling priority \(-e\) 0 file size \(blocks, -f\) unlimited pending signals \(-i\) 63877 max locked memory \(kbytes, -l\) 64 max memory size \(kbytes, -m\) unlimited open files \(-n\) 1024 pipe size \(512 bytes, -p\) 8 POSIX message queues \(bytes, -q\) 819200 real-time priority \(-r\) 0 stack size \(kbytes, -s\) 8192 cpu time \(seconds, -t\) unlimited max user processes \(-u\) 63877 virtual memory \(kbytes, -v\) unlimited file locks \(-x\) unlimited
-在上文讲述bash和sh之间的区别时，我们已经接触过这个命令中的-c参数了，用来限制core文件的大小。我们再来看看其它参数的含义：
-data seg size：程序的数据段限制。
-scheduling priority：优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
-file size：文件大小限制。
-pending signals：未决信号个数限制。
-max locked memory：最大可以锁内存的空间限制。
-max memory size：最大物理内存使用限制。
-open files：文件打开个数限制。
-pipe size：管道空间限制。
-POSIX message queues：POSIX消息队列空间限制。
-real-time priority：实时优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
-stack size：程序栈空间限制。
-cpu time：占用CPU时间限制。
-max user processes：可以打开的的进程个数限制。
-virtual memory：虚拟内存空间限制。
-file locks：锁文件个数限制。
-以上参数涉及各方面的相关知识，我们在此就不详细描述这些相关内容了。在此我们主要关注open files和max user processes参数，这两个参数是我们在优化系统时最常用的两个参数。
-这里需要注意的是，使用ulimit命令配置完这些参数之后的bash产生的子进程都会继承父进程的相关资源配置。ulimit的资源配置的继承关 系类似环境变量，父进程的配置变化可以影响子进程。所以，如果我们只是在某个登录shell或者交互式shell中修改了ulimit配置，那么在这个 bash环境中执行的命令和产生的子进程都会受到影响，但是对整个系统的其它进程没有影响。如果我们想要让所有用户一登录就有相关的配置，可以考虑把 ulimit命令写在bash启动的相关脚本中，如\/etc\/profile。如果只想影响某一个用户，可以写在这个用户的主目录的bash启动脚本中， 如~\/.bash\_profile。系统的pam模块也给我们提供了配置ulimit相关限制的配置方法，在centos7中大家可以在以下目录和文件中 找到相关配置：
-\[zorro@zorrozou-pc0 bash\]$ ls \/etc\/security\/limits.d\/ 10-gcr.conf 99-audio.conf \[zorro@zorrozou-pc0 bash\]$ ls \/etc\/security\/limits.conf \/etc\/security\/limits.conf
-即使是写在pam相关配置文件中的相关配置，也可能不是系统全局的。如果你想给某一个后台进程设置ulimit，最靠谱的办法还是在它的启动脚本中进行配置。无论如何，只要记得一点，如果相关进程的ulimit没生效，要想的是它的父进程是谁？它的父进程是不是生效了？
-ulimit参数中绝大多数配置都是root才有权限改的更大，而非root身份只能在现有的配置基础上减小限制。如果你执行ulimit的时候报错了，请注意是不是这个原因。
-最后
-通过本文我们学习了bash编程的进程环境的相关内容，主要包括的知识点为：
-bash的常用参数。
-bash的环境变量。
-命令历史功能和相关变量配置。
-bash脚本的资源限制ulimit的使用。
+
+* HISTIGNORE：可以控制history机制忽略某些命令，配置方法：
+  ```
+  export HISTIGNORE=”pwd:ls:cd:”。
+  ```
+
+* HISTSIZE：命令历史纪录的命令个数。
+* HISTTIMEFORMAT：可以用来定义命令历史纪录的时间格式.在命令历史中记录命令执行时间有时候很有用，配置方法：
+  ```
+  export HISTTIMEFORMAT='%F %T '
+  ```
+  > 相关时间格式的帮助可以查看man 3 strftime。
+* HISTCMD：当前命令历史的行数。
+  > 在交互式操作bash的时候，可以通过一些特殊符号对命令历史进行快速调用，这些符号基本都是以!开头的，除非!后面跟的是空格、换行、等号=或者小括号\(\)：
+  > !n：表示引用命令历史中的第n条命令，如：!123，执行第123条命令。
+  > !-n：表示引用命令历史中的倒数第n条命令，如：!-123，执行倒数第123条命令。
+  > !!：重复执行上一条命令。
+  > !string：在命令历史中找到最近的一条以string字符串开头的命令并执行。
+  > !?string\[?\]：在命令历史中找到最近的一条包括string字符的命令并执行。如果最有一个?省略的话，就是找到以string结尾的命令。
+  > ^string1^string2^：将上一个命令中的string1字符串替换成string2字符串并执行。可以简写为：^string1^string2
+  > !\#：重复当前输入的命令。
+  > 以下符号可以作为某个命令的单词代号，如：
+  > ^：!^表示上一条命令中的第一个参数，$123^表示第123条命令的第一个参数。
+  > $：!$表示上一条命令中的最后一个参数。!123$表示第123条命令的最后一个参数。
+  > n（数字）：!!0表示上一条命令的命令名，!!3上一条命令的第三个参数。!123:3第123条命令的第三个参数。
+  > ：表示所有参数，如：!123:\或!123\_
+  > x-y：x和y都是数字，表示从第x到第y个参数，如：!123:1-6表示第123条命令的第1个到第6个参数。只写成-y，取前y个，如：!123:-7表示0-7。
+  > x：表示取从第x个参数之后的所有参数，相当于x-$。如：!123:2\
+  > x-：表示取从第x个参数之后的所有参数，不包括最后一个。如：!123:2-
+  > 选择出相关命令或者参数之后，我们还可以通过一些命令对其进行操作：
+  > h 删除所有后面的路径，只留下前面的
+  > \[zorro@zorrozou-pc0 bash\]$ ls \/etc\/passwd \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:h ls \/etc ...
+  > t 删除所有前面的路径，只留下后面的
+  > \[zorro@zorrozou-pc0 bash\]$ !-2:t passwd
+  > 紧接着上面的命令执行，相当于运行passwd。
+  > r 删除后缀.xxx, 留下文件名
+  > \[zorro@zorrozou-pc0 bash\]$ ls 123.txt ls: cannot access '123.txt': No such file or directory \[zorro@zorrozou-pc0 bash\]$ !!:r ls 123
+  > e 删除文件名, 留下后缀
+  > \[zorro@zorrozou-pc0 bash\]$ !-2:e .txt bash: .txt: command not found
+  > p 只打印结果命令，但不执行
+  > \[zorro@zorrozou-pc0 bash\]$ ls \/etc\/passwd \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:p ls \/etc\/passwd
+  > q 防止代换参数被再次替换，相当于给选择的参数加上了’’，以防止其被转义。
+  > \[zorro@zorrozou-pc0 bash\]$ ls `echo /etc/passwd` \/etc\/passwd \[zorro@zorrozou-pc0 bash\]$ !!:q 'ls `echo /etc/passwd`' -bash: ls `echo /etc/passwd`: No such file or directory
+  > x 作用同上，区别是每个参数都会分别给加上’’。如：
+  > \[zorro@zorrozou-pc0 bash\]$ !-2:x 'ls' '`echo' '/etc/passwd`' ls: cannot access '`echo': No such file or directory ls: cannot access '/etc/passwd`': No such file or directory
+  > s\/old\/new\/ 字符串替换，跟上面的^^类似，但是可以指定任意历史命令。只替换找到的第一个old字符串。 & 重复上次替换 g 在执行s或者＆命令作为前缀使用，表示全局替换。
+  > 资源限制
+  > 每一个进程环境中都有对于资源的限制，bash脚本也不例外。我们可以使用ulimit内建命令查看和设置bash环境中的资源限制。
+  > \[zorro@zorrozou-pc0 ~\]$ ulimit -a core file size \(blocks, -c\) unlimited data seg size \(kbytes, -d\) unlimited scheduling priority \(-e\) 0 file size \(blocks, -f\) unlimited pending signals \(-i\) 63877 max locked memory \(kbytes, -l\) 64 max memory size \(kbytes, -m\) unlimited open files \(-n\) 1024 pipe size \(512 bytes, -p\) 8 POSIX message queues \(bytes, -q\) 819200 real-time priority \(-r\) 0 stack size \(kbytes, -s\) 8192 cpu time \(seconds, -t\) unlimited max user processes \(-u\) 63877 virtual memory \(kbytes, -v\) unlimited file locks \(-x\) unlimited
+  > 在上文讲述bash和sh之间的区别时，我们已经接触过这个命令中的-c参数了，用来限制core文件的大小。我们再来看看其它参数的含义：
+  > data seg size：程序的数据段限制。
+  > scheduling priority：优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
+  > file size：文件大小限制。
+  > pending signals：未决信号个数限制。
+  > max locked memory：最大可以锁内存的空间限制。
+  > max memory size：最大物理内存使用限制。
+  > open files：文件打开个数限制。
+  > pipe size：管道空间限制。
+  > POSIX message queues：POSIX消息队列空间限制。
+  > real-time priority：实时优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
+  > stack size：程序栈空间限制。
+  > cpu time：占用CPU时间限制。
+  > max user processes：可以打开的的进程个数限制。
+  > virtual memory：虚拟内存空间限制。
+  > file locks：锁文件个数限制。
+  > 以上参数涉及各方面的相关知识，我们在此就不详细描述这些相关内容了。在此我们主要关注open files和max user processes参数，这两个参数是我们在优化系统时最常用的两个参数。
+  > 这里需要注意的是，使用ulimit命令配置完这些参数之后的bash产生的子进程都会继承父进程的相关资源配置。ulimit的资源配置的继承关 系类似环境变量，父进程的配置变化可以影响子进程。所以，如果我们只是在某个登录shell或者交互式shell中修改了ulimit配置，那么在这个 bash环境中执行的命令和产生的子进程都会受到影响，但是对整个系统的其它进程没有影响。如果我们想要让所有用户一登录就有相关的配置，可以考虑把 ulimit命令写在bash启动的相关脚本中，如\/etc\/profile。如果只想影响某一个用户，可以写在这个用户的主目录的bash启动脚本中， 如~\/.bash\_profile。系统的pam模块也给我们提供了配置ulimit相关限制的配置方法，在centos7中大家可以在以下目录和文件中 找到相关配置：
+  > \[zorro@zorrozou-pc0 bash\]$ ls \/etc\/security\/limits.d\/ 10-gcr.conf 99-audio.conf \[zorro@zorrozou-pc0 bash\]$ ls \/etc\/security\/limits.conf \/etc\/security\/limits.conf
+  > 即使是写在pam相关配置文件中的相关配置，也可能不是系统全局的。如果你想给某一个后台进程设置ulimit，最靠谱的办法还是在它的启动脚本中进行配置。无论如何，只要记得一点，如果相关进程的ulimit没生效，要想的是它的父进程是谁？它的父进程是不是生效了？
+  > ulimit参数中绝大多数配置都是root才有权限改的更大，而非root身份只能在现有的配置基础上减小限制。如果你执行ulimit的时候报错了，请注意是不是这个原因。
+  > 最后
+  > 通过本文我们学习了bash编程的进程环境的相关内容，主要包括的知识点为：
+  > bash的常用参数。
+  > bash的环境变量。
+  > 命令历史功能和相关变量配置。
+  > bash脚本的资源限制ulimit的使用。
+
 
