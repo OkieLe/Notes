@@ -387,23 +387,23 @@ aaa=1000
 
 在交互式操作bash的时候，可以通过一些特殊符号对命令历史进行快速调用，这些符号基本都是以!开头的，除非!后面跟的是空格、换行、等号=或者小括号\(\)：
 
-* !n：表示引用命令历史中的第n条命令，如：!123，执行第123条命令。
-* !-n：表示引用命令历史中的倒数第n条命令，如：!-123，执行倒数第123条命令。
-* !!：重复执行上一条命令。
-* !string：在命令历史中找到最近的一条以string字符串开头的命令并执行。
-* !?string\[?\]：在命令历史中找到最近的一条包括string字符的命令并执行。如果最有一个?省略的话，就是找到以string结尾的命令。
-* ^string1^string2^：将上一个命令中的string1字符串替换成string2字符串并执行。可以简写为：^string1^string2
-* !\#：重复当前输入的命令。
+> !n：表示引用命令历史中的第n条命令，如：!123，执行第123条命令。
+> !-n：表示引用命令历史中的倒数第n条命令，如：!-123，执行倒数第123条命令。
+> !!：重复执行上一条命令。
+> !string：在命令历史中找到最近的一条以string字符串开头的命令并执行。
+> !?string\[?\]：在命令历史中找到最近的一条包括string字符的命令并执行。如果最有一个?省略的话，就是找到以string结尾的命令。
+> ^string1^string2^：将上一个命令中的string1字符串替换成string2字符串并执行。可以简写为：^string1^string2
+> !\#：重复当前输入的命令。
 
 以下符号可以作为某个命令的单词代号，如：
 
-* ^：!^表示上一条命令中的第一个参数，$123^表示第123条命令的第一个参数。
-* $：!$表示上一条命令中的最后一个参数。!123$表示第123条命令的最后一个参数。
-* n（数字）：!!0表示上一条命令的命令名，!!3上一条命令的第三个参数。!123:3第123条命令的第三个参数。
-* ：表示所有参数，如：!123:\或!123\_
-* x-y：x和y都是数字，表示从第x到第y个参数，如：!123:1-6表示第123条命令的第1个到第6个参数。只写成-y，取前y个，如：!123:-7表示0-7。
-* x：表示取从第x个参数之后的所有参数，相当于x-$。如：!123:2\
-* x-：表示取从第x个参数之后的所有参数，不包括最后一个。如：!123:2-
+> ^：!^表示上一条命令中的第一个参数，$123^表示第123条命令的第一个参数。
+> $：!$表示上一条命令中的最后一个参数。!123$表示第123条命令的最后一个参数。
+> n（数字）：!!0表示上一条命令的命令名，!!3上一条命令的第三个参数。!123:3第123条命令的第三个参数。
+> ：表示所有参数，如：!123:\或!123\_
+> x-y：x和y都是数字，表示从第x到第y个参数，如：!123:1-6表示第123条命令的第1个到第6个参数。只写成-y，取前y个，如：!123:-7表示0-7。
+> x：表示取从第x个参数之后的所有参数，相当于x-$。如：!123:2\
+> x-：表示取从第x个参数之后的所有参数，不包括最后一个。如：!123:2-
 
 选择出相关命令或者参数之后，我们还可以通过一些命令对其进行操作：
 
@@ -449,19 +449,23 @@ aaa=1000
   ```
 
 * q 防止代换参数被再次替换，相当于给选择的参数加上了’’，以防止其被转义。
-      [zorro@zorrozou-pc0 bash]$ ls `echo /etc/passwd`
-      /etc/passwd
-      [zorro@zorrozou-pc0 bash]$ !!:q
-      'ls `echo /etc/passwd`'
-      -bash: ls `echo /etc/passwd`: No such file or directory 
+  ```
+  [zorro@zorrozou-pc0 bash]$ ls `echo /etc/passwd`
+  /etc/passwd
+  [zorro@zorrozou-pc0 bash]$ !!:q
+  'ls `echo /etc/passwd`'
+  -bash: ls `echo /etc/passwd`: No such file or directory
+  ```
 
 * x 作用同上，区别是每个参数都会分别给加上’’。如：
-      [zorro@zorrozou-pc0 bash]$ !-2:x
-      'ls' '`echo' '/etc/passwd`'
-      ls: cannot access '`echo': No such file or directory
-      ls: cannot access '/etc/passwd`': No such file or directory 
+  ```
+  [zorro@zorrozou-pc0 bash]$ !-2:x
+  'ls' '`echo' '/etc/passwd`'
+  ls: cannot access '`echo': No such file or directory
+  ls: cannot access '/etc/passwd`': No such file or directory
+  ```
 
-* s\/old\/new\/ 字符串替换，跟上面的^^类似，但是可以指定任意历史命令。只替换找到的第一个old字符串。
+* `s/old/new/` 字符串替换，跟上面的`^^`类似，但是可以指定任意历史命令。只替换找到的第一个old字符串。
 * & 重复上次替换
 * g 在执行s或者＆命令作为前缀使用，表示全局替换。
 
@@ -492,7 +496,7 @@ file locks (-x) unlimited
 在上文讲述bash和sh之间的区别时，我们已经接触过这个命令中的-c参数了，用来限制core文件的大小。我们再来看看其它参数的含义：
 
 > data seg size：程序的数据段限制。
-> scheduling priority：优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
+> scheduling priority：优先级限制。相关概念的理解可以参考这篇：[wp.me](http://wp.me/p79Cit-S)
 > file size：文件大小限制。
 > pending signals：未决信号个数限制。
 > max locked memory：最大可以锁内存的空间限制。
@@ -500,7 +504,7 @@ file locks (-x) unlimited
 > open files：文件打开个数限制。
 > pipe size：管道空间限制。
 > POSIX message queues：POSIX消息队列空间限制。
-> real-time priority：实时优先级限制。相关概念的理解可以参考这篇：[http:\/\/wp.me\/p79Cit-S](http://wp.me/p79Cit-S)
+> real-time priority：实时优先级限制。相关概念的理解可以参考这篇：[wp.me](http://wp.me/p79Cit-S)
 > stack size：程序栈空间限制。
 > cpu time：占用CPU时间限制。
 > max user processes：可以打开的的进程个数限制。
