@@ -14,9 +14,11 @@ openGL
 
 [Ref](https://www.khronos.org/registry/egl/sdk/docs/man/html/)
 
-LinuxToy
+Linux
 
-[Zorro](https://linuxtoy.org/author/zorro.html) [穷佐罗的Linux书](http://liwei.life/)
+[linuxtoy](https://linuxtoy.org/)
+
+[穷佐罗的Linux书](http://liwei.life/)
 
 ### Resources
 
