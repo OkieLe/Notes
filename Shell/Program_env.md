@@ -150,6 +150,7 @@ echo $?
 ```
 
 `-x`参数是跟踪模式\(xtrace\)。可以跟踪各种语法的调用，并打印出每个命令的输出结果：
+
 ```
  [zorro@zorrozou-pc0 bash]$ cat arg.sh
 #!/bin/bash -v
@@ -164,7 +165,9 @@ echo $#
 echo $*
 echo $?
 ```
+
 执行结果为：
+
 ```
 [zorro@zorrozou-pc0 bash]$ ./arg.sh 111 222 333 444 555
 + echo ./arg.sh
@@ -186,53 +189,147 @@ ls: cannot access '/123': No such file or directory
 + echo 0
 0
 ```
+
 `-n`参数用来检查bash的语法错误，并且不会真正执行bash脚本。这个就不举例子了。另外，三种方式除了可以直接在bash后面加参数以外，还可以在程序中随时使用内建命令set打开和关闭，方法如下：
-```
-[zorro@zorrozou-pc0 bash]$ cat arg.sh #!/bin/bash set -v #set -o verbose echo $0 set +v echo $1 set -x #set -o xtrace echo $2 ls /123 echo $3 set +x echo $4 echo $# set -n #set -o noexec echo $* echo $? set +n
-```
-执行结果为：
-```
 
 ```
+[zorro@zorrozou-pc0 bash]$ cat arg.sh
+#!/bin/bash
+
+set -v
+#set -o verbose
+echo $0
+set +v
+echo $1
+set -x
+#set -o xtrace
+echo $2
+ls /123
+echo $3
+set +x
+echo $4
+
+echo $#
+
+set -n
+#set -o noexec
+echo $*
+echo $?
+set +n
+```
+
+执行结果为：
+
+```
+[zorro@zorrozou-pc0 bash]$ ./arg.sh
+#set -o verbose
+echo $0
+./arg.sh
+set +v
+
++ echo
+
++ ls /123
+ls: cannot access '/123': No such file or directory
++ echo
+
++ set +x
+
+0
+```
+
 以上例子中顺便演示了1、3、\#、?的意义，大家可以自行对比它们的区别以理解参数的意义。另外再补充一个-e参数，这个参数可以让bash脚本命令执行错误的时候直接退出，而不是继续执行。这个功能在某些调试的场景下非常有用！
+
 本节只列出了几个常用的参数的意义和使用注意事项，希望可以起到抛砖引玉的作用。大家如果想要学习更多的bash参数，可以自行查看bash的man手册，并详细学习set和shopt命令的使用方法。
-环境变量
+
+#### 环境变量
+
 我们目前已经知道有个PATH变量，bash会在查找外部命令的时候到PATH所记录的目录中进行查找，从这个例子我们可以先理解一下环境变量的作 用。环境变量就类似PATH这种变量，是bash预设好的一些可能会对其状态和行为产生影响的变量。bash中实现的环境变量个数大概几十个，所有的帮助 说明都可以在man bash中找到。我们还是拿一些会在bash编程中经常用到的来讲解一下。
+
 我们可以使用env命令来查看当前bash已经定义的环境变量。set命令不加任何参数可以查看当前bash环境中的所有变量，包括环境变量和私有的一般变量。一般变量的定义方法：
-**\[**zorro@zorrozou-pc0 ~\]**$ aaa=1000 **\[**zorro@zorrozou-pc0 ~\]**$ echo $aaa 1000 **\[**zorro@zorrozou-pc0 ~\]**$ env\|grep aaa **\[**zorro@zorrozou-pc0 ~\]**$ set\|grep aaa aaa=1000
+
+```
+[zorro@zorrozou-pc0 ~]$ aaa=1000
+[zorro@zorrozou-pc0 ~]$ echo $aaa
+1000
+[zorro@zorrozou-pc0 ~]$ env|grep aaa
+[zorro@zorrozou-pc0 ~]$ set|grep aaa
+aaa=1000
+```
+
 上面我们定义了一个变量名字叫做aaa，我们能看到在set命令中可以显示出这个变量，但是env不显示。export命令可以将一个一般变量编程环境变量。
-**\[**zorro@zorrozou-pc0 ~\]**$ export aaa **\[**zorro@zorrozou-pc0 ~\]**$ env\|grep aaa aaa=1000 **\[**zorro@zorrozou-pc0 ~\]**$ set\|grep aaa aaa=1000
+
+```
+[zorro@zorrozou-pc0 ~]$ export aaa
+[zorro@zorrozou-pc0 ~]$ env|grep aaa
+aaa=1000
+[zorro@zorrozou-pc0 ~]$ set|grep aaa
+aaa=1000
+```
+
 export之后，env和set都能看到这个变量了。一般变量和环境变量的区别是：一般变量不能被子进程继承，而环境变量会被子进程继承。
-**\[**zorro@zorrozou-pc0 ~\]**$ env\|grep aaa aaa=1000 **\[**zorro@zorrozou-pc0 ~\]**$ bbb=2000 **\[**zorro@zorrozou-pc0 ~\]**$ echo $bbb 2000 **\[**zorro@zorrozou-pc0 ~\]**$ echo $aaa 1000 **\[**zorro@zorrozou-pc0 ~\]**$ env\|grep bbb **\[**zorro@zorrozou-pc0 ~\]**$ bash **\[**zorro@zorrozou-pc0 ~\]**$ echo $aaa 1000 **\[**zorro@zorrozou-pc0 ~\]**$ echo $bbb **\[_\*zorro@zorrozou-pc0 ~\]___\___$
+
+```
+[zorro@zorrozou-pc0 ~]$ env|grep aaa
+aaa=1000
+[zorro@zorrozou-pc0 ~]$ bbb=2000
+[zorro@zorrozou-pc0 ~]$ echo $bbb
+2000
+[zorro@zorrozou-pc0 ~]$ echo $aaa
+1000
+[zorro@zorrozou-pc0 ~]$ env|grep bbb
+[zorro@zorrozou-pc0 ~]$ bash
+[zorro@zorrozou-pc0 ~]$ echo $aaa
+1000
+[zorro@zorrozou-pc0 ~]$ echo $bbb
+
+[zorro@zorrozou-pc0 ~]$
+```
+
 上面测试中，我们的bash环境里有一个环境变量aaa＝1000，又定义了一个一般变量bbb＝2000。此时我们在用bash打开一个子进程，在子进程中我们发现，aaa变量仍然能取到值，但是bbb不可以。证明aaa可以被子进程继承，bbb不可以。
+
 搞清楚了环境变量的基础知识之后，再来看一下bash中常用的环境变量：
-进程自身信息相关
-BASH：当前bash进程的进程名。
-BASHOPTS：记录了shopt命令已经设置为打开的选项。
-BASH\_VERSINFO：bash的版本号信息，是一个数组。可以使用命令：echo ${BASH\_VERSINFO\[\_\]}查看数组的信息。有关数组的操作我们会在其它文章里详细说明。
-BASH\_VERSION：bash的版本号信息。比上一个信息更少一点。
-HOSTNAME：系统主机名信息。
-HOSTTYPE：系统类型信息。
-OLDPWD：上一个当前工作目录。
-PWD：当前工作目录。
-HOME：主目录。一般指进程uid对应用户的主目录。
-SHELL：bash程序所在路径。
-常用数字
-RANDOM：每次取这个变量的值都能得到一个0-32767的随机数。
-SECONDS：当前bash已经开启了多少秒。
-BASHPID：当前bash进程的PID。
-EUID：进程的有效用户id。
-GROUPS：进程组身份。
-PPID：父进程PID。
-UID：用户uid。
-提示符
-PS1：用户bash的交互提示符，主提示符。
-PS2：第二提示符，主要用在一些除了PS1之外常见的提示符场景，比如输入了’之后回车，就能看到这个提示符。
-PS3：用于select语句的交互提示符。
-PS4：用于跟踪执行过程时的提示符，一般显示为”+”。比如我们在bash中使用set -x之后的跟踪提示就是这个提示符显示的。
-命令历史
-交互bash中提供一种方便追溯曾经使用的命令的功能，叫做命令历史功能。就是将曾经用过的命令纪录下来，以备以后查询或者重复调用。这个功能在交 互方式的bash中默认打开，在bash编程环境中默认是没有开启的。可以使用set +H来关闭这个功能，set -H打开这个功能。在开启了history功能的bash中我们可以使用history内建命令查询当前的命令历史列表：
-\[zorro@zorrozou-pc0 bash\]$ history 1 sudo bash 2 ps ax 3 ls 4 ip ad sh
+
+##### 进程自身信息相关
+
+> BASH：当前bash进程的进程名。
+> BASHOPTS：记录了shopt命令已经设置为打开的选项。
+> BASH\_VERSINFO：bash的版本号信息，是一个数组。可以使用命令：echo ${BASH\_VERSINFO\[\_\]}查看数组的信息。有关数组的操作我们会在其它文章里详细说明。
+> BASH\_VERSION：bash的版本号信息。比上一个信息更少一点。
+> HOSTNAME：系统主机名信息。
+> HOSTTYPE：系统类型信息。
+> OLDPWD：上一个当前工作目录。
+> PWD：当前工作目录。
+> HOME：主目录。一般指进程uid对应用户的主目录。
+> SHELL：bash程序所在路径。
+
+##### 常用数字
+
+> RANDOM：每次取这个变量的值都能得到一个0-32767的随机数。
+> SECONDS：当前bash已经开启了多少秒。
+> BASHPID：当前bash进程的PID。
+> EUID：进程的有效用户id。
+> GROUPS：进程组身份。
+> PPID：父进程PID。
+> UID：用户uid。
+
+##### 提示符
+
+> PS1：用户bash的交互提示符，主提示符。
+> PS2：第二提示符，主要用在一些除了PS1之外常见的提示符场景，比如输入了’之后回车，就能看到这个提示符。
+> PS3：用于select语句的交互提示符。
+> PS4：用于跟踪执行过程时的提示符，一般显示为”+”。比如我们在bash中使用set -x之后的跟踪提示就是这个提示符显示的。
+
+#### 命令历史
+
+交互bash中提供一种方便追溯曾经使用的命令的功能，叫做命令历史功能。就是将曾经用过的命令纪录下来，以备以后查询或者重复调用。这个功能在交互方式的bash中默认打开，在bash编程环境中默认是没有开启的。可以使用`set +H`来关闭这个功能，`set -H`打开这个功能。在开启了history功能的bash中我们可以使用history内建命令查询当前的命令历史列表：
+```
+[zorro@zorrozou-pc0 bash]$ history
+1 sudo bash
+2 ps ax
+3 ls
+4 ip ad sh
+```
 命令历史的相关配置都是通过bash的环境变量来完成的：
 HISTFILE：记录命令历史的文件路径。
 HISTFILESIZE：命令历史文件的行数限制
