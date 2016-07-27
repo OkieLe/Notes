@@ -331,10 +331,12 @@ aaa=1000
 4 ip ad sh
 ```
 命令历史的相关配置都是通过bash的环境变量来完成的：
-HISTFILE：记录命令历史的文件路径。
-HISTFILESIZE：命令历史文件的行数限制
-HISTCONTROL：这个变量可以用来控制命令历史的一些特性。比如一般的命令历史会完全按照我们执行命令的顺序来完整记录，如果我们连续执行相同的命令，也会重复记录，如：
+> HISTFILE：记录命令历史的文件路径。
+> HISTFILESIZE：命令历史文件的行数限制
+> HISTCONTROL：这个变量可以用来控制命令历史的一些特性。比如一般的命令历史会完全按照我们执行命令的顺序来完整记录，如果我们连续执行相同的命令，也会重复记录，如：
+```
 \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ history ...... 1173 pwd 1174 pwd 1175 pwd 1176 history
+```
 我们可以利用这个变量的配置来消除命令历史中的重复记录：
 \[zorro@zorrozou-pc0 bash\]$ export HISTCONTROL=ignoredups \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ pwd \/home\/zorro\/bash \[zorro@zorrozou-pc0 bash\]$ history 1177 export HISTCONTROL=ignoredups 1178 history 1179 pwd 1180 history
 这个变量还有其它配置，ignorespace可以用来让history忽略以空格开头的命令，ignoreboth可以同时起到ignoredups和ignorespace的作用，
