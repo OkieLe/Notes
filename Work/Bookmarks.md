@@ -16,7 +16,7 @@ openGL
 
 LinuxToy
 
-[Zorro](https://linuxtoy.org/author/zorro.html)
+[Zorro](https://linuxtoy.org/author/zorro.html) [穷佐罗的Linux书](http://liwei.life/)
 
 ### Resources
 
