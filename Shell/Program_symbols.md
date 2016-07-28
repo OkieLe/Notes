@@ -268,3 +268,90 @@ zorro@zorrozou-pc0 bash]$ > /tmp/out
 [zorro@zorrozou-pc0 bash]$ :> /tmp/out
 ```
 因为”:”是一个内建命令，跟true是同样的功能，所以没有任何输出，所以这个命令清空文件的作用。
+
+#### 脚本参数处理
+
+我们在之前的例子中已经简单看过相关参数处理的特殊符号了，再来看一下：
+```
+[zorro@zorrozou-pc0 bash]$ cat arg1.sh
+#!/bin/bash
+
+echo $0
+echo $1
+echo $2
+echo $3
+echo $4
+echo $#
+echo $*
+echo $?
+```
+执行结果：
+```
+[zorro@zorrozou-pc0 bash]$ ./arg1.sh 111 222 333 444
+./arg1.sh
+111
+222
+333
+444
+4
+111 222 333 444
+0
+```
+可以罗列一下：
+
+> `$0`：命令名。
+> `$n`：n是一个数字，表示第n个参数。
+> `$#`：参数个数。
+> `$*`：所有参数列表。
+> `$@`：同上。
+
+实际上大家可以认为上面的`0,1,2,3,#,*,@,?`都是一堆变量名。跟`aaa=1000`定义的变量没什么区别，只是他们有特殊含义。所以`$@`实际上就是对@变量取值，跟`$aaa`概念一样。所以上述所有取值都可以写成`${}`的方式，因为bash中对变量取值有两种写法，另外一种是`${aaa}`。 这种写法的好处是对变量名字可以有更明确的界定，比如：
+```
+[zorro@zorrozou-pc0 bash]$ aaa=1000
+[zorro@zorrozou-pc0 bash]$ echo $aaa
+1000
+[zorro@zorrozou-pc0 bash]$ echo $aaa0
+
+[zorro@zorrozou-pc0 bash]$ echo ${aaa}0
+10000
+```
+内建命令shift可以用来对参数进行位置处理，它会将所有参数都左移一个位置，可以用来进行参数处理。使用例子如下：
+```
+[zorro@zorrozou-pc0 ~]$ cat shift.sh
+#!/bin/bash
+
+if [ $# -lt 1 ] then
+    echo "Argument num error!" 1>&2
+    echo "Usage ....." 1>&2
+    exit
+fi
+
+while ! [ -z $1 ] do
+    echo $1
+    shift
+done
+```
+执行效果：
+```
+[zorro@zorrozou-pc0 bash]$ ./shift.sh 111 222 333 444 555 666
+111
+222
+333
+444
+555
+666
+```
+其他的特殊变量还有：
+
+> `$?`：上一个命令的返回值。
+> `$$`：当前shell的PID。
+> `$!`：最近一个被放到后台任务管理的进程PID。如：
+```
+[zorro@zorrozou-pc0 tmp]$ sleep 3000 &
+[1] 867
+[zorro@zorrozou-pc0 tmp]$ echo $!
+867
+```
+> `$-`：列出当前bash的运行参数，比如set -v或者-i这样的参数。
+> `$`：”“算是所有特殊变量中最诡异的一个了，在bash脚本刚开始的时候，它可以取到脚本的完整文件名。当执行完某个命令之后，它可以取到这个命令的最后一个参数。当在检查邮件的时候，这个变量帮你保存当前正在查看的邮件名。
+
