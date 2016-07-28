@@ -46,3 +46,29 @@ CFQ是内核默认选择的IO调度队列，它在桌面应用场景以及大多
 
 当前内核已经实现了针对IO资源的cgroup资源隔离，所以在以上体系的基础上，cfq也实现了针对cgroup的调度支持。关于cgroup的blkio功能的描述，请看我之前的文章[Cgroup – Linux的IO资源隔离](http://liwei.life/2016/01/22/cgroup_io/)。总的来说，cfq用了一系列的数据结构实现了以上所有复杂功能的支持，大家可以通过源代码看到其相关实现，文件在源代码目录下的`block/cfq-iosched.c`。
 
+#### CFQ设计原理
+
+在此，我们对整体数据结构做一个简要描述：首先，cfq通过一个叫做`cfq_data`的数据结构维护了整个调度器流程。在一个支持了cgroup功能的cfq中，全部进程被分成了若干个contral group进行管理。每个cgroup在cfq中都有一个`cfq_group`的结构进行描述，所有的cgroup都被作为一个调度对象放进一个红黑树中，并以vdisktime为key进行排序。vdisktime这个时间纪录的是当前cgroup所占用的io时间，每次对cgroup进行调度时，总是通过红黑树选择当前vdisktime时间最少的cgroup进行处理，以保证所有cgroups之间的IO资源占用“公平”。当然我们知道，cgroup是可以对blkio进行资源比例分配的，其作用原理就是，分配比例大的cgroup占用vdisktime时间增长较慢，分配比例小的vdisktime 时间增长较快，快慢与分配比例成正比。这样就做到了不同的cgroup分配的IO比例不一样，并且在cfq的角度看来依然是“公平“的。
+
+选择好了需要处理的cgroup（`cfq_group`）之后，调度器需要决策选择下一步的`service_tree`。`service_tree`这个数据结构对应的都是一系列的红黑树，主要目的是用来实现请求优先级分类的，就是RT、BE、IDLE的分类。每一个`cfq_group`都维护了7个`service_trees`，其定义如下：
+```
+struct cfq_rb_root service_trees[2][3];
+struct cfq_rb_root service_tree_idle;
+```
+其中`service_tree_idle`就是用来给IDLE类型的请求进行排队用的红黑树。而上面二维数组，首先第一个维度针对RT和BE分别各实现了一个数组，每一个数组中都维护了三个红黑树，分别对应三种不同子类型的请求，分别是：`SYNC`、`SYNC_NOIDLE`以及`ASYNC`。我们可以认为`SYNC`相当于`SYNC_IDLE`并与`SYNC_NOIDLE`对应。idling是cfq在设计上为了尽量合并连续的IO请求以达到提高吞吐量的目的而加入的机制，我们可以理解为是一种“空转”等待机制。空转是指，当一个队列处理一个请求结束后，会在发生调度之前空等一小会时间，如果下一个请求到来，则可以减少磁头寻址，继续处理顺序的IO请求。为了实现这个功能，cfq在`service_tree`这层数据结构这实现了`SYNC`队列，如果请求是同步顺序请求，就入队这个`service tree`，如果请求是同步随机请求，则入队`SYNC_NOIDLE`队列，以判断下一个请求是否是顺序请求。所有的异步写操作请求将入队`ASYNC`的`service tree`，并且针对这个队列没有空转等待机制。此外，cfq还对SSD这样的硬盘有特殊调整，当cfq发现存储设备是一个ssd硬盘这样的队列深度更大的设备时，所有针对单独队列的空转都将不生效，所有的IO请求都将入队`SYNC_NOIDLE`这个`service tree`。
+
+每一个`service tree`都对应了若干个`cfq_queue`队列，每个`cfq_queue`队列对应一个进程，这个我们后续再详细说明。
+`cfq_group`还维护了一个在cgroup内部所有进程公用的异步IO请求队列，其结构如下：
+```
+struct cfq_queue *async_cfqq[2][IOPRIO_BE_NR];
+struct cfq_queue *async_idle_cfqq;
+```
+异步请求也分成了RT、BE、IDLE这三类进行处理，每一类对应一个`cfq_queue`进行排队。BE和RT也实现了优先级的支持，每一个类型有`IOPRIO_BE_NR`这么多个优先级，这个值定义为8，数组下标为0-7。我们目前分析的内核代码版本为Linux 4.4，可以看出，从cfq的角度来说，已经可以实现异步IO的cgroup支持了，我们需要定义一下这里所谓异步IO的含义，它仅仅表示从内存的`buffer/cache`中的数据同步到硬盘的IO请求，而不是aio(man 7 aio)或者linux的native异步io以及libaio机制，实际上这些所谓的“异步”IO机制，在内核中都是同步实现的（本质上冯诺伊曼计算机 没有真正的“异步”机制）。
+
+我们在上面已经说明过，由于进程正常情况下都是将数据先写入`buffer/cache`，所以这种异步IO都是统一由`cfq_group`中的`async`请求队列处理的。那么为什么在上面的`service_tree`中还要实现和一个`ASYNC`的类型呢？这当然是为了支持区分进程的异步IO并使之可以“完全公平”做准备喽。实际上在最新的cgroup v2的blkio体系中，内核已经支持了针对buffer IO的cgroup限速支持，而以上这些可能容易混淆的一堆类型，都是在新的体系下需要用到的类型标记。新体系的复杂度更高了，功能也更加强大，但是大家先不要着急，正式的cgroup v2体系，在Linux 4.5发布的时候会正式跟大家见面。
+
+我们继续选择`service_tree`的过程，三种优先级类型的`service_tree`的选择就是根据类型的优先级来做选择的，RT优先级最高，BE其次，IDLE最低。就是说，RT里有，就会一直处理RT，RT没了再处理BE。每个`service_tree`对应一个元素为`cfq_queue`排队的红黑树，而每个`cfq_queue`就是内核为进程（线程）创建的请求队列。每一个`cfq_queue`都会维护一个`rb_key`的变量，这个变量实际上就是这个队列的IO服务时间（service time）。这里还是通过红黑树找到service time时间最短的那个`cfq_queue`进行服务，以保证“完全公平”。
+
+选择好了`cfq_queue`之后，就要开始处理这个队列里的IO请求了。这里的调度方式基本跟deadline类似。`cfq_queue`会对进入队列的每一个请求进行两次入队，一个放进fifo中，另一个放进按访问扇区顺序作为key的红黑树中。默认从红黑树中取请求进行处理，当请求的延时时间达到deadline时，就从红黑树中取等待时间最长的进行处理，以保证请求不被饿死。
+这就是整个cfq的调度流程，当然其中还有很多细枝末节没有交代，比如合并处理以及顺序处理等等。
+
