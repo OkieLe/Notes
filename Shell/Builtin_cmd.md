@@ -466,3 +466,152 @@ unknow argument!
 ```
 getopts只能处理段格式参数，如：-a这样的。不能支持的是如–login这种长格式参数。实际上我们的系统中还给了一个getopt命令，可以处理长格式参数。这个命令不是内建命令，使用方法跟getopts类似，大家可以自己man getopt近一步学习这个命令的使用，这里就不再赘述了。
 
+#### 进程环境
+
+内建命令中最多的就是关于进程环境的配置的相关命令，当然绝大多数我们之前已经会用了。它们包括：
+
+alias、unalias、cd、 declare、typeset、dirs、enable、export、hash、history、popd、pushd、local、pwd、 readonly、set、unset、shopt、ulimit、umask。
+
+我们在这需要简单说明的命令有：
+
+`declare`：
+
+`typeset`：
+
+这两个命令用来声明或显示进程的变量或函数相关信息和属性。如：
+
+> `declare -a array`：可以声明一个数组变量。
+> `declare -A array`：可以声明一个关联数组。
+> `declare -f func`：可以声明或查看一个函数。
+
+其他常用参数可以help declare查看。
+
+`enable`：
+
+可以用来打开或者关闭某个内建命令的功能。
+
+`dirs`：
+
+`popd`：
+
+`pushd`：
+
+dirs、popd、pushd可以用来操作目录栈。目录栈是bash提供的一种纪录曾经去过的相关目录的缓存数据结构，可以方便的使操作者在多个深层次的目录中方便的跳转。使用演示：
+
+显示当前目录栈：
+```
+[zorro@zorrozou-pc0 dirstack]$ dirs
+~/bash/dirstack
+```
+只有一个当前工作目录。将aaa加入目录栈：
+```
+[zorro@zorrozou-pc0 dirstack]$ pushd aaa
+~/bash/dirstack/aaa ~/bash/dirstack
+```
+pushd除了将目录加入了目录栈外，还改变了当前工作目录。
+```
+[zorro@zorrozou-pc0 aaa]$ pwd
+/home/zorro/bash/dirstack/aaa
+```
+将bbb目录加入目录栈：
+```
+[zorro@zorrozou-pc0 aaa]$ pushd ../bbb/
+~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+[zorro@zorrozou-pc0 bbb]$ dirs
+~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+[zorro@zorrozou-pc0 bbb]$ pwd
+/home/zorro/bash/dirstack/bbb
+```
+加入ccc、ddd、eee目录：
+```
+[zorro@zorrozou-pc0 bbb]$ pushd ../ccc
+~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+[zorro@zorrozou-pc0 ccc]$ pushd ../ddd
+~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+[zorro@zorrozou-pc0 ddd]$ pushd ../eee
+~/bash/dirstack/eee ~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+[zorro@zorrozou-pc0 eee]$ dirs
+~/bash/dirstack/eee ~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack
+```
+将当前工作目录切换到目录栈中的第2个目录，即当前的ddd目录：
+```
+[zorro@zorrozou-pc0 eee]$ pushd +1
+~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack ~/bash/dirstack/eee
+```
+将当前工作目录切换到目录栈中的第5个目录，即当前的~/bash/dirstack目录:
+```
+[zorro@zorrozou-pc0 ddd]$ pushd +4
+~/bash/dirstack ~/bash/dirstack/eee ~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa
+```
+`+N`;表示当前目录栈从左往右数的第N个，第一个是左边的第一个目录，从0开始。
+
+将当前工作目录切换到目录栈中的倒数第3个目录，即当前的ddd目录:
+```
+[zorro@zorrozou-pc0 dirstack]$ pushd -3
+~/bash/dirstack/ddd ~/bash/dirstack/ccc ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack ~/bash/dirstack/eee
+```
+`-N`表示当亲啊目录栈从右往左数的第N个，第一个是右边的第一个目录，从0开始。
+
+从目录栈中推出一个目录，默认推出当前所在的目录：
+```
+[zorro@zorrozou-pc0 ccc]$ popd
+~/bash/dirstack/ddd ~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack ~/bash/dirstack/eee
+[zorro@zorrozou-pc0 ddd]$ popd
+~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack ~/bash/dirstack/eee
+```
+指定要推出的目录编号，数字含义跟pushd一样：
+```
+[zorro@zorrozou-pc0 bbb]$ popd +2
+~/bash/dirstack/bbb ~/bash/dirstack/aaa ~/bash/dirstack/eee
+[zorro@zorrozou-pc0 bbb]$ popd -2
+~/bash/dirstack/aaa ~/bash/dirstack/eee
+[zorro@zorrozou-pc0 aaa]$ pushd +1
+~/bash/dirstack/eee ~/bash/dirstack/aaa
+```
+
+`readonly`：
+声明一个只读变量。
+
+`local`：
+声明一个局部变量。bash的局部变量概念很简单，它只能在函数中使用，并且局部变量只有在函数中可见。
+
+`set`：
+
+`shopt`：
+
+我们之前已经讲过这两个命令的使用。这里补充一下其他信息，请参见：[ ziyunfei ](http://www.cnblogs.com/ziyunfei/p/4913758.html)
+
+`eval`：
+
+`eval`是一个可能会被经常用到的内建命令。它的作用其实很简单，就是将指定的命令解析两次。可以这样理解这个命令：
+
+首先我们定义一个变量：
+```
+[zorro@zorrozou-pc0 bash]$ pipe="|"
+[zorro@zorrozou-pc0 bash]$ echo $pipe
+|
+```
+这个变量时pipe，值就是”|”这个字符。然后我们试图在后续命令中引入管道这个功能，但是管道符是从变量中引入的，如：
+```
+[zorro@zorrozou-pc0 bash]$ cat /etc/passwd $pipe wc -l
+cat: invalid option -- 'l'
+Try 'cat --help' for more information.
+```
+此时执行报错了，因为bash在解释这条命令的时候，并不会先将`$pipe`解析成”|”再做解释。这时候我们需要让bash先解析`$pipe`，然后 得到”|”字符之后，再将`cat /etc/passwd ｜ wc -l`当成一个要执行的命令传给bash解释执行。此时我们需要eval：
+```
+[zorro@zorrozou-pc0 bash]$ eval cat /etc/passwd $pipe wc -l
+30
+```
+这就是eval的用法。再来理解一下，eval就是将所给的命令解析两遍。
+
+#### 最后
+
+通过本文和之前的文章，我们几乎将所有的bash内建命令都覆盖到了。本文主要包括的知识点为：
+1. bash脚本程序的输入输出。
+2. bash的作业控制。
+3. bash脚本的信号处理。
+4. bash对进程的控制。
+5. 命令行参数处理。
+6. 使用内建命令改变bash相关环境。
+
+来源：[ 穷佐罗的Linux书 ](http://liwei.life/2016/06/13/shell%e7%bc%96%e7%a8%8b%e4%b9%8b%e5%86%85%e5%bb%ba%e5%91%bd%e4%bb%a4/)
