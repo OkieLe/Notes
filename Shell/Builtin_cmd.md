@@ -371,21 +371,19 @@ echo "End!"
 ```
 
 执行效果：
-
-    [zorro@zorrozou-pc0 bash]$ ./suspend.sh
-    echo 31833
-    Begin!
-    hmB
-    Enter suspend stat:
-
-    [1]+ Stopped ./suspend.sh
-    ````
-    十秒之后：
-
-\[zorro@zorrozou-pc0 bash\]$
-\[zorro@zorrozou-pc0 bash\]$ Get SIGCONT and continue running.
+```
+[zorro@zorrozou-pc0 bash]$ ./suspend.sh
+echo 31833
+Begin!
+hmB
+Enter suspend stat:
+[1]+ Stopped ./suspend.sh
+```
+十秒之后：
+```
+[zorro@zorrozou-pc0 bash]$
+[zorro@zorrozou-pc0 bash]$ Get SIGCONT and continue running.
 End!
-
 ```
 以上是suspend在脚本中的使用方法。另外，suspend默认不能在非loginshell中使用，如果使用，需要加-f参数。
 
@@ -393,30 +391,27 @@ End!
 
 bash中也实现了基本的进程控制方法。主要的命令有exit，exec，logout，wait。其中exit我们已经了解了。logout的功能跟exit实际上差不多，区别只是logout是专门用来退出login方式的bash的。如果bash不是login方式执行的，logout会报错：
 ```
-
-\[zorro@zorrozou-pc0 bash\]$ cat logout.sh
-
-# !\/bin\/bash
+[zorro@zorrozou-pc0 bash]$ cat logout.sh
+# !/bin/bash
 
 logout
-\[zorro@zorrozou-pc0 bash\]$ .\/logout.sh
-.\/logout.sh: line 3: logout: not login shell: use \`exit'
+[zorro@zorrozou-pc0 bash]$ ./logout.sh
+./logout.sh: line 3: logout: not login shell: use `exit'
+```
 
+`wait`：
 
-    `wait`：
-
-    wait命令的功能是用来等待jobs作业控制进程退出的。因为一般进程默认行为就是要等待其退出之后才能继续执行。wait可以等待指定的某个jobs进程，也可以等待所有jobs进程都退出之后再返回，实际上wait命令在bash脚本中是可以作为类似“屏障”这样的功能使用的。考虑这样一个场景，我们程序在运行到某一个阶段之后，需要并发的执行几个jobs，并且一定要等到这些jobs都完成工作才能继续执行，但是每个jobs的运行时间又不一定多久，此时，我们就可以用这样一个办法：
-
-\[zorro@zorrozou-pc0 bash\]$ cat wait.sh
-
-# !\/bin\/bash
+wait命令的功能是用来等待jobs作业控制进程退出的。因为一般进程默认行为就是要等待其退出之后才能继续执行。wait可以等待指定的某个jobs进程，也可以等待所有jobs进程都退出之后再返回，实际上wait命令在bash脚本中是可以作为类似“屏障”这样的功能使用的。考虑这样一个场景，我们程序在运行到某一个阶段之后，需要并发的执行几个jobs，并且一定要等到这些jobs都完成工作才能继续执行，但是每个jobs的运行时间又不一定多久，此时，我们就可以用这样一个办法：
+```
+[zorro@zorrozou-pc0 bash]$ cat wait.sh
+# !/bin/bash
 
 echo "Begin:"
 
-\(sleep 3; echo 3\) &
-\(sleep 5; echo 5\) &
-\(sleep 7; echo 7\) &
-\(sleep 9; echo 9\) &
+(sleep 3; echo 3) &
+(sleep 5; echo 5) &
+(sleep 7; echo 7) &
+(sleep 9; echo 9) &
 
 wait
 
@@ -425,7 +420,7 @@ echo parent continue
 sleep 3
 
 echo end!
-\[zorro@zorrozou-pc0 bash\]$ .\/wait.sh
+[zorro@zorrozou-pc0 bash]$ ./wait.sh
 Begin:
 3
 5
@@ -433,12 +428,13 @@ Begin:
 9
 parent continue
 end!
-
 ```
 通过这个例子可以看到wait的行为：在不加任何参数的情况下，wait会等到所有作业控制进程都退出之后再回返回，否则就会一直等待。当然，wait也可以指定只等待其中一个进程，可以指定pid和jobs方式的作业进程编号，如%3，就变成了：
 ```
-[zorro@zorrozou-pc0 bash]$ cat wait.sh 
-#!/bin/bash
+
+[zorro@zorrozou-pc0 bash]$ cat wait.sh
+
+# !\/bin\/bash
 
 echo "Begin:"
 
@@ -467,7 +463,6 @@ end!
 我们已经在重定向那一部分讲过exec处理bash程序的文件描述符的使用方法了，在此补充一下它是如何执行命令的。这个命令的执行过程跟exec族的函数功能是一样的：将当前进程的执行镜像替换成指定进程的执行镜像。还是举例来看：
 ```
 [zorro@zorrozou-pc0 bash]$ cat exec.sh
-
 # !/bin/bash
 
 echo "Begin:"
@@ -491,40 +486,39 @@ Before exec:
 我们都知道一般的命令参数都是通过-a、-b、-c这样的参数来指定各种功能的，如果我们想要实现这样的功能，只单纯使用shift这样的方式手工处理将会非常麻烦，而且还不能支持让-a -b写成-ab这样的方式。bash跟其他语言一样，提供了getopts这样的方法来帮助我们处理类似的问题，如：
 ```
 [zorro@zorrozou-pc0 bash]$ cat getopts.sh
-#!/bin/bash
+# !/bin/bash
 
-#getopts的使用方式：字母后面带:的都是需要执行子参数的，如：-c xxxxx -e xxxxxx，后续可以用$OPTARG变量进行判断。
-#getopts会将输入的-a -b分别赋值给arg变量，以便后续判断。
+# getopts的使用方式：字母后面带:的都是需要执行子参数的，如：-c xxxxx -e xxxxxx，后续可以用$OPTARG变量进行判断。
+# getopts会将输入的-a -b分别赋值给arg变量，以便后续判断。
+
 while getopts "abc:de:f" arg
 do
     case $arg in
-        a)
+        a\)
         echo "aaaaaaaaaaaaaaa"
         ;;
-        b)
+        b\)
         echo "bbbbbbbbbbbbbbb"
         ;;
-        c)
+        c\)
         echo "c: arg:$OPTARG"
         ;;
-        d)
+        d\)
         echo "ddddddddddddddd"
         ;;
-        e)
+        e\)
         echo "e: arg:$OPTARG"
         ;;
-        f)
+        f\)
         echo "fffffffffffffff"
         ;;
-        ?)
+        ?\)
         echo "$arg :no this arguments!"
     esac
 done
 ```
-
 以下为程序输出：
-
-````
+```
 [zorro@zorrozou-pc0 bash]$ ./getopts.sh -a -bd -c zorro -e jerry
 aaaaaaaaaaaaaaa
 bbbbbbbbbbbbbbb
@@ -541,7 +535,6 @@ fffffffffffffff
 ./getopts.sh: illegal option -- g
 unknow argument!
 ```
-
 getopts只能处理段格式参数，如：-a这样的。不能支持的是如–login这种长格式参数。实际上我们的系统中还给了一个getopt命令，可以处理长格式参数。这个命令不是内建命令，使用方法跟getopts类似，大家可以自己man getopt近一步学习这个命令的使用，这里就不再赘述了。
 
 #### 进程环境
