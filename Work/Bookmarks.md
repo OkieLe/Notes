@@ -26,7 +26,7 @@ Linux
 
 [runoob.com](http://www.runoob.com)
 
-Leetcode(github)
+Leetcode\(github\)
 
 [Leetcode](https://leetcode.com/)
 
@@ -79,7 +79,7 @@ libs on Github
 
 [cnblogs](http://www.cnblogs.com/hawkon/p/3593709.html)
 
-xml/json
+xml\/json
 
 [dom4j](http://blog.csdn.net/redarmy_chen/article/details/12969219)
 
@@ -117,3 +117,6 @@ Picasso
 
 [Picasso](http://square.github.io/picasso/)
 
+Ruby
+
+[RubyGems mirror](https://ruby.taobao.org/)
