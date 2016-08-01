@@ -81,3 +81,83 @@ android:maxWidth 设置文本区域的最大宽度
 android:minWidth 设置文本区域的最小宽度
 ```
 
+#### 设置多种字体大小
+
+使用Spannable设置
+```Java
+String text = "I'm 5 years old.";
+int start = text.indexOf('5');
+int end = text.length();
+Spannable textSpan = new SpannableStringBuilder(text);
+textSpan.setSpan(new AbsoluteSizeSpan(16), 0, start, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+textSpan.setSpan(new AbsoluteSizeSpan(26), start, end - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+textSpan.setSpan(new AbsoluteSizeSpan(16), end - 1, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+TextView textView = (TextView) findViewById(R.id.text);
+textView.setText(textSpan);
+```
+
+#### 设置超链接
+
+设置android:autoLink属性，用Spannable可以做复杂的自定义显示效果
+```Java
+testText.setText(getClickableSpan());
+testText.setMovementMethod(LinkMovementMethod.getInstance());
+
+private SpannableString getClickableSpan() {
+    SpannableString spanStr = new SpannableString("使用该软件，即表示您同意该软件的使用条款和隐私政策");
+    //设置下划线文字
+    spanStr.setSpan(new UnderlineSpan(), 16, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //设置文字的单击事件
+    spanStr.setSpan(new ClickableSpan() {
+        @Override
+        public void onClick(View widget) {
+            startActivity(new Intent(MainActivity.this, UsageActivity.class));
+        }
+    }, 16, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //设置文字的前景色
+    spanStr.setSpan(new ForegroundColorSpan(Color.GREEN), 16, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //设置下划线文字
+    spanStr.setSpan(new UnderlineSpan(), 21, 25, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //设置文字的单击事件
+    spanStr.setSpan(new ClickableSpan() {
+        @Override
+        public void onClick(View widget) {
+            startActivity(new Intent(MainActivity.this, PrivacyActivity.class));
+        }
+    }, 21, 25, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    //设置文字的前景色
+    spanStr.setSpan(new ForegroundColorSpan(Color.GREEN), 21, 25, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    return spanStr;
+}
+```
+
+#### 支持的Html标签
+
+```html
+<a href="..."> //定义链接内容
+<b> //定义粗体文字 b 是blod的缩写
+<big> //定义大字体的文字
+<blockquote> //引用块标签
+<br> //定义换行
+<cite> //表示引用的URI
+<dfn> //定义标签 dfn 是defining instance的缩写
+<div align="...">
+<em> //强调标签 em 是emphasis的缩写
+<font size="..." color="..." face="...">
+<h1>
+<h2>
+<h3>
+<h4>
+<h5>
+<h6>
+<i> //定义斜体文字
+<img src="...">
+<p> // 段落标签,里面可以加入文字,列表,表格等
+<small> //定义小字体的文字
+<strike> // 定义删除线样式的文字 不符合标准网页设计的理念,不赞成使用. strike是strikethrough的缩写
+<strong> //重点强调标签
+<sub> //下标标签 sub 是subscript的缩写
+<sup> //上标标签 sup 是superscript的缩写
+<tt> //定义monospaced字体的文字 不赞成使用. 此标签对中文没意义 tt是teletype or monospaced text style的意思
+<u> //定义带有下划线的文字 u是underlined text style的意思
+```
