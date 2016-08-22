@@ -345,8 +345,49 @@ find /etc -mtime -7 -type f -exec cp {} /tmp/back/ \+
 
 它们的作用跟exec和execdir一样，区别只是在做任何操作之前，会让用户确认是不是ok？如：
 ```
-[root@zorrozou-pc0 find]# find /etc -mtime -7 -type f -ok cp -t /tmp/back/ {} \; < cp ... /etc/bluetooth/main.conf > ?
+[root@zorrozou-pc0 find]# find /etc -mtime -7 -type f -ok cp -t /tmp/back/ {} \;
+< cp ... /etc/bluetooth/main.conf > ?
 ```
 于是，每一次cp你都要确认是不是要这么做。只要你输入的是y或者以y开头的任何字符串，都是确认。其他的字符串是否认。另外，这两个参数不支持`{} +`的格式。
 
+#### OPERATORS
 
+find的操作符（OPERATORS）实际上是用来连接多个表达式和确定其逻辑关系用的。如：
+```
+[root@zorrozou-pc0 zorro]# find /etc -name "pass*" -type f
+/etc/passs/passwd /etc/default/passwd /etc/pam.d/passwd /etc/passwd- /etc/passwd
+```
+这个find命令中使用了两个表达式，他们之间没有任何分隔，这是实际上表达的含义是，找到两个条件都符合的文件。实际上就是表达式的逻辑与关系，这跟`-a`参数连接或者`-and`参数一样：
+```
+[root@zorrozou-pc0 zorro]# find /etc -name "pass*" -a -type f
+/etc/passs/passwd /etc/default/passwd /etc/pam.d/passwd /etc/passwd- /etc/passwd
+[root@zorrozou-pc0 zorro]# find /etc -name "pass*" -and -type f
+/etc/passs/passwd /etc/default/passwd /etc/pam.d/passwd /etc/passwd- /etc/passwd
+```
+除了逻辑与关系以外，还有逻辑或关系：
+```
+[root@zorrozou-pc0 zorro]# find /etc -name "pass*" -o -type f
+[root@zorrozou-pc0 zorro]# find /etc -name "pass*" -or -type f
+```
+表示两个条件只要符合其中一个都可以。
+
+在条件表达式前面加!表示对表达式取非。同样的也可以用`-not`参数。另外如果表达式很多，可以使用`( expr )`确定优先级，如：
+```
+[root@zorrozou-pc0 zorro]# find / \( -name "passwd" -a -type f \) -o \( -name "shadow" -a -type f \)
+```
+这里表示的是：`-name “passwd” -a -type f`和`-name “shadow” -a -type f`是或关系。
+
+#### 最后
+
+find中还可能常用的其他参数比如：
+
+`-depth`：制定了这个参数后，遇到目录先进入目录操作目录中的文件，最后再操作目录本身。
+
+`-maxdepth`：目录最大深度限制。
+
+`-mindepth`：目录最小深度限制。
+
+还有一些其他相关参数大家可以在man find中自行补充，就不在这更多废话了。希望本篇可以对大家深入的掌握find命令有所帮助。
+如果有相关问题，可以在我的微博、微信或者博客上联系我。 
+
+来源：[穷佐罗的Linux书](http://liwei.life/2016/07/11/find%e5%91%bd%e4%bb%a4%e8%af%a6%e8%a7%a3/)
