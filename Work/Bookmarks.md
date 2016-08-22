@@ -108,6 +108,11 @@ Retrofit
 [注解说明](http://blog.csdn.net/maplejaw_/article/details/51942145)
 [使用](http://blog.csdn.net/lmj623565791/article/details/51304204)
 
+Glide
+
+[官方页面](https://github.com/bumptech/glide)
+[使用](http://blog.csdn.net/xx326664162/article/details/50373676)
+
 RxJava
 
 [是时候学习RxJava了](http://android.jobbole.com/83416/)
