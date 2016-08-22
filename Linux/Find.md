@@ -188,15 +188,10 @@ mode还可以使用/或-作为前缀进行描述。如果指定了`-mode`，就�
 `-size n[cwbkMG]`：指定文件长度查找文件。单位选择位：
 
 > c：字节单位。
-
 > b：块为单位，块大小为512字节，这个是默认单位。
-
 > w：以words为单位，words表示两个字节。
-
 > k：以1024字节为单位。
-
 > M：以1048576字节为单位。
-
 > G：以1073741824字节温单位。
 
 n的数字指定也可以使用`+-`号作为前缀。意义跟时间类似，表示找到小于(-)指定长度的文件或者大于(+)指定长度的文件。
@@ -212,16 +207,146 @@ n的数字指定也可以使用`+-`号作为前缀。意义跟时间类似，表
 c可以选择的类型为：
 
 > b：块设备
-
 > c：字符设备
-
 > d：目录
-
 > p：命名管道
-
 > f：普通文件
-
 > l：符号连接
-
 > s：socket
+
+#### ACTIONS
+
+表达式中的actions类型参数主要是用来对找到的文件进行操作的参数。在上面的例子中，我们已经看到可以使用-ls参数对找到的文件进行长格式显示，这就是一个actions类型的参数。类似的参数还有。
+
+`-fls file`：跟-ls功能一样，区别是将信息写入file指定的文件，而不是显示在屏幕上。
+
+`-print`：将找到的文件显示在屏幕上，实际上默认find命令就会将文件打印出来显示。
+
+`-print0`：`-print`参数会将每个文件用换行分割，而这个参数适用null分割。有时候在脚本编程时可能会用上。
+
+`-fprint file`：`-print`参数的写入文件版本。将内容写到文件中，而不是显示在屏幕上。
+
+`-fprint0 file`：`-print0`的写入文件版本。
+
+`-delete`：可以将找到的文件直接删除。
+
+`-printf`：格式化输出方式打印。如：
+```
+[root@zorrozou-pc0 zorro]# find /etc/ -name "pass*" -printf "%p "
+/etc/default/passwd /etc/pam.d/passwd /etc/passwd- /etc/passwd
+```
+显示文件名，并以空格分隔。%p代表文件名。其他信息可以参见`man find`。
+
+`-prune`：如果复合条件的是一个目录，则不进入目录进行查找。例子：
+```
+[root@zorrozou-pc0 zorro]# mkdir /etc/passs
+[root@zorrozou-pc0 zorro]# touch /etc/passs/passwd
+[root@zorrozou-pc0 zorro]# find /etc/ -name "pass*" -prune
+/etc/passs
+/etc/default/passwd
+/etc/pam.d/passwd
+/etc/passwd-
+/etc/passwd
+[root@zorrozou-pc0 zorro]# find /etc/ -name "pass*"
+/etc/passs
+/etc/passs/passwd
+/etc/default/passwd
+/etc/pam.d/passwd
+/etc/passwd-
+/etc/passwd
+```
+我们先创建了一个`/etc/passs`的目录，然后在这个目录下创建了一个叫passwd的文件。之后先用带`-prune`的find看到，能显示出passs目录，但是目录中的passwd文件并没有显示，说明这个参数让find命令没有进入这个目录查找。而后一个不带`-prun`e参数的find显示出了passs目录下的passwd。
+
+`-quit`：找到符合条件的文件后立即退出。
+
+##### find中执行命令
+
+`-exec`
+
+find命令的exec是一个非常好用的参数，当然其可能造成的破坏也可能非常大。在学习它之前，我先要提醒大家，使用之前千万要确定自己在做什么。
+
+这个参数的常见格式是：
+```
+-exec command ;
+```
+注意后面的分号。它是用来给find做标记用的。find在解析命令的时候，要区分给定的参数是要传给自己的还是要传给command命令的。所以find以分号作为要执行命令所有参数的结束标记。命令返回值为0则返回true。在exec参数指定的执行命令中，可以使用`{}`符号表示当前find找到的文件名。比如：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec echo {} \;
+/etc/default/passwd /etc/pam.d/passwd /etc/passwd
+```
+上面的命令表示，找到`/etc/`目录下文件名为passwd的文件，并echo其文件名。注意再使用分号的时候前面要加转移字符`\`，因为分号也是bash的特殊字符，所以bash会先解释它。前面加上`\`就可以让bash直接将其船体给find命令，这个分号由find解释，而不是bash。其实这个exec用的比较废话，毕竟find本身就会找到相关条件的文件并显示其文件名。但是试想如果我们将echo换成rm或者cp，是不是就有意义的多？比如：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec rm {} \;
+```
+请不要执行这个命令！！
+
+或者：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec cp {} {}.bak \;
+```
+这个命令可以将符合条件的文件都加个.bak后缀备份一份。于是我们可以执行删除了：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd.bak"
+/etc/default/passwd.bak /etc/pam.d/passwd.bak /etc/passwd.bak
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd.bak" -exec rm {} \; 
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd.bak"
+```
+当然，删除前还是要确认清楚你要删的文件一定是对的。
+
+`-execdir`
+
+execdir和exec有一些差别，主要是在执行指定的命令时，那个相关命令是在那个工作目录下执行的差别。exec是在find所指定的起始目录，而execdir是文件所在目录。对比一下就明白了：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec echo {} \;
+/etc/default/passwd /etc/pam.d/passwd /etc/passwd
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -execdir echo {} \;
+./passwd ./passwd ./passwd
+```
+一个命令打印出来的路径都是`/etc/`开头，另一个显示的都是当前目录下的某某文件。
+
+execdir的方式要比exec安全一些，因为这种执行方式避免了在解析文件名时所产生的竞争条件。
+
+出了上述两种比较典型的执行命令的方法以外，find还对这两个参数提供了另一种形式的命令执行格式：
+```
+-exec command {} +
+
+-execdir command {} +
+```
+我们还是先用例子来看一下这个格式和以分号结束的方式的差别：
+```
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec echo {} \;
+/etc/default/passwd /etc/pam.d/passwd /etc/passwd
+[root@zorrozou-pc0 find]# find /etc/ -name "passwd" -exec echo {} \+
+/etc/default/passwd /etc/pam.d/passwd /etc/passwd
+```
+光这样看可能还不是很明显，我们可以这样在描述一遍他们的执行过程：
+```
+echo /etc/default/passwd echo /etc/pam.d/passwd echo /etc/passwd
+```
+和
+```
+echo /etc/default/passwd /etc/pam.d/passwd /etc/passwd
+```
+其实就是说，对于`command {} ;`格式来说，每找到一个文件就执行一遍相关命令，而`command {} +`格式的意思是说，先执行find，找到所有符合条件的文件之后，将每个文件作为命令的一个参数传给命令执行，exec指定的命令实际上只被执行了一次。这样用的限制也是不言而喻的：`{}`只能出现一次。
+```
+[root@zorrozou-pc0 find]# find /etc -mtime -7 -type f -exec cp -t /tmp/back/ {} \+
+```
+上面这个命令将符合条件的文件全部cp到了`/tmp/back`目录中，当然如果文件有重名的情况下，会被覆盖掉。从这个命令中我们学习一下`{} +`格式的使用注意事项，它不能写成：
+```
+find /etc -mtime -7 -type f -exec cp {} /tmp/back/ \+
+```
+所以只能使用`-t`参数改变cp命令的参数顺序来指定相关的动作。
+
+无论如何，直接使用exec和execdir是很危险的，因为他们会直接对找到的文件调用相关命令，并且没有任何确认。所以我们不得不在进行相关操作前再三确认，以防止误操作。当然，find命令也给了更安全的exec参数，它们就是：
+
+`-ok`
+
+`-okdir`
+
+它们的作用跟exec和execdir一样，区别只是在做任何操作之前，会让用户确认是不是ok？如：
+```
+[root@zorrozou-pc0 find]# find /etc -mtime -7 -type f -ok cp -t /tmp/back/ {} \; < cp ... /etc/bluetooth/main.conf > ?
+```
+于是，每一次cp你都要确认是不是要这么做。只要你输入的是y或者以y开头的任何字符串，都是确认。其他的字符串是否认。另外，这两个参数不支持`{} +`的格式。
+
 
