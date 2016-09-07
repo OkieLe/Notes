@@ -188,5 +188,123 @@ int main()
 
 ```
 
+父进程先给子进程发一个消息，子进程接收到之后打印消息，之后再给父进程发消息，父进程再打印从子进程接收到的消息。程序执行效果：
+```
+[zorro@zorro-pc pipe]$ ./pipe_parent_child
+Parent pid is: 8309
+Child pid is: 8310
+Message from parent: My pid is: 8309
+Message from child: My pid is: 8310
+```
+从这个程序中我们可以看到，管道实际上可以实现一个半双工通信的机制。使用同一个管道的父子进程可以分时给对方发送消息。我们也可以看到对管道读写的一些特点，即：
+
+在管道中没有数据的情况下，对管道的读操作会阻塞，直到管道内有数据为止。当一次写的数据量不超过管道容量的时候，对管道的写操作一般不会阻塞，直接将要写的数据写入管道缓冲区即可。
+
+当然写操作也不会再所有情况下都不阻塞。这里我们要先来了解一下管道的内核实现。上文说过，管道实际上就是内核控制的一个内存缓冲区，既然是缓冲区，就有容量上限。我们把管道一次最多可以缓存的数据量大小叫做PIPESIZE。内核在处理管道数据的时候，底层也要调用类似read和write这样的方法进行数据拷贝，这种内核操作每次可以操作的数据量也是有限的，一般的操作长度为一个page，即默认为4k字节。我们把每次可以操作的数据量长度叫做PIPEBUF。POSIX标准中，对PIPEBUF有长度限制，要求其最小长度不得低于512字节。PIPEBUF的作用是，内核在处理管道的时候，如果每次读写操作的数据长度不大于PIPEBUF时，保证其操作是原子的。而PIPESIZE的影响是，大于其长度的写操作会被阻塞，直到当前管道中的数据被读取为止。
+
+在Linux 2.6.11之前，PIPESIZE和PIPEBUF实际上是一样的。在这之后，Linux重新实现了一个管道缓存，并将它与写操作的PIPEBUF实现成了不同的概念，形成了一个默认长度为65536字节的PIPESIZE，而PIPEBUF只影响相关读写操作的原子性。从Linux 2.6.35之后，在fcntl系统调用方法中实现了`F_GETPIPE_SZ`和`F_SETPIPE_SZ`操作，来分别查看当前管道容量和设置管道容量。管道容量容量上限可以在`/proc/sys/fs/pipe-max-size`进行设置。
+```
+#define BUFSIZE 65536
+
+......
+
+ret = fcntl(pipefd[1], F_GETPIPE_SZ);
+if (ret < 0) {
+    perror("fcntl()");
+    exit(1);
+}
+
+printf("PIPESIZE: %d\n", ret);
+
+ret = fcntl(pipefd[1], F_SETPIPE_SZ, BUFSIZE);
+if (ret < 0) {
+    perror("fcntl()");
+    exit(1);
+}
+
+......
+```
+PIPEBUF和PIPESIZE对管道操作的影响会因为管道描述符是否被设置为非阻塞方式而有行为变化，n为要写入的数据量时具体为：
+
+`O_NONBLOCK`关闭，`n <= PIPE_BUF`：
+
+n个字节的写入操作是原子操作，write系统调用可能会因为管道容量(PIPESIZE)没有足够的空间存放n字节长度而阻塞。
+
+`O_NONBLOCK`打开，`n <= PIPE_BUF`：
+
+如果有足够的空间存放n字节长度，write调用会立即返回成功，并且对数据进行写操作。空间不够则立即报错返回，并且errno被设置为EAGAIN。
+
+`O_NONBLOCK`关闭，`n > PIPE_BUF`：
+
+对n字节的写入操作不保证是原子的，就是说这次写入操作的数据可能会跟其他进程写这个管道的数据进行交叉。当管道容量长度低于要写的数据长度的时候write操作会被阻塞。
+
+`O_NONBLOCK`打开，`n > PIPE_BUF`：
+
+如果管道空间已满。write调用报错返回并且errno被设置为EAGAIN。如果没满，则可能会写入从1到n个字节长度，这取决于当前管道的剩余空间长度，并且这些数据可能跟别的进程的数据有交叉。
+
+以上是在使用半双工管道的时候要注意的事情，因为在这种情况下，管道的两端都可能有多个进程进行读写处理。如果再加上线程，则事情可能变得更复杂。实际上，我们在使用管道的时候，并不推荐这样来用。管道推荐的使用方法是其单工模式：即只有两个进程通信，一个进程只写管道，另一个进程只读管道。实现为：
+```
+[zorro@zorro-pc pipe]$ cat pipe_parent_child2.c
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+#define STRING "hello world!"
+
+int main()
+{
+    int pipefd[2];
+    pid_t pid;
+    char buf[BUFSIZ];
+
+    if (pipe(pipefd) == -1) {
+        perror("pipe()");
+        exit(1);
+    }
+
+    pid = fork();
+    if (pid == -1) {
+        perror("fork()");
+        exit(1);
+    }
+
+    if (pid == 0) {
+        /* this is child. */
+        close(pipefd[1]);
+        printf("Child pid is: %d\n", getpid());
+
+        if (read(pipefd[0], buf, BUFSIZ) < 0) {
+            perror("write()");
+            exit(1);
+        }
+
+        printf("%s\n", buf);
+    } else {
+        /* this is parent */
+        close(pipefd[0]);
+        printf("Parent pid is: %d\n", getpid());
+
+        snprintf(buf, BUFSIZ, "Message from parent: My pid is: %d", getpid());
+        if (write(pipefd[1], buf, strlen(buf)) < 0) {
+            perror("write()");
+            exit(1);
+        }
+
+        wait(NULL);
+    }
+
+    exit(0);
+}
+```
+这个程序实际上比上一个要简单，父进程关闭管道的读端，只写管道。子进程关闭管道的写端，只读管道。整个管道的打开效果最后成为下图所示：
+
+![pipe](../_attach/Linux/pipe_c.png)
+
+此时两个进程就只用管道实现了一个单工通信，并且这种状态下不用考虑多个进程同时对管道写产生的数据交叉的问题，这是最经典的管道打开方式，也是我们推荐的管道使用方式。另外，作为一个程序员，即使我们了解了Linux管道的实现，我们的代码也不能依赖其特性，所以处理管道时该越界判断还是要判断，该错误检查还是要检查，这样代码才能更健壮。
+
+
 
 来源：[穷佐罗的Linux书](http://liwei.life/2016/07/18/pipe/)
