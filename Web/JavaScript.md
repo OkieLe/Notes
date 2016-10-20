@@ -28,11 +28,11 @@
 
 
 
-![DOM文档对象](../_attach/Web/DOM_obj.gif)
+![DOM文档对象](../_attach/Web/DOM_obj.jpg)
 
 
 
-![BOM对象](../_attach/Web/BOM.gif)
+![BOM对象](../_attach/Web/BOM.jpg)
 
 
 
