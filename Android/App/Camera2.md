@@ -8,7 +8,7 @@
 public void openCamera(String cameraId, CameraDevice.StateCallback callback, Handler handler)
 ```
 
-- 使用`getCameraIdList()`来获得可用摄像设备的列表。一旦成功打开相机，`CameraDevice.StateCallback`中的`onOpened(CameraDevice)`将被调用。相机设备可以通过调用`createCaptureSession()`和`createCaptureRequest()`去设置操作。如果打开相机设备失败，那么设备回调的`onError`方法将被调用，后续调用相机设备将抛出一个`CameraAccessException`。
+- 使用`getCameraIdList()`来获得可用摄像设备的列表。一旦成功打开相机，`CameraDevice.StateCallback`中的`onOpened(CameraDevice)`将被调用。相机设备可以通过调用`createCaptureSession()`和`createCaptureRequest()`去设置。如果打开相机设备失败，那么设备回调的`onError`方法将被调用，后续调用相机设备将抛出一个`CameraAccessException`。
 
 ```Java
 public abstract CaptureRequest.Builder createCaptureRequest(int templateType)
@@ -38,7 +38,7 @@ RenderScriptAllocation
 ImageReader
 ```
 
-- 一旦创建可以交给活动的拍照会话`CameraCaptureSession`，一次拍照（capture ）或者无止境连续拍照（captureBurst），或预览（Repeating）。setRepeatingRequest请求或setRepeatingBurst请求。
+- Request一旦创建可以交给活动的拍照会话`CameraCaptureSession`，进行拍照（capture ）或者连续拍照（captureBurst），预览setRepeatingRequest()或setRepeatingBurst()。
 
 
 
@@ -118,7 +118,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
  
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
- 
     }
  
     @Override
@@ -129,7 +128,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
     //TextureView.SurfaceTextureListener
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
- 
     }
  
     private CameraDevice.StateCallback mCameraDeviceStateCallback = new CameraDevice.StateCallback() {
@@ -145,12 +143,10 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
  
         @Override
         public void onDisconnected(CameraDevice camera) {
- 
         }
  
         @Override
         public void onError(CameraDevice camera, int error) {
- 
         }
     };
     //开始预览，主要是camera.createCaptureSession这段代码很重要，创建会话
@@ -180,7 +176,6 @@ public class CameraFragment extends Fragment implements TextureView.SurfaceTextu
  
         @Override
         public void onConfigureFailed(CameraCaptureSession session) {
- 
         }
     };
  
