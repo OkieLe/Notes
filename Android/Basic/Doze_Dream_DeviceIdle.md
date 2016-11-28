@@ -133,6 +133,7 @@ API 24 或以上会启用该模式，相比Deep Doze Mode，打包任务的频�
 ## 中断/避开Doze
 
 以下所有情况，Google官方都建议不在特殊情景，不要去使用，由于中断了省电的规则。
+
 1. AlarmManager：指定需要精确时间的事件: `setAndAllowWhileIdle()`、`setExactAndAllowWhileIdle()`。但是在非窗口期间并不解除无网络访问的限制，并且只有10s的时间给予处理。指定闹钟事件`AlarmManager.setAlarmClock()`的事件会在闹钟结束前，令系统短暂的完全退出Doze模式，并且正常处理事件，系统为了突显该闹钟事件，将会在status bar上显示物理闹钟的icon。
 2. FCM/GCM：(Firebase Cloud Messaging，旧版中称为Google Cloud Messaging(GCM))。FCM/GCM中高优先级的任务配置中("priority" : "high") 的消息，在Doze模式下可以正常及时到达。
 3. 白名单：主动请求加入白名单，用户同意以后加入白名单，用户也可以主动将App从白名单中删除或添加应用；应用可以通过`isIgnoringBatteryOptimizations()`来获知是否在白名单中，白名单的应用可以访问网络与持有有效的WakeLock，但是其他Doze的约束依然存在(如延后的Job Scheduler、AlarmManager);
