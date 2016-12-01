@@ -141,7 +141,7 @@ recovery.img 和 boot.img 的区别不大，主要是 init 脚本不一样，rec
 
 ## Recovery模式
 
-init.rc中定义了recovery启动，也就是recovery.img被当做系统分区启动时，在init的过程中启动了recovery。Recovery模式的界面是在`bootable/recovery/screen_ui.*`中定义，定制也可以在此修改。
+init.rc中定义了recovery启动，也就是recovery.img被当做系统分区启动时，在init的过程中启动了recovery。
 
 有时候 Android 需要不同的模式互相协助来完成一项任务，这样不同模式之间就要有一种机制来交换信息。
 
@@ -157,6 +157,12 @@ init.rc中定义了recovery启动，也就是recovery.img被当做系统分区�
 > - set_encrypted_filesystem=on|off：加密、解密文件系统
 > - just_exit：退出并重启
 >   操作完成后，`/cache/recovery/command`被擦除。
+
+### 厂商定制
+
+Recovery模式的界面是在`bootable/recovery/screen_ui.*`中定义，定制也可以在此修改。([官方说明](https://source.android.com/devices/tech/ota/device_code.html))。
+
+厂商可以在BoardConfig.mk中定义`TARGET_RECOVERY_FSTAB`替换recovery下的fstab。
 
 ### 擦除数据/Factory Reset
 
@@ -184,5 +190,58 @@ init.rc中定义了recovery启动，也就是recovery.img被当做系统分区�
    7a. prompt_and_wait()显示提示，等用户处理
    7b. 用户重启(拔电池等方式)
 8. 重启手机到正常模式
+
+### 其他
+
+当手机无法正常启动去下载OTA包的时候，可以用这个功能进行升级。一般可以用SD卡升级替代，但是对于不支持扩展SD卡的手机，这个是一种完善的机制。这个支持两种方式，从cache分区或者通过adb。
+
+adb的方式命令如下：
+```
+adb sideload filename
+```
+
+**A/B系统升级**：大致逻辑是采用两套分区，升级时使用当前未使用的分区，当升级完成后再重启进入升级后的分区。如果升级失败则还进入老的分区，检测分区是否异常使用dm-verity。升级使用一个后台服务update_engine，支持这个功能还需要修改bootloader、分区表、编译程序和OTA包。([官方说明](https://source.android.com/devices/tech/ota/ab_updates.html))
+
+## 升级包
+
+Block-Based OTA：基于块的OTA，Android L加入，保证每个分区升级后的内容完全一致，每个分区一个文件，只生成一个patch。L之前的版本使用文件对比的方式，只保证每个文件内容、权限和模式一样，时间戳等元数据可以不同。这也是支持dm-verity的前提，升级后分区内容和用fastboot刷入的一样。
+
+### 制作升级包
+
+`build/tools/releasetools`目录中的工具`ota_from_target_files`可以用来制作OTA升级包。
+
+升级包制作要用到编译版本生成的target-files.zip文件，编译方法：
+```shell
+# first, build the target-files .zip
+$ . build/envsetup.sh && lunch tardis-eng
+$ mkdir dist_output
+$ make dist DIST_DIR=dist_output
+```
+
+1. 制作完整包：
+```
+$ ./build/tools/releasetools/ota_from_target_files dist_output/tardis-target_files.zip ota_update.zip
+```
+2. 制作差分包：
+```
+$ ./build/tools/releasetools/ota_from_target_files -i PREVIOUS-tardis-target_files.zip dist_output/tardis-target_files.zip incremental_ota_update.zip
+```
+3. 制作Block-based OTA包需要添加` --block `参数
+
+### 升级包内容
+
+升级包中有一个可执行程序`META-INF/com/google/android/update-binary`，就是安装升级包的程序。还有一个脚本`META-INF/com/google/android/update-script`，脚本使用edify进行解释，edify源码放在`bootable/recovery/edify`。
+
+系统默认的升级程序代码放在`bootable/recovery/updater`中。这个程序和脚本可以用其他自定义的替换掉。一般厂商会在`/device/*/*`目录下进行定制。
+
+### 安装升级包
+
+不论是通过OTA、SD卡，还是直接adb加载升级包，只是升级包所在的位置不同，最终安装升级包的逻辑是一样的。安装升级包代码在`install_package();//bootable/recovery/install.cpp`
+
+1. `setup_install_mounts()`检查分区挂载情况，确保tmp和cache两个分区已挂载
+2. `ensure_path_mounted()`确保安装包所在分区已挂载
+3. `verify_file()`验证安装包签名有效性
+4. `mzOpenZipArchive()/OpenArchiveFromMemory()`打开压缩包，读出内容
+5. `try_update_binary()`执行升级包中的脚本(先解压到/tmp)，按照脚本进行升级（平台实现不同）
 
 > 想了解更多细节，可以自行阅读bootable中的代码。
