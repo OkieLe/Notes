@@ -134,3 +134,7 @@ Ruby
 [RubyGems mirror](https://ruby.taobao.org/)
 
 [RubyGems search](https://rubygems.org/)
+
+依赖注入框架Guice
+
+[google/guice](https://github.com/google/guice) [介绍](http://www.cnblogs.com/youngC/archive/2012/12/21/2828419.html)
