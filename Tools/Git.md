@@ -2,7 +2,7 @@
 ```gitconfig
 [user]
     name = xingle
-    email = xingle@yeptelecom.com
+    email = xingled@gmail.com
 [color]
     ui = true
 [core]
