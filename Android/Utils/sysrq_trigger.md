@@ -1,5 +1,7 @@
 /proc/sysrq-trigger这个文件是最近调试内存稳定性的时候接触的，完整的内容可以参考内核目录下Documentation/sysrq.txt。用该功能必须将内核中的CONFIG_MAGIC_SYSRQ配置选项打开，但一般的发行版本都将此选项关闭了，该功能主要是用于调试的，想体验该功能的重新配置下内核。
 
+root版本通过`echo 1 > proc/sys/kernel/sysrq`打开。
+
 下面介绍用法：
 
 `echo b > /proc/sysrq-trigger`
