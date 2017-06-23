@@ -1,4 +1,4 @@
-[Safe fun substitute](../_attach/Safe_fun.pdf)
+[Safe fun substitute](../_attach/Docs/pdf/Safe_fun.pdf)
 
 #### POSIX
 

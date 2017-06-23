@@ -2,4 +2,4 @@
 
 同事[csumissu](https://csumissu.github.io/)的文档
 
-[ActvityManagerService知多少.pdf](../../_attach/Android/ActivityManagerService.pdf)
+[ActvityManagerService知多少.pdf](../../_attach/Docs/pdf/ActivityManagerService.pdf)

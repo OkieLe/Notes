@@ -161,4 +161,4 @@ Doze 模式的推出本身是为了减少电池的消耗，且 Google 希望统�
 
 来源： [tuicool](http://www.tuicool.com/articles/aMnqUbb)
 
-官方文档：[Docs](../../_attach/Android/Doze_AppStandby.pdf)
+官方文档：[Docs](../../_attach/Docs/pdf/Doze_AppStandby.pdf)
