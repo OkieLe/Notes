@@ -192,14 +192,14 @@ android初始化过程中会修改一些属性，通过getprop命令我们可以
 init的源代码在文件：./system/core/init/init.c 中，init会一步步完成下面的任务：
 1. 初始化log系统
 2. 解析/init.rc和/init.%hardware%.rc文件  
-3. 执行 early-init action in the two files parsed in step 2.  
+3. 执行两个文件解析的early-init动作.  
 4. 设备初始化，例如：在 /dev 下面创建所有设备节点，下载 firmwares.  
 5. 初始化属性服务器，Actually the property system is working as a share memory.Logically it looks like a registry under Windows system.  
-6. 执行 init action in the two files parsed in step 2.  
+6. 执行解析出来的 init 动作.  
 7. 开启 属性服务。
-8. 执行 early-boot and boot actions in the two files parsed in step 2.  
-9. 执行 Execute property action in the two files parsed in step 2.  
-10. 进入一个无限循环 to wait for device/property set/child process exit events.例如,如果SD卡被插入，init会收到一个设备插入事件，它会为这个设备创建节点。系统中比较重要的进程都是由init来fork的，所 以如果他们他谁崩溃了，那么init 将会收到一个 SIGCHLD 信号，把这个信号转化为子进程退出事件， 所以在loop中，init 会操作进程退出事件并且执行*.rc 文件中定义的命令。
+8. 执行解析出来的 early-boot和boot 动作.  
+9. 执行属性动作.  
+10. 进入一个无限循环等待device/property set/child process exit事件。例如,如果SD卡被插入，init会收到一个设备插入事件，它会为这个设备创建节点。系统中比较重要的进程都是由init来fork的，所 以如果他们他谁崩溃了，那么init 将会收到一个 SIGCHLD 信号，把这个信号转化为子进程退出事件， 所以在loop中，init 会操作进程退出事件并且执行*.rc 文件中定义的命令。
 
 例如，在init.rc中，因为有：
 ```init
@@ -440,19 +440,20 @@ service hsag
 service installd
 service flash_recovery
 ```
-状态服务器相关：
 
-在init.c 的main函数中启动状态服务器。
+属性服务相关：
+
+在init.c 的main函数中启动属性服务。
 `property_set_fd = start_property_service();`
 
-状态读取函数：
+属性读取函数：
 ```C
 Property_service.c (system/core/init)
 const char* property_get(const char *name)
 Properties.c (system/core/libcutils)
 int property_get(const char *key, char *value, const char *default_value)
 ```
-状态设置函数：
+属性设置函数：
 ```C
 Property_service.c (system/core/init)
 int property_set(const char *name, const char *value)
