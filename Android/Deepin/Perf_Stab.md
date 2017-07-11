@@ -175,3 +175,7 @@ iaware的CPU方案核心思路是保证前台程序的CPU资源，提高前台�
 **Background组**：后台非关键应用，即用户无明显感知的不可见应用。
 **system background**：系统后台组，即系统自带的后台次要进程。
 **key background**：后台关键应用，即用户有明显感知的不可见应用。这类主要有：音乐播放、下载、运动传感（含GPS）、音频通话、录音等。另外根据用户习惯识别的TOP3 IM和TOP1 Email也可作为后台关键应用。新安装应用未经训练，可以先列入TOP IM或者TOP Email，这时可能会不只TOP3和TOP1。
+
+## 12. 其他
+
+[性能优化](http://hukai.me/android-performance-patterns/)
