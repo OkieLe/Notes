@@ -2,7 +2,7 @@
 
 Binder源自Be Inc公司开发的OpenBinder框架，后来该框架转移的Palm Inc，由Dianne Hackborn主导开发。OpenBinder的内核部分已经合入Linux Kernel 3.19。
 
-Android Binder是在OpneBinder上的定制实现。原先的OpenBinder框架现在已经不再继续开发，可以说Android上的Binder让原先的OpneBinder得到了重生。
+Android Binder是在OpenBinder上的定制实现。原先的OpenBinder框架现在已经不再继续开发，可以说Android上的Binder让原先的OpenBinder得到了重生。
 
 Binder是Android系统中大量使用的IPC（Inter-process communication，进程间通讯）机制。无论是应用程序对系统服务的请求，还是应用程序自身提供对外服务，都需要使用到Binder。因此，Binder机制在Android系统中的地位非常重要，可以说，理解Binder是理解Android系统的绝对必要前提。
 
@@ -16,12 +16,12 @@ Binder是Android系统中大量使用的IPC（Inter-process communication，进�
 
 Android系统中对于传统的IPC使用较少（但也有使用，例如：在请求Zygote fork进程的时候使用的是Socket IPC），大部分场景下使用的IPC都是Binder。
 
-[大概了解一下](./IPC_brief.md)
-
 Binder相较于传统IPC来说更适合于Android系统，具体原因的包括如下三点：
 - Binder本身是C/S架构的，这一点更符合Android系统的架构
 - 性能上更有优势：管道，消息队列，Socket的通讯都需要两次数据拷贝，而Binder只需要一次。要知道，对于系统底层的IPC形式，少一次数据拷贝，对整体性能的影响是非常之大的
 - 安全性更好：传统IPC形式，无法得到对方的身份标识（UID/GID)，而在使用Binder IPC时，这些身份标示是跟随调用过程而自动传递的。Server端很容易就可以知道Client端的身份，非常便于做安全检查
+
+[大概了解一下](./IPC_brief.md)
 
 ## 〇、 整体架构
 
@@ -54,13 +54,13 @@ Client对于Server的请求会经由Binder框架由上至下传递到内核的Bi
 
 ### 初识ServiceManager
 
-前面已经提到，使用Binder框架的既包括系统服务，也包括第三方应用。因此，在同一时刻，系统中会有大量的Server同时存在。那么，Client在请求Server的时候，是如果确定请求发送给哪一个Server的呢？
+前面已经提到，使用Binder框架的既包括系统服务，也包括第三方应用。因此，在同一时刻，系统中会有大量的Server同时存在。那么，Client在请求Server的时候，是如何确定请求发送给哪一个Server的呢？
 
 这个问题，就和我们现实生活中如何找到一个公司/商场，如何确定一个人/一辆车一样，解决的方法就是：每个目标对象都需要一个唯一的标识。并且，需要有一个组织来管理这个唯一的标识。
 
 而Binder框架中负责管理这个标识的就是ServiceManager。ServiceManager对于Binder Server的管理就好比车管所对于车牌号码的的管理，派出所对于身份证号码的管理：每个公开对外提供服务的Server都需要注册到ServiceManager中（通过addService），注册的时候需要指定一个唯一的id（这个id其实就是一个字符串）。
 
-Client要对Server发出请求，就必须知道服务端的id。Client需要先根据Server的id通过ServerManager拿到Server的标示（通过getService），然后通过这个标示与Server进行通信。
+Client要对Server发出请求，就必须知道服务端的id。Client需要先根据Server的id通过ServerManager拿到Server的标识（通过getService），然后通过这个标识与Server进行通信。
 
 整个过程如下图所示：
 
@@ -118,7 +118,7 @@ static const struct file_operations binder_fops = {
 ```
 这里除了owner之外，每一个字段都是一个函数指针，这些函数指针对应了用户空间在使用Binder设备时的操作。例如：`binder_poll`对应了`poll`系统调用的处理，`binder_mmap`对应了`mmap`系统调用的处理，其他类同。
 
-这其中，有三个函数尤为重要，它们是：`binder_open`，`binder_mmap`和`binder_ioctl`。 这是因为，需要使用Binder的进程，几乎总是先通过`binder_ope`n打开Binder设备，然后通过`binder_mmap`进行内存映射。在这之后，通过`binder_ioctl`来进行实际的操作。Client对于Server端的请求，以及Server对于Client请求结果的返回，都是通过ioctl完成的。
+这其中，有三个函数尤为重要，它们是：`binder_open`，`binder_mmap`和`binder_ioctl`。 这是因为，需要使用Binder的进程，几乎总是先通过`binder_open`打开Binder设备，然后通过`binder_mmap`进行内存映射。在这之后，通过`binder_ioctl`来进行实际的操作。Client对于Server端的请求，以及Server对于Client请求结果的返回，都是通过ioctl完成的。
 
 这里提到的流程如下图所示：
 
@@ -130,6 +130,7 @@ Binder驱动中包含了很多的结构体。为了便于下文讲解，这里�
 
 驱动中的结构体可以分为两类：
 - 一类是与用户空间共用的，这些结构体在Binder通信协议过程中会用到。因此，这些结构体定义在`binder.h`中，包括：
+
 | 结构体名称                       | 说明                         |
 | --------------------------- | -------------------------- |
 | flat_binder_object          | 描述在Binder IPC中传递的对象，见下文    |
@@ -141,9 +142,11 @@ Binder驱动中包含了很多的结构体。为了便于下文讲解，这里�
 | binder_handle_cookie        | 包含了一个句柄和一个cookie           |
 | binder_pri_desc             | 暂未用到                       |
 | binder_pri_ptr_cookie       | 暂未用到                       |
+
 > 这其中，`binder_write_read`和`binder_transaction_data`这两个结构体最为重要，它们存储了IPC调用过程中的数据。关于这一点，我们在下文中会讲解。
 
 - Binder驱动中，还有一类结构体是仅仅Binder驱动内部实现过程中需要的，它们定义在`binder.c`中，包括：
+
 | 结构体名称                        | 说明                         |
 | ---------------------------- | -------------------------- |
 | **binder_node**              | 描述Binder实体节点，即：对应了一个Server |
@@ -157,6 +160,7 @@ Binder驱动中包含了很多的结构体。为了便于下文讲解，这里�
 | binder_ref_death             | 描述Binder实体死亡的信息            |
 | binder_transaction_log       | debugfs日志                  |
 | binder_transaction_log_entry | debugfs日志条目                |
+
 > 这里需要读者关注的结构体已经用加粗做了标注。
 
 ### Binder协议
@@ -164,6 +168,7 @@ Binder驱动中包含了很多的结构体。为了便于下文讲解，这里�
 Binder协议可以分为控制协议和驱动协议两类。
 
 控制协议是进程通过`ioctl("/dev/binder")`与Binder设备进行通讯的协议，该协议包含以下几种命令：
+
 | 命令                       | 说明                              | 参数类型              |
 | ------------------------ | ------------------------------- | ----------------- |
 | **BINDER_WRITE_READ**    | 读写操作，最常用的命令。IPC过程就是通过这个命令进行数据传递 | binder_write_read |
@@ -179,6 +184,7 @@ Binder的驱动协议描述了对于Binder驱动的具体使用过程。驱动�
 - 一类是`binder_driver_return_protocol`，描述了*Binder驱动发送给进程的命令*
 
 binder_driver_command_protocol共包含17个命令，分别是：
+
 | 命令                            | 说明                           | 参数类型                    |
 | ----------------------------- | ---------------------------- | ----------------------- |
 | BC_TRANSACTION                | Binder事务，即：Client对于Server的请求 | binder_transaction_data |
@@ -200,6 +206,7 @@ binder_driver_command_protocol共包含17个命令，分别是：
 | BC_ACQUIRE_RESULT             | 暂未实现                         | -                       |
 
 binder_driver_return_protocol共包含18个命令，分别是：
+
 | 返回类型                             | 说明                        | 参数类型                    |
 | -------------------------------- | ------------------------- | ----------------------- |
 | BR_OK                            | 操作完成                      | void                    |
@@ -594,6 +601,7 @@ libbinder中，将实现分为Proxy和Native两端。Proxy对应了上文提到�
 Proxy代表了调用方，通常与服务的实现不在同一个进程，因此下文中，我们也称Proxy端为“远程”端。Native端是服务实现的自身，因此下文中，我们也称Native端为”本地“端。
 
 这里，我们先对libbinder中的主要类做一个简要说明，了解一下它们的关系，然后再详细的讲解。
+
 | 类名             | 说明                                       |
 | -------------- | ---------------------------------------- |
 | BpRefBase      | RefBase的子类，提供remote()方法获取远程Binder        |
@@ -621,6 +629,7 @@ Proxy代表了调用方，通常与服务的实现不在同一个进程，因此
 在这幅图中，浅黄色部分的结构是最难理解的，因此我们先从它们着手。
 
 先来看看IBinder这个类。这个类描述了所有在Binder上传递的对象，它既是Binder本地对象BBinder的父类，也是Binder远程对象BpBinder的父类。这个类中的主要方法说明如下：
+
 | 方法名                    | 说明                                |
 | ---------------------- | --------------------------------- |
 | localBinder            | 获取本地Binder对象                      |
@@ -785,6 +794,7 @@ root:/ # showmap 1889 | grep "/dev/binder"
 上文提到ProcessState是一个单例类，一个进程只有一个实例。而负责与Binder驱动通信的IPCThreadState也是一个单例类。但这个类不是一个进程只有一个实例，而是一个线程有一个实例。
 
 IPCThreadState负责了与驱动通信的细节处理。这个类中的关键几个方法说明如下：
+
 | 方法                   | 说明                                  |
 | -------------------- | ----------------------------------- |
 | transact             | 公开接口。供Proxy发送数据到驱动，并读取返回结果          |
@@ -1155,12 +1165,14 @@ int main()
 3. `binder_loop(bs, svcmgr_handler);`是在Looper上循环，等待其他模块请求服务
 
 service_manager.c中的实现与普通Binder服务的实现有些不一样：并没有通过继承接口类来实现，而是通过几个c语言的函数来完成了实现。这个文件中的主要方法如下：
+
 | 方法名称            | 方法说明                             |
 | --------------- | -------------------------------- |
 | main            | 可执行文件入口函数，刚刚已经做过说明               |
 | svcmgr_handler  | 请求的入口函数，类似于普通Binder服务的onTransact |
 | do_add_service  | 注册一个Binder服务                     |
 | do_find_service | 通过名称查找一个已经注册的Binder服务            |
+
 ServiceManager中，通过`svcinfo`结构体来描述已经注册的Binder服务：
 ```C++
 struct svcinfo
@@ -1207,6 +1219,7 @@ public:
 };
 ```
 这里我们看到，ServiceManager提供的接口只有四个，这四个接口说明如下：
+
 | 接口名称         | 接口说明                          |
 | ------------ | ----------------------------- |
 | addService   | 向ServiceManager中注册一个新的Service |
@@ -1262,6 +1275,7 @@ Android应用程序使用Java语言开发，Binder框架自然也少不了在Jav
 ![](../../_attach/Android/Binder_JNI.png)
 
 这里对图中Java层和JNI层的几个类做一下说明：
+
 | 名称                | 类型        | 说明                                       |
 | ----------------- | --------- | ---------------------------------------- |
 | IInterface        | interface | 供Java层Binder服务接口继承的接口                    |
@@ -1275,6 +1289,7 @@ Android应用程序使用Java语言开发，Binder框架自然也少不了在Jav
 这里的IInterface，IBinder和C++层的两个类是同名的。这个同名并不是巧合：它们不仅仅同名，它们所起的作用，以及其中包含的接口都是几乎一样的，区别仅仅在于一个是C++层，一个是Java层而已。
 
 除了IInterface，IBinder之外，这里Binder与BinderProxy类也是与C++的类对应的，下面列出了Java层和C++层类的对应关系：
+
 | C++        | Java层       |
 | ---------- | ----------- |
 | IInterface | IInterface  |
@@ -1402,6 +1417,7 @@ private boolean execTransact(int code, long dataObj, long replyObj,
 ![](../../_attach/Android/Binder_ActivityManager.png)
 
 下面是上图中几个类的说明：
+
 | 类名                     | 说明            |
 | ---------------------- | ------------- |
 | IActivityManager       | Binder服务的公共接口 |
@@ -1600,6 +1616,7 @@ interface IRemoteService {
 - Stub内部又包含了一个名称为Proxy的静态内部类，Proxy类同样实现了IRemoteService接口
 
 仔细看一下Stub类和Proxy两个中包含的方法，是不是觉得很熟悉？是的，这里和前面介绍的服务实现是一样的模式。这里我们列一下各层类的对应关系：
+
 | C++   | Java层     | AIDL            |
 | ----- | --------- | --------------- |
 | BpXXX | XXXProxy  | IXXX.Stub.Proxy |
