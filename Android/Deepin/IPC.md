@@ -1736,8 +1736,10 @@ public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel re
 - [彻底理解Android Binder通信架构](http://gityuan.com/2016/09/04/binder-start-service/)
 - [binder驱动——-之内存映射篇](http://blog.csdn.net/xiaojsj111/article/details/31422175)
 - [Android Binder机制(一) Binder的设计和框架](http://wangkuiwu.github.io/2014/09/01/Binder-Introduce/)
-- [Android Binder 分析——内存管理]http://light3moon.com/2015/01/28/Android%20Binder%20%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/()
-
+- [Android Binder 分析——内存管理](http://light3moon.com/2015/01/28/Android%20Binder%20%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/)
+- [Binder驱动](http://www.cnblogs.com/Doing-what-I-love/p/5530173.html)
+- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6633311)
+- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6629298)
 
 ### 原文
 
