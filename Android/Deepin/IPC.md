@@ -1729,6 +1729,8 @@ public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel re
 
 ## 参考资料和推荐读物
 
+### 原文参考资料
+
 - [Android Binder](https://www.nds.rub.de/media/attachments/files/2012/03/binder.pdf)
 - [Android Interface Definition Language](https://developer.android.com/guide/components/aidl.html)
 - [Android Bander设计与实现 - 设计篇](http://blog.csdn.net/universus/article/details/6211589)
@@ -1737,12 +1739,22 @@ public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel re
 - [binder驱动——-之内存映射篇](http://blog.csdn.net/xiaojsj111/article/details/31422175)
 - [Android Binder机制(一) Binder的设计和框架](http://wangkuiwu.github.io/2014/09/01/Binder-Introduce/)
 - [Android Binder 分析——内存管理](http://light3moon.com/2015/01/28/Android%20Binder%20%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/)
-- [Binder驱动](http://www.cnblogs.com/Doing-what-I-love/p/5530173.html)
-- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6633311)
-- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6629298)
 
-### 原文
+
+### 原文链接
 
 http://qiangbo.space/2017-01-15/AndroidAnatomy_Binder_Driver/
 http://qiangbo.space/2017-02-12/AndroidAnatomy_Binder_CPP/
 http://qiangbo.space/2017-03-15/AndroidAnatomy_Binder_Java/
+
+### 其他参考资料
+
+- [Binder驱动](http://www.cnblogs.com/Doing-what-I-love/p/5530173.html)
+- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6633311)
+- [老罗的Android之旅](http://blog.csdn.net/luoshengyang/article/details/6629298)
+- [红茶一杯话Binder 初始篇](https://my.oschina.net/youranhongcha/blog/149575)
+- [红茶一杯话Binder 传输机制篇_上](https://my.oschina.net/youranhongcha/blog/152233)
+- [红茶一杯话Binder 传输机制篇_中](https://my.oschina.net/youranhongcha/blog/152963)
+- [红茶一杯话Binder 传输机制篇_下](https://my.oschina.net/youranhongcha/blog/167314)
+- [红茶一杯话Binder ServiceManager篇](https://my.oschina.net/youranhongcha/blog/149578)
+- [Android进程间通信](http://blog.csdn.net/kc58236582/article/details/51743426)
