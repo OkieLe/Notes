@@ -155,7 +155,7 @@ public void showImageFragment(boolean show, String imgTxt, String imgUrl) {
     }
 }
 ```
-### 获取arrt的值
+### 获取attr的值
 
 不同主题下需要把颜色，数值写成attr属性
 xml里，我们可以简单的引用attr属性值
@@ -550,19 +550,19 @@ String tmp = keywordsList.get(ran).get("keyword").toString();
 ### selector下的属性值
 
 - android:state_pressed
-如果是true，当被点击时显示该图片，如果是false没被按下时显示默认。
+  如果是true，当被点击时显示该图片，如果是false没被按下时显示默认。
 - android:state_focused
-true，获得焦点时显示；false，没获得焦点显示默认。
+  true，获得焦点时显示；false，没获得焦点显示默认。
 - android:state_selected
-true，当被选择时显示该图片；false，当未被选择时显示该图片。
+  true，当被选择时显示该图片；false，当未被选择时显示该图片。
 - android:state_checkable
-true，当 能使用时显示该图片；false，当CheckBox不能使用时显示该图片。
+  true，当 能使用时显示该图片；false，当CheckBox不能使用时显示该图片。
 - android:state_checked
-true，当CheckBox选中时显示该图片；false，当CheckBox为选中时显示该图片。
+  true，当CheckBox选中时显示该图片；false，当CheckBox为选中时显示该图片。
 - android:state_enabled
-true，当该组件能使用时显示该图片；false，当该组件不能使用时显示该图片。
+  true，当该组件能使用时显示该图片；false，当该组件不能使用时显示该图片。
 - android:state_window_focused
-true，当此activity获得焦点在最前面时显示该图片；false，当没在最前面时显示该图片。
+  true，当此activity获得焦点在最前面时显示该图片；false，当没在最前面时显示该图片。
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
