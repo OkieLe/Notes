@@ -1238,4 +1238,5 @@ public void addView(View view, ViewGroup.LayoutParams params,
 ## 参考
 
 腾讯 Bugly的浅析[Android的窗口](http://dev.qq.com/topic/5923ef85bdc9739041a4a798)
+
 Hohohong的[Android窗口系列](http://www.jianshu.com/u/107bd58d5bbb)

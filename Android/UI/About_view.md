@@ -995,8 +995,12 @@ invalidate : 使无效； damage : 损毁；dirty : 脏；
 ## 参考
 
 《Android开发艺术探索》
+
 《深入理解Android》卷III
 
+
 [深入理解Android之View的绘制流程](http://www.jianshu.com/p/060b5f68da79)
+
 [Android View的绘制流程](http://www.jianshu.com/p/5a71014e7b1b)
+
 [Idtk 的博客](http://www.idtkm.com/)

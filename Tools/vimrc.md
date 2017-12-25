@@ -5,6 +5,10 @@ set matchtime=5
 set incsearch
 
 set nu
+set cursorline
+
+set foldenable
+set foldmethod=manual
 
 set nocompatible
 set history=100
