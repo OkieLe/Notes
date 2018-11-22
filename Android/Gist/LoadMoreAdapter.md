@@ -64,9 +64,7 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
     override fun onBindViewHolder(holder: RecyclerViewHolder<T>, position: Int) {
         val item = items[position]
         holder.bindView(item)
-        if (itemClicker != null) {
-            holder.itemView.setOnClickListener { itemClicker?.invoke(item) }
-        }
+        holder.itemView.setOnClickListener { itemClicker?.invoke(item) }
     }
 
     override fun getItemViewType(position: Int): Int {
