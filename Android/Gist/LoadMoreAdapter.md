@@ -1,5 +1,6 @@
 ```kotlin
 import android.content.Context
+import android.support.annotation.CallSuper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -29,14 +30,13 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
 
         const val FOOTER_COUNT = 1
 
-        const val FOOTER_IDLE = 0
+        const val FOOTER_NONE = 0
         const val FOOTER_LOADING = 1
-        const val FOOTER_COMPLETE = 2
-        const val FOOTER_ERROR = 3
-        const val FOOTER_NO_MORE = 4
+        const val FOOTER_ERROR = 2
+        const val FOOTER_NO_MORE = 3
     }
 
-    private var loadState = FOOTER_IDLE
+    private var loadState = FOOTER_NONE
     private var loadMessage: String? = null
     private val items = ArrayList<T>()
 
@@ -48,8 +48,11 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
 
     abstract fun createDataViewHolder(parent: ViewGroup): RecyclerViewHolder<T>
     abstract fun createFooterViewHolder(parent: ViewGroup): FooterLoadMore<T>
-    open fun showFooterForState(state: Int): Boolean = false
-    open fun disallowLoadMore(state: Int): Boolean = false
+
+    @CallSuper
+    open fun showFooterForState(state: Int): Boolean {
+        return state == FOOTER_LOADING
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder<T> {
         if (viewType == TYPE_FOOTER_MORE) {
@@ -120,8 +123,8 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
             super.onScrollStateChanged(recyclerView, newState)
             val itemCount = recyclerView.adapter?.itemCount ?: 0
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 >= itemCount) {
-                if (loadState != FOOTER_LOADING && !disallowLoadMore(loadState) && itemCount > 0) {
+                    && lastVisibleItem + 1 >= itemCount && itemCount > 0) {
+                if (loadState == FOOTER_LOADING) {
                     loadMoreListener?.invoke()
                 }
             }
@@ -138,8 +141,8 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
 
     fun updateLoadState(state: Int, message: String? = null) {
         val wasShown = showFooterForState(loadState)
-        val willShow = showFooterForState(state)
-        loadState = state
+        val willShow = showFooterForState(state) || state == FOOTER_ERROR
+        loadState = if (state == FOOTER_ERROR) FOOTER_LOADING else state
         loadMessage = message
         if (wasShown && !willShow) {
             notifyItemRemoved(originItems.size)
