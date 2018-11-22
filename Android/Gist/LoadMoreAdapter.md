@@ -121,7 +121,7 @@ abstract class LoadMoreRecyclerAdapter<T>(val context: Context)
             val itemCount = recyclerView.adapter?.itemCount ?: 0
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem + 1 >= itemCount) {
-                if (loadState != FOOTER_LOADING && disallowLoadMore(loadState) && itemCount > 0) {
+                if (loadState != FOOTER_LOADING && !disallowLoadMore(loadState) && itemCount > 0) {
                     loadMoreListener?.invoke()
                 }
             }
