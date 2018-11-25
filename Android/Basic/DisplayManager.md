@@ -6,7 +6,7 @@ Android显示(android.view.Display)相关的内容，主要内容包括：Displa
 
 ## 一、Display架构
 
-![Layers](./display_structure.jpg)
+![Layers](../../_attach/Android/display_structure.jpg)
 
 如上图所示，与Android其他模块类似，从上到下依次为应用和框架层、支持库和虚拟机、（HAL）、内核层。
 
