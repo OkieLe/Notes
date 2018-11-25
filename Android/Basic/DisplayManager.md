@@ -67,11 +67,11 @@ PowerManagerService.systemReady()
 
 Power键亮灭屏的流程：
 1. Power按键事件处理
-   ![Power key](./power_key.png)
+   ![Power key](../../_attach/Android/power_key.png)
 2. PowerManagerService对屏幕状态的处理
-   ![Power state1](./power_state_1.png)
+   ![Power state1](../../_attach/Android/power_state_1.png)
 
-   ![Power state2](./power_state_2.png)
+   ![Power state2](../../_attach/Android/power_state_2.png)
 
 其他情况，比如指纹亮屏或者超时灭屏，只是第一部分逻辑不同，第二部分屏幕状态处理类似。
 
