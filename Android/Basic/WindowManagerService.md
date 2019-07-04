@@ -11,7 +11,7 @@ Android的GUI系统是Android最重要也最复杂的系统之一。它包括以
 4. 应用框架系统 - Activity Manager System.
 
 它们之间的关系如下图所示：
-![services-relationship](./services-relationship.png)
+![services-relationship](../../_attach/services-relationship.png)
 
 本文主要介绍第一部分的WMS。
 
@@ -63,7 +63,7 @@ WindowManagerGlobal: 一个Singleton对象，对象里维护了三个数组：
 
 ViewRootImpl 在整个Android的GUI系统中占据非常重要的位置，从下图可以看到，ViewRootImpl 与用户输入系统(接收用户按键，触摸屏输入), 窗口系统（复杂窗口的布局，刷新，动画），显示合成系统（包括定时器Choreographer, SurfaceFlinger), 乃至Audio系统（音效输出）等均有密切的关联。
 
-![viewrootimpl](./viewroot_impl.png)
+![viewrootimpl](../../_attach/viewroot_impl.png)
 
 三者( ViewRootImpl, WindowManagerImpl, WindowManagerGlobal) 都存在于应用（有Activity)的进程空间里，一个Activity对应一个WindowManagerImpl, 一个DecorView(ViewRoot),以及一个ViewRootImpl (上面说过，实际一个Activity只有一个DecorView），而WindowManagerGlobal是一个全局对象，一个应用永远只有一 个。
 
@@ -125,7 +125,7 @@ Display 是Android 对输出显示设备的一个抽象，传统的Display 设�
 
 Android 应用程序创建的大概流程是 ActivityManagerService -> Zygote -> Fork App，然后应用程序在ActivityThread 中进入loop循环等待处理来自AcitivyManagerService的消息。如果一个Android的应用有Acitivity， 那它起来后的第一件事情就是将自己显示出来。
 
-![View WindowManager](./window_view_wms.png)
+![View WindowManager](../../_attach/window_view_wms.png)
 
 Android 中跟窗口管理相关（不包括显示和按键处理）主要有两个进程，Acitivty所在进程和WndowManagerService 所在进程（SystemServer).  上图中用不同颜色区分这两个进程，黄色的模块运行在Activity的进程里，绿色的模块则在SystemServer内部，本文主要讨论的是WindowManager Service。它们的分工是：Activity进程负责窗口内View的管理，而WindowManagerService 管理来自与不同Acitivity以及系统的窗口。
 
@@ -133,7 +133,7 @@ Android 中跟窗口管理相关（不包括显示和按键处理）主要有两
 
 一个新的应用被fork完后，第一个调用的方法就是 ActivityThread的main()，这个函数主要就是创建一个ActivityThread线程，然后调用loop()开始等待。当收到来自 ActivityManager 的 LAUNCH_ACTIVITY 消息后，Activity开始了他的显示之旅。下图描绘的是Activity在显示前的准备流程。
 
-![](./acvitity_surface_create.png)
+![](../../_attach/acvitity_surface_create.png)
 
 图分为三部分， 右上角是Acitivity应用的初始化。中间部分是Acitivity 与WindowManagerService的交互准备工作，左下角是window显示的开始。本文主要描述后两部分。
 
@@ -153,11 +153,11 @@ Android 中跟窗口管理相关（不包括显示和按键处理）主要有两
 
 VSYNC一般由硬件产生，也可以由软件产生（如果够准确的话），Android 中VSYNC来自于HWComposer，接收者就是Choreographer。Choreographer英文意思是编舞者，跳舞很讲究节奏不是吗，必须要踩准点。Choreographer 就是用来帮助Android的动画，输入，还有显示刷新按照固定节奏来完成工作的。看看Chroreographer 和周边的类结构。
 
-![](./choreographer_class.png)
+![](../../_attach/choreographer_class.png)
 
 Choreographer 是ViewRootImpl 创建的，它拥有一个Receiver，用来接收外部传入的Event，它还有一个Callback Queue，里面存放着若干个CallbackRecord，还有一个FrameHandler，用来handleMessage， 最后它还跟Looper有引用关系。再看看下面这张时序图：
 
-![](./choreographer_seq.png)
+![](../../_attach/choreographer_seq.png)
 
 首先Looper调用loop() 后，线程进入进入睡眠，直到收到一个消息。Looper也支持addFd()方法，这样如果某个fd上发生了IO操作(read/write)，它也会从睡眠中醒来。Choreographer的实现用到了这两种方式，首先他通过某种方式获取到SurfaceFlinger 进程提供的fd，然后将其交给Looper进行监听，只要SurfaceFlinger往这个fd写入VSync事件，looper便会唤醒。Looper唤醒后，会执行onVsync()，这里面只是调用Handler接口 sendMessageAtTime() 往消息队列里又送了一个消息。这个消息最终调到了Handler （实际是FrameHandler)的handleCallback来完成上层安排的工作。为什么要绕这么大个圈？为什么不在onVSync里直接handleCallback()? 毕竟onVSync 和 handleCallback() 都在一个线程里。这是因为MessageQueue 不光接收来自SurfaceFlinger 的VSync 事件，还有来自上层的控制消息。VSync的处理是相当频繁的，如果不将VSync信号送人MessageQueue进行排队，MessageQueue里的事件就有可能得不到及时处理，严重的话会导致溢出。当然了，如果因为VSync信号排队而导致处理延迟，这就是设计的问题了，这也是为什么Android文档里反复强调在Activity的onXXX()里不要做太耗时的工作，因为这些回调函数和Choreographer运行在同一个线程里，这个线程就是所谓的UI线程。
 
@@ -184,11 +184,11 @@ if (surfaceControl != null) {
 
 直接从前面提到的performMeasure()函数开始
 
-![](./view_measure_seq.png)
+![](../../_attach/view_measure_seq.png)
 
 因为递归调用，实际的函数调用栈比这里显示的深很多，这个函数会从View的结构树顶（DecorView), 一直遍历到叶节点。中间会经过三个基类：DecorView， ViewGroup 和 View 它们的类结构如下图所示：
 
-![](./view_class.png)
+![](../../_attach/view_class.png)
 
 所有可见的View(不包括DecorView 和 ViewGroup)都是一个矩形，Measure的目的就是算出这个矩形的尺寸，mMeasuredWidth 和 mMeasuredHeight (注意，这不是最终在屏幕上显示的尺寸），这两个尺寸的计算受其父View的尺寸和类型限制，这些信息存放在 MeasureSpec里。widthMeasureSpec 和 heightMeasureSpec 作为 onMeasure的参数出入，子View根据这两个值计算出自己的尺寸，最终调用 setMeasuredDimension() 更新mMeasuredWidth 和 mMeasuredHeight.
 
@@ -234,7 +234,7 @@ DisplayListCanvas(Java)是Canvas的扩展类，用于记录绘制操作的GL Can
 
 #### Draw
 
-![](./draw_renderer.png)
+![](../../_attach/draw_renderer.png)
 
 绘制流程从performDraw()开始，主要的工作由ThreadedRenderer完成，进入到hwui后实际是由RenderThread执行最后的GL命令，RenderThread后面进行专门讨论。
 
@@ -257,13 +257,13 @@ DisplayListCanvas(Java)是Canvas的扩展类，用于记录绘制操作的GL Can
 
 上面讨论的只是一个窗口的流程，而Android是个多窗口的系统，窗口之间可能会有重叠，窗口切换会有动画产生，窗口的显示和隐藏都有可能会导致资源的分配和释放，这一切需要有一个全局的服务进行统一的管理，这个服务就是我们大名鼎鼎的Window Manager Service (简写 WMS)。
 
-![](./wms_class.png)
+![](../../_attach/wms_class.png)
 
 #### Layout
 
 Layout 是Window Manager Service 重要工作之一，它的流程如下图所示：
 
-![](./layout_wms.png)
+![](../../_attach/layout_wms.png)
 
 - 每个View将期望窗口尺寸交给WMS（WindowManagerService).
 - WMS 将所有的窗口大小以及当前的Overscan区域传给WPM （WindowPolicy Manager).
@@ -274,7 +274,7 @@ Layout 是Window Manager Service 重要工作之一，它的流程如下图所�
 
 Animation的原理很简单，就是定时重绘图形。下面的类图中给出了Android跟Animation相关的类。
 
-![](./wms_animation_class.png)
+![](../../_attach/wms_animation_class.png)
 
 - Animation:
 >    Animation抽象类，里面最重要的一个接口就是applyTranformation, 它的输入是当前的一个描述进度的浮点数(0.0 ~ 1.0)， 输出是一个Transformation类对象，这个对象里有两个重要的成员变量，mAlpha 和 mMatrix, 前者表示下一个动画点的透明度(用于灰度渐变效果），后者则是一个变形矩阵，通过它可以生成各种各样的变形效果。Android提供了很多Animation的具体实现，比如RotationAnimation, AlphaAnimation 等等，用户也可以实现自己的Animation类，只需要重载applyTransform 这个接口。注意，Animation类只生成绘制动画所需的参数（alpha 或 matrix)，不负责完成绘制工作。完成这个工作的是Animator.
@@ -289,7 +289,7 @@ Animation的原理很简单，就是定时重绘图形。下面的类图中给�
 
 具体来看一下Window的Animation和View的Animation(与Android N有偏差，整体流程类似)：
 
-![](./wms_animation.png)
+![](../../_attach/wms_animation.png)
 
 1. WindowManagerService 的 scheduleAnimationLocked() 将windowAnimator的mAnimationRunnable 注册到定时器 Choreographer.
 2. 如果应用程序的res/anim/下有xml文件定义animation，在layout过程中，会通过appTransition类的loadAnimation() 函数将XML转换成 Animation_Set 对象，它里面可以包含多个Animation。
