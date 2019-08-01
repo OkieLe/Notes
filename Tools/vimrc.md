@@ -131,6 +131,8 @@ Plug 'bumaociyuan/vim-swift'
 Plug 'kien/ctrlp.vim'
 " precision colorscheme for the vim text editor
 Plug 'altercation/vim-colors-solarized'
+" one colortheme for vim
+Plug 'rakr/vim-one'
 " lean & mean status/tabline for vim that's light as air
 Plug 'vim-airline/vim-airline'
 " Vim plugin for intensely orgasmic commenting
@@ -160,10 +162,16 @@ call plug#end()
 
 " altercation/vim-colors-solarized
 "" https://github.com/altercation/vim-colors-solarized
-syntax enable
-let g:solarized_termcolors=256
+" syntax enable
+" let g:solarized_termcolors=256
+" set background=light
+" colorscheme solarized
+
+" rakr/vim-one
+let g:airline_theme='one'
 set background=dark
-colorscheme solarized
+let g:one_allow_italics = 1
+colorscheme one
 
 " scrooloose/nerdtree
 "" open a NERDTree automatically when vim starts up
