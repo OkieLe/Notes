@@ -116,6 +116,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
+let mapleader=","
+
 " PLUGIN
 
 call plug#begin()
@@ -123,6 +125,7 @@ call plug#begin()
 Plug 'tpope/vim-fugitive'
 " A tree explorer plugin for vim
 Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
 " Git flag on nerdtree
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'kballard/vim-swift'
@@ -191,6 +194,9 @@ map <Leader>n :NERDTreeToggle<Enter>
 "" locate current file in the tree
 map <Leader>j :NERDTreeFind<Enter>
 inoremap <Leader>j <Esc>:NERDTreeFind<Enter>
+let NERDTreeShowLineNumbers=1
+let g:NERDTreeWinSize = 45
+let g:nerdtree_tabs_open_on_console_startup = 1
 
 " xolox/vim-easytags
 let g:easytags_cmd = '/usr/local/bin/ctags'
