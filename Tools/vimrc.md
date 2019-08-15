@@ -66,6 +66,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'xolox/vim-misc'
+Plug 'jistr/vim-nerdtree-tabs'
 
 " search
 Plug 'junegunn/fzf'
@@ -138,6 +139,8 @@ colorscheme gruvbox
 "" filetype extension 
 "" java
 au BufNewFile,BufRead *.java,*.jav,*.aidl setf java
+
+let mapleader=","
 
 "" quick edit vimrc
 map <Leader><F2> :e ~/.vimrc<CR>
@@ -217,6 +220,12 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 let g:NERDTreeChDirMode = 2
 "" startup cursor in editing area
 autocmd VimEnter * NERDTree | wincmd p
+
+"" config for appearance
+let NERDTreeShowHidden=1
+let NERDTreeShowLineNumbers=1
+let g:NERDTreeWinSize = 25
+let g:nerdtree_tabs_open_on_console_startup = 1
 
 " vim-fugitive'
 nnoremap <Leader>gs :Gstatus<CR>
