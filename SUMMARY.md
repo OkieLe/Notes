@@ -1,9 +1,7 @@
 # Summary
 
 * [Android]()
-  * []()
 * [Algorithms]()
-
 * [C++]()
 * [Java]()
 * [Linux]()
