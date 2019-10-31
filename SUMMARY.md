@@ -1,6 +1,8 @@
 # Summary
 
 * [Android]()
+  * [Basic]()
+    * [AIDL](Android/Basic/AIDL.md)
 * [Algorithms]()
 * [C++]()
 * [Java]()
@@ -28,7 +30,7 @@
   * [Security](Web/security.md)
   * [Servlet](Web/Servlet.md)
   * [Javascript](Web/JavaScript.md)
-  * [Typescript](Web/Typescript.md)
+  * [Typescript](Web/TypeScript.md)
 * [Work]()
   * [Bookmarks](Work/Bookmarks.md)
   * [Books](Work/Books.md)
