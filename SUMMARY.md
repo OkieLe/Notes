@@ -1,6 +1,18 @@
 # Summary
 
-* [Android](Android/template.md)
+* [Android]()
+  * []()
+* [Algorithms]()
 
+* [C++]()
+* [Java]()
+* [Linux]()
+* [Patterns]()
+* [Python]()
+* [Shell]()
+* [Tools]()
+* [Web]()
 * [Work]()
-    * [Bookmarks](Work/Bookmarks.md)
+  * [Bookmarks](Work/Bookmarks.md)
+  * [Books](Work/Books.md)
+  * [System](Work/System.md)
