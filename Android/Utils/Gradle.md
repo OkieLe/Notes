@@ -310,15 +310,17 @@ gradle.taskGraph.whenReady {taskGraph ->
 ```
 
 执行结果如下：
-```shell`
+```shell
 msdx@msdx-ubuntu:~/tmp$ gradle -q distribution
 We build the zip with version=1.0-SNAPSHOT
 msdx@msdx-ubuntu:~/tmp$ gradle -q release
 We build the zip with version=1.0
 We release now
 msdx@msdx-ubuntu:~/tmp$
+
 ```
 在上面的脚本代码中，whenReady会在release任务执行之前影响它，即使这个任务不是主要的任务（即不是通过命令行传入参数来调用）。
 
-本文原创，参考自Gradle官方文档，可看作是阅读该文档的笔记。
 原文出处：[CSDN博客](http://blog.csdn.net/maosidiaoxian/article/details/40340571)
+
+
