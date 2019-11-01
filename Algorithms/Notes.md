@@ -1,1 +1,0 @@
-- 最长回文子串，Manacher算法[(说明)](http://blog.csdn.net/xingyeyongheng/article/details/9310555)

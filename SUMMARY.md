@@ -2,7 +2,6 @@
 
 * [Android]()
   * [App]()
-    * [Camera](Android/App/Camera.md)
     * [Camera2](Android/App/Camera2.md)
     * [Exp 1](Android/App/Exp-a.md)
     * [Exp 2](Android/App/Exp-b.md)
@@ -53,8 +52,6 @@
     * [Sysrq trigger](Android/Utils/sysrq_trigger.md)
     * [vmstat](Android/Utils/vmstat.md)
     * [Notes](Android/Utils/Notes.md)
-* [Algorithms]()
-  * [Notes](Algorithms/Notes.md)
 * [C++]()
   * [Constructor](C++/Constructor.md)
   * [Os libs](C++/OS_libs.md)
